@@ -1,11 +1,12 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
 
 /**
- * Hero component for Lando Norris website.
+ * Hero component for Zinedine Rouabah's portfolio.
  * Features a minimalist light background with topographic line patterns,
- * a "Next Race" widget, rotating helmet (placeholder for Rive),
- * and large background portrait silhouettes.
+ * a technical widget, and large background portrait silhouettes.
  */
 export default function HeroSection() {
   return (
@@ -14,10 +15,10 @@ export default function HeroSection() {
       <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center opacity-10">
         <div className="relative w-full h-full max-w-[1440px]">
           <Image
-            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/67d18655b032045a4dc78e56_ln4-hp-lando-head-18.webp"
-            alt="Lando Norris Silhouette"
+            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
+            alt="Zinedine Silhouette"
             fill
-            className="object-contain object-center scale-150"
+            className="object-cover object-center scale-150"
             priority
           />
         </div>
@@ -26,19 +27,19 @@ export default function HeroSection() {
       {/* Main Container */}
       <div className="container relative z-10 flex flex-col md:flex-row items-center justify-between h-full min-h-screen py-24 md:py-0">
         
-        {/* Left Side: Next Race Widget */}
+        {/* Left Side: Technical Widget */}
         <div className="w-full md:w-auto self-start md:self-center mt-20 md:mt-0">
           <div className="flex flex-col items-start space-y-4">
             <div className="border border-[#4A4D43] rounded-lg p-6 bg-white/40 backdrop-blur-sm max-w-[240px]">
               <div className="mb-4">
                 <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#4A4D43] block mb-1">
-                  Next Race
+                  Status
                 </span>
                 <div className="h-[1px] w-full bg-[#4A4D43]/20 mb-4" />
               </div>
               
               <div className="flex flex-col space-y-6">
-                {/* Circuit Map Interface (Simulated Rive) */}
+                {/* Tech Stack Interface */}
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-12 relative opacity-80">
                     <svg viewBox="0 0 100 80" className="w-full h-full fill-none stroke-[#282C20] stroke-[1.5]">
@@ -47,8 +48,8 @@ export default function HeroSection() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-sans font-black text-xl leading-none text-[#282C20] uppercase">Melbourne</h3>
-                    <p className="font-mono text-[10px] tracking-widest text-[#4A4D43] uppercase">GP</p>
+                    <h3 className="font-sans font-black text-xl leading-none text-[#282C20] uppercase">Secure</h3>
+                    <p className="font-mono text-[10px] tracking-widest text-[#4A4D43] uppercase">Systems</p>
                   </div>
                 </div>
 
@@ -63,7 +64,7 @@ export default function HeroSection() {
                   </div>
                   <div>
                     <p className="font-mono text-[10px] leading-tight tracking-wider text-[#4A4D43] uppercase">
-                      mclaren f1<br />since 2019
+                      Systems & Security<br />Researcher
                     </p>
                   </div>
                 </div>
@@ -72,20 +73,20 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Center/Right: Helmet Animation Area */}
+        {/* Center/Right: Core Focus Area */}
         <div className="flex-1 flex items-center justify-center relative h-[400px] md:h-screen w-full">
           <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px]">
-             {/* Rotating Helmet Image */}
+             {/* Abstract Tech Visual */}
              <div className="absolute inset-0 flex items-center justify-center">
                <div className="relative w-4/5 h-4/5 animate-hover items-center justify-center flex">
-                  <Image
-                    src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/67d18655b032045a4dc78e53_ln4-hp-lando-helmet-17.webp"
-                    alt="Lando Norris Helmet"
-                    width={500}
-                    height={500}
-                    className="object-contain drop-shadow-2xl"
-                    priority
-                  />
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[#D9FF00]/20 blur-[100px] rounded-full" />
+                    <svg viewBox="0 0 200 200" className="w-full h-full text-[#282C20]">
+                      <path d="M100,20 L180,60 L180,140 L100,180 L20,140 L20,60 Z" fill="none" stroke="currentColor" strokeWidth="2" />
+                      <path d="M100,40 L160,70 L160,130 L100,160 L40,130 L40,70 Z" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="5,5" />
+                      <circle cx="100" cy="100" r="10" fill="#D9FF00" />
+                    </svg>
+                  </div>
                </div>
              </div>
           </div>
@@ -93,27 +94,21 @@ export default function HeroSection() {
 
         {/* Mobile Large Text Overlay */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[90%] md:hidden z-20">
-          <Image
-            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/svgs/67e968a40345883f8ccc1b05_ln4-lando-norris-text-mob-1.svg"
-            alt="Lando Norris"
-            width={400}
-            height={100}
-            className="w-full h-auto opacity-20"
-          />
+          <h1 className="text-6xl font-black text-[#282C20] opacity-20 uppercase text-center leading-none">
+            Zinedine<br />Rouabah
+          </h1>
         </div>
       </div>
 
       {/* Hero Desktop Title Hidden but SEO friendly */}
       <div className="sr-only">
-        <h1>Lando Norris</h1>
-        <h2>2025 McLaren Formula 1 Driver</h2>
+        <h1>Zinedine Rouabah</h1>
+        <h2>Systems Programmer & Security Researcher</h2>
       </div>
 
       {/* Decorative Signature (bottom right on desktop) */}
       <div className="hidden lg:block absolute bottom-12 right-12 z-20 opacity-40">
-        <svg width="240" height="80" viewBox="0 0 240 80" className="fill-[#282C20]">
-          <path d="M20,60 Q40,20 80,40 T140,30 T220,50" stroke="currentColor" fill="none" strokeWidth="2" opacity="0.4" />
-        </svg>
+        <div className="font-black text-4xl text-[#282C20] italic tracking-tighter">ZR</div>
       </div>
 
       <style jsx global>{`
