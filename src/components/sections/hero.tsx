@@ -80,34 +80,29 @@ const HeroSection = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[800px] md:h-[800px] bg-red-600/5 rounded-full blur-[80px] md:blur-[120px] animate-pulse" />
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-6 z-10">
-        <div className="flex flex-col items-center text-center">
-          <Link href="/f1" className="inline-flex items-center gap-4 mb-12 text-[10px] font-technical text-white/40 hover:text-white transition-colors group uppercase tracking-[0.4em] pointer-events-auto">
-            <ArrowLeft size={14} className="group-hover:-translate-x-2 transition-transform text-red-600" />
-            BACK_TO_ARCHIVE
-          </Link>
+        {/* Content */}
+        <div className="container mx-auto px-6 z-10">
+          <div className="flex flex-col items-center text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="mb-6 md:mb-8"
+            >
+              <span className="font-technical text-[8px] md:text-[10px] tracking-[0.6em] md:tracking-[1em] text-red-600 uppercase">
+                NODE_DZ // PROTOCOL_01
+              </span>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="mb-6 md:mb-8"
-          >
-            <span className="font-technical text-[8px] md:text-[10px] tracking-[0.6em] md:tracking-[1em] text-red-600 uppercase">
-              NODE_DZ // PROTOCOL_01
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[16vw] md:text-[12vw] font-black leading-[0.75] text-white uppercase italic tracking-tighter"
-          >
-            MAXIMUM<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.4)" }}>VELOCITY</span>
-          </motion.h1>
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[16vw] md:text-[12vw] font-black leading-[0.75] text-white uppercase italic tracking-tighter"
+            >
+              ROUABAH<br />
+              <span className="text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.4)" }}>ZIN EDDINE</span>
+            </motion.h1>
 
           <motion.div
             initial={{ opacity: 0 }}
