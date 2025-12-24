@@ -3,7 +3,6 @@
 import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text, Float, MeshDistortMaterial, PerspectiveCamera, ContactShadows } from '@react-three/drei';
-import { motion } from 'framer-motion-3d';
 import { motion as motion2d, AnimatePresence } from 'framer-motion';
 import * as THREE from 'three';
 
