@@ -8,37 +8,42 @@ interface ProjectData {
   id: string;
   name: string;
   year: string;
+  category: string;
   baseImg: string;
   hoverImg: string;
 }
 
 const projectGallery: ProjectData[] = [
   {
-    id: "kernel-research",
-    name: "Kernel",
-    year: "2025",
-    baseImg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
-    hoverImg: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-  },
-  {
-    id: "compiler-tech",
-    name: "Compiler",
-    year: "2025",
-    baseImg: "https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2070&auto=format&fit=crop",
-    hoverImg: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop",
-  },
-  {
-    id: "security-audit",
-    name: "Audit",
+    id: "snovatech",
+    name: "SnovaTech",
     year: "2024",
-    baseImg: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop",
-    hoverImg: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop",
+    category: "Solar Simulation",
+    baseImg: "https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?q=80&w=2070&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    id: "distributed-systems",
-    name: "DistSys",
+    id: "photographer",
+    name: "Photographer",
+    year: "2025",
+    category: "Marketplace",
+    baseImg: "https://images.unsplash.com/photo-1452784444945-3f422708fe5e?q=80&w=2072&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1493863641943-9b68992a8d07?q=80&w=2058&auto=format&fit=crop",
+  },
+  {
+    id: "clinic",
+    name: "Clinic",
     year: "2024",
-    baseImg: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2070&auto=format&fit=crop",
+    category: "Management Sys",
+    baseImg: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2070&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: "kernel",
+    name: "Open Source",
+    year: "Active",
+    category: "Contributions",
+    baseImg: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
     hoverImg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
   }
 ];
@@ -79,13 +84,18 @@ const ProjectCard = ({ project, index }: { project: ProjectData; index: number }
         </div>
 
         <div className="absolute bottom-4 right-6 text-right">
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-[10px] sm:text-[12px] font-technical text-[#F4F4F1] uppercase tracking-wider">
-              {project.name}
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] font-technical text-[#F4F4F1] opacity-60 uppercase tracking-widest">
+              {project.category}
             </span>
-            <span className="text-[10px] sm:text-[12px] font-technical text-[#D9FF00] font-bold">
-              {project.year}
-            </span>
+            <div className="flex items-center justify-end gap-2">
+              <span className="text-[10px] sm:text-[12px] font-technical text-[#F4F4F1] uppercase tracking-wider font-bold">
+                {project.name}
+              </span>
+              <span className="text-[10px] sm:text-[12px] font-technical text-[#D9FF00] font-bold">
+                {project.year}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -95,15 +105,15 @@ const ProjectCard = ({ project, index }: { project: ProjectData; index: number }
 
 export default function HelmetGallery() {
   return (
-    <section className="bg-[#0A0A0A] pt-24 pb-32 overflow-hidden relative">
+    <section id="projects" className="bg-[#0A0A0A] pt-24 pb-32 overflow-hidden relative">
       <div className="absolute inset-0 topographic-bg opacity-10 pointer-events-none" />
 
       <div className="container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32">
-          <div className="relative rounded-2xl overflow-hidden aspect-[4/5] lg:aspect-square">
+          <div className="relative rounded-2xl overflow-hidden aspect-[4/5] lg:aspect-square border border-muted-gray/20">
             <Image
-              src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
-              alt="Systems visualization"
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+              alt="Project visualization"
               fill
               className="object-cover"
               priority
@@ -113,13 +123,13 @@ export default function HelmetGallery() {
           <div className="max-w-xl">
             <div className="mb-8">
               <h2 className="text-[12px] font-technical tracking-[0.2em] text-[#D9FF00] mb-4">
-                Research
+                02 — Selected Works
               </h2>
               <h3 className="text-6xl md:text-8xl font-black text-[#F4F4F1] leading-[0.85] mb-8">
-                Systems <br />Archive
+                Featured <br />Projects
               </h3>
               <p className="text-[#A1A1AA] text-lg leading-relaxed max-w-md font-sans">
-                A selection of high-performance systems and security research projects developed across various hardware architectures.
+                Production systems and innovative solutions demonstrating technical excellence in Energy, Marketplace, and Healthcare sectors.
               </p>
             </div>
           </div>
@@ -133,10 +143,12 @@ export default function HelmetGallery() {
 
         <div className="mt-40 flex justify-center">
           <a
-            href="https://github.com/zineddine"
+            href="https://github.com/xCyberpunkx"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative flex items-center justify-between bg-[#D9FF00] text-[#0A0A0A] font-technical font-bold text-sm px-6 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(217,255,0,0.4)]"
           >
-            <span className="mr-6 uppercase tracking-widest">View GitHub</span>
+            <span className="mr-6 uppercase tracking-widest">View All Projects</span>
             <div className="bg-[#0A0A0A] text-[#D9FF00] rounded-full p-2 transition-transform duration-300 group-hover:rotate-45">
               <ArrowUpRight size={18} strokeWidth={3} />
             </div>
@@ -146,7 +158,7 @@ export default function HelmetGallery() {
 
       <div className="absolute bottom-[-10%] left-0 w-full select-none pointer-events-none overflow-hidden whitespace-nowrap opacity-[0.03]">
         <span className="text-[25vw] font-black italic text-white uppercase leading-none">
-          SECURE SYSTEMS
+          ENGINEERING PRECISION
         </span>
       </div>
     </section>

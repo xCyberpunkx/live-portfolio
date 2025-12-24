@@ -4,12 +4,12 @@ import React from 'react';
 import Image from 'next/image';
 
 const techStack = [
-  { name: 'Rust', logo: 'https://www.rust-lang.org/static/images/rust-logo-blk.svg', width: 60, height: 60 },
-  { name: 'TypeScript', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg', width: 60, height: 60 },
   { name: 'Next.js', logo: 'https://cdn.worldvectorlogo.com/logos/next-js.svg', width: 60, height: 60 },
-  { name: 'C++', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg', width: 60, height: 60 },
-  { name: 'Linux', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg', width: 60, height: 60 },
   { name: 'React', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg', width: 60, height: 60 },
+  { name: 'TypeScript', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg', width: 60, height: 60 },
+  { name: 'C++', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg', width: 60, height: 60 },
+  { name: 'PHP', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg', width: 60, height: 60 },
+  { name: 'Cisco CCNA', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg', width: 60, height: 60 },
 ];
 
 export default function Partnerships() {
@@ -20,7 +20,7 @@ export default function Partnerships() {
           <div className="flex items-center gap-4">
             <div className="w-12 h-[1px] bg-[#4A4D43]"></div>
             <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#4A4D43]">
-              Tech Stack
+              Competencies
             </span>
           </div>
           <div className="flex flex-col">
@@ -32,7 +32,7 @@ export default function Partnerships() {
             </h2>
           </div>
           <p className="max-w-[480px] mt-8 text-[#A1A1AA] font-sans text-lg leading-relaxed">
-            Specializing in high-assurance languages and modern frontend frameworks to build secure, scalable, and high-performance systems.
+            Specializing in building reliable, scalable applications with clean architecture, efficient algorithms, and secure network infrastructure.
           </p>
         </div>
 
