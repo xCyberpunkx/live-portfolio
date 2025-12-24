@@ -6,6 +6,7 @@ import Image from "next/image";
 
 const FloatingLogos = () => {
     const logos = [
+      { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg", x: "12%", y: "45%", size: 40, mdSize: 70 },
       { name: "Tech 1", src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=100&auto=format&fit=crop", x: "15%", y: "20%", size: 30, mdSize: 50 },
       { name: "Tech 2", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=100&auto=format&fit=crop", x: "80%", y: "15%", size: 40, mdSize: 80 },
       { name: "Tech 3", src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=100&auto=format&fit=crop", x: "10%", y: "70%", size: 25, mdSize: 40 },
