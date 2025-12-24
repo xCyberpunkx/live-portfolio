@@ -27,6 +27,7 @@ export default function Home() {
         <TechExperience />
         <MyProjects />
         <ChampionCollection />
+        <FormulaOne />
         <Partnerships />
         <Footer />
       </SmoothScroll>
