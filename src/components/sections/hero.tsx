@@ -2,10 +2,57 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+const FloatingLogos = () => {
+  const logos = [
+    { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Pirelli_logo.svg", x: "15%", y: "20%", size: 60 },
+    { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png", x: "80%", y: "15%", size: 100 },
+    { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Benz_logo%2C_2010.svg", x: "10%", y: "70%", size: 50 },
+    { name: "Vercel", src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Vercel_logo_black.svg", x: "85%", y: "65%", size: 60, invert: true },
+    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg", x: "50%", y: "10%", size: 80 },
+    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg", x: "75%", y: "80%", size: 80 },
+  ];
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {logos.map((logo, i) => (
+        <motion.div
+          key={logo.name}
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: [0.1, 0.3, 0.1],
+            y: [0, -20, 0],
+            x: [0, 10, 0],
+          }}
+          transition={{
+            duration: 5 + i,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.5,
+          }}
+          className="absolute z-0 hidden md:block"
+          style={{ left: logo.x, top: logo.y }}
+        >
+          <div style={{ width: logo.size, height: "auto" }}>
+            <img 
+              src={logo.src} 
+              alt={logo.name} 
+              className={`w-full h-auto opacity-40 grayscale ${logo.invert ? 'invert' : ''}`}
+            />
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 const HeroSection = () => {
   return (
     <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+      {/* Floating Logos */}
+      <FloatingLogos />
+      
       {/* Animated Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" />
