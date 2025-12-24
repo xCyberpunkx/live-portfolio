@@ -1,64 +1,83 @@
 "use client";
 
-import React, { Suspense, useRef, useState, useEffect } from 'react';
+import React, { Suspense, useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Text, Float, MeshDistortMaterial, PerspectiveCamera, ContactShadows } from '@react-three/drei';
-import { motion as motion2d, AnimatePresence } from 'framer-motion';
+import { Text, Float, MeshDistortMaterial, PerspectiveCamera, ContactShadows, Stars, Sparkles, Float as FloatDrei } from '@react-three/drei';
+import { motion as motion2d, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 
-function Rig() {
-  const { camera, mouse } = useThree();
-  const vec = new THREE.Vector3();
-  return useFrame(() => {
-    camera.position.lerp(vec.set(mouse.x * 0.5, mouse.y * 0.5, 5), 0.05);
-    camera.lookAt(0, 0, 0);
-  });
-}
+function ParticleField() {
+  const points = useMemo(() => {
+    const p = new Float32Array(2000 * 3);
+    for (let i = 0; i < 2000; i++) {
+      p[i * 3] = (Math.random() - 0.5) * 20;
+      p[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      p[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    }
+    return p;
+  }, []);
 
-function FloatingText() {
-  return (
-    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-      <Text
-        font="https://fonts.gstatic.com/s/plusjakartasans/v8/LDS9onS6vVyc-qYW3P3_p1809_S_kL5p.woff"
-        fontSize={0.8}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={10}
-        textAlign="center"
-        fontWeight={900}
-      >
-        ROUABAH{"\n"}ZINE EDDINE
-      </Text>
-    </Float>
-  );
-}
-
-function Sphere() {
-  const mesh = useRef<THREE.Mesh>(null);
+  const ref = useRef<THREE.Points>(null);
   useFrame((state) => {
-    if (mesh.current) {
-      mesh.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-      mesh.current.rotation.y = state.clock.getElapsedTime() * 0.3;
+    if (ref.current) {
+      ref.current.rotation.y = state.clock.getElapsedTime() * 0.05;
+      ref.current.rotation.x = state.clock.getElapsedTime() * 0.02;
     }
   });
 
   return (
-    <mesh ref={mesh} scale={2.5} position={[0, 0, -2]}>
-      <sphereGeometry args={[1, 64, 64]} />
-      <MeshDistortMaterial
-        color="#111111"
-        distort={0.4}
-        speed={2}
-        roughness={0.1}
-        metalness={0.8}
-      />
-    </mesh>
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={points.length / 3}
+          array={points}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.015} color="#ffffff" transparent opacity={0.4} sizeAttenuation />
+    </points>
+  );
+}
+
+function TechGrid() {
+  return (
+    <group rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
+      <gridHelper args={[40, 40, 0x222222, 0x111111]} />
+    </group>
+  );
+}
+
+function FloatingCore() {
+  const mesh = useRef<THREE.Mesh>(null);
+  useFrame((state) => {
+    if (mesh.current) {
+      mesh.current.rotation.z = state.clock.getElapsedTime() * 0.5;
+    }
+  });
+
+  return (
+    <FloatDrei speed={2} rotationIntensity={1} floatIntensity={1}>
+      <mesh ref={mesh} scale={1.5}>
+        <torusKnotGeometry args={[1, 0.3, 128, 32]} />
+        <MeshDistortMaterial
+          color="#ffffff"
+          distort={0.3}
+          speed={3}
+          roughness={0}
+          metalness={1}
+          wireframe
+        />
+      </mesh>
+    </FloatDrei>
   );
 }
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   useEffect(() => {
     setMounted(true);
@@ -70,126 +89,120 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0">
         {mounted && (
           <Canvas dpr={[1, 2]}>
-            <PerspectiveCamera makeDefault position={[0, 0, 8]} fov={50} />
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
-            <pointLight position={[-10, -10, -10]} intensity={1} />
-            <pointLight position={[0, 5, 5]} intensity={0.5} color="white" />
+            <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={50} />
+            <ambientLight intensity={0.2} />
+            <pointLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
+            <pointLight position={[-10, -10, -10]} intensity={1} color="#ffffff" />
             <Suspense fallback={null}>
-              <FloatingText />
-              <Sphere />
-              <Rig />
-              <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
+              <ParticleField />
+              <TechGrid />
+              <FloatingCore />
+              <Sparkles count={50} scale={10} size={1} speed={0.4} opacity={0.2} />
+              <ContactShadows position={[0, -4, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
             </Suspense>
           </Canvas>
         )}
       </div>
 
-      {/* Hero Visual Overlay (Charles Leclerc / Lando style) */}
-      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        <motion2d.div 
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 0.15, scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          className="absolute inset-0"
-        >
-          <img 
-            src="https://images.unsplash.com/photo-1493397212122-2b85def8d0b0?q=80&w=2070&auto=format&fit=crop" 
-            alt="Abstract Architecture" 
-            className="w-full h-full object-cover grayscale"
-          />
-        </motion2d.div>
+      {/* Cinematic Overlays */}
+      <div className="absolute inset-0 z-[1] pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_90%)]" />
       </div>
 
       {/* Content Layer */}
-      <div className="container relative z-10 h-full flex flex-col justify-center items-center pointer-events-none">
+      <motion2d.div 
+        style={{ y: y1, opacity }}
+        className="container relative z-10 h-full flex flex-col justify-center items-center pointer-events-none"
+      >
         <div className="w-full flex flex-col items-center text-center">
-          <motion2d.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8"
-          >
-            <span className="text-[10px] font-technical text-white/40 tracking-[0.8em] uppercase block mb-4">Software Engineer — Network Associate</span>
-            <h1 className="text-[12vw] md:text-[8vw] font-black text-white leading-[0.85] tracking-tighter uppercase">
-              <span className="block overflow-hidden">
-                <motion2d.span 
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="block"
-                >
-                  ROUABAH
-                </motion2d.span>
-              </span>
-              <span className="block overflow-hidden">
-                <motion2d.span 
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="block text-white/20 italic"
-                >
-                  ZINE EDDINE
-                </motion2d.span>
-              </span>
-            </h1>
-          </motion2d.div>
+          <div className="overflow-hidden mb-4">
+            <motion2d.span
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[10px] font-technical text-white/40 tracking-[0.8em] uppercase block"
+            >
+              System Architect & Network Engineer
+            </motion2d.span>
+          </div>
 
-          <motion2d.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="max-w-xl text-white/40 text-sm md:text-lg font-technical uppercase tracking-widest leading-relaxed mb-12"
-          >
-            Defining the intersection of performance engineering and resilient digital infrastructure. Available for selective partnerships.
-          </motion2d.p>
+          <h1 className="text-[14vw] md:text-[10vw] font-black text-white leading-[0.8] tracking-tighter uppercase mb-12">
+            <div className="overflow-hidden">
+              <motion2d.span 
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="block"
+              >
+                ROUABAH
+              </motion2d.span>
+            </div>
+            <div className="overflow-hidden">
+              <motion2d.span 
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="block text-transparent stroke-white stroke-1"
+                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}
+              >
+                ZINE EDDINE
+              </motion2d.span>
+            </div>
+          </h1>
 
-          <motion2d.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            className="flex gap-8 pointer-events-auto"
-          >
-            <a href="#projects" className="group relative flex items-center gap-4 text-white hover:text-white/60 transition-colors">
-              <span className="text-[10px] font-technical uppercase tracking-[0.4em]">View Selected Works</span>
-              <div className="w-8 h-[1px] bg-white group-hover:w-12 transition-all" />
-            </a>
-            <a href="#contact" className="group relative flex items-center gap-4 text-white hover:text-white/60 transition-colors">
-              <span className="text-[10px] font-technical uppercase tracking-[0.4em]">Inquire</span>
-              <div className="w-8 h-[1px] bg-white group-hover:w-12 transition-all" />
-            </a>
-          </motion2d.div>
+          <div className="flex flex-col md:flex-row gap-12 items-center pointer-events-auto">
+            <motion2d.a
+              href="#projects"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="group flex items-center gap-6"
+            >
+              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white transition-all duration-500">
+                <div className="w-2 h-2 bg-white group-hover:bg-black rounded-full" />
+              </div>
+              <span className="text-[10px] font-technical text-white uppercase tracking-[0.4em]">Explore Archive</span>
+            </motion2d.a>
+
+            <motion2d.a
+              href="/resume.pdf"
+              target="_blank"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="group border-b border-white/20 pb-2 hover:border-white transition-all"
+            >
+              <span className="text-[10px] font-technical text-white uppercase tracking-[0.4em]">Download CV (PDF)</span>
+            </motion2d.a>
+          </div>
         </div>
+      </motion2d.div>
+
+      {/* Side HUD Elements */}
+      <div className="absolute left-[5vw] bottom-12 hidden md:block overflow-hidden">
+        <motion2d.div
+          initial={{ x: -100 }}
+          animate={{ x: 0 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="flex flex-col gap-2"
+        >
+          <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Core Stack</span>
+          <span className="text-[10px] font-technical text-white uppercase tracking-widest">NEXTJS / CISCO / C++</span>
+        </motion2d.div>
       </div>
 
-      {/* Scroll Down Indicator */}
-      <motion2d.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-12 left-[5vw] flex items-center gap-4"
-      >
-        <div className="w-px h-12 bg-white/20 relative overflow-hidden">
-          <motion2d.div 
-            animate={{ y: ["-100%", "100%"] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 bg-white"
-          />
-        </div>
-        <span className="text-[8px] font-technical text-white/20 uppercase tracking-[0.3em] rotate-90 origin-left">Scroll</span>
-      </motion2d.div>
-
-      {/* Location Badge */}
-      <motion2d.div 
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-12 right-[5vw] flex flex-col items-end"
-      >
-        <span className="text-[8px] font-technical text-white/40 uppercase tracking-[0.3em]">Localized in</span>
-        <span className="text-xs font-bold text-white uppercase tracking-tighter">Algeria / 213</span>
-      </motion2d.div>
+      <div className="absolute right-[5vw] bottom-12 hidden md:block overflow-hidden">
+        <motion2d.div
+          initial={{ x: 100 }}
+          animate={{ x: 0 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="flex flex-col items-end gap-2"
+        >
+          <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Project Version</span>
+          <span className="text-[10px] font-technical text-white uppercase tracking-widest">2025 // EDITION 1.0</span>
+        </motion2d.div>
+      </div>
     </section>
   );
 }
