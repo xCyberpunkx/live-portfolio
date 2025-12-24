@@ -1,127 +1,112 @@
 "use client";
 
-import React, { Suspense, useRef, useState, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { PerspectiveCamera, ContactShadows, Sparkles, Float, MeshDistortMaterial } from '@react-three/drei';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import * as THREE from 'three';
+import React, { Suspense, useRef } from "react";
+import { motion } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { 
+  MeshDistortMaterial, 
+  Float, 
+  PerspectiveCamera, 
+  Text, 
+  MeshTransmissionMaterial,
+  Environment,
+  ContactShadows
+} from "@react-three/drei";
+import * as THREE from "three";
 
-function HeroBackground() {
-  const { viewport } = useThree();
-  const group = useRef<THREE.Group>(null);
+function CentralShape() {
+  const mesh = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
-    if (group.current) {
-      group.current.rotation.y = state.clock.getElapsedTime() * 0.1;
-      group.current.rotation.x = state.clock.getElapsedTime() * 0.05;
+    if (mesh.current) {
+      mesh.current.rotation.x = state.clock.getElapsedTime() * 0.2;
+      mesh.current.rotation.y = state.clock.getElapsedTime() * 0.3;
     }
   });
 
   return (
-    <group ref={group}>
-      <Sparkles count={100} scale={15} size={2} speed={0.4} opacity={0.2} color="#ffffff" />
-      <mesh scale={4}>
-        <sphereGeometry args={[1, 64, 64]} />
-        <MeshDistortMaterial
-          color="#111111"
-          distort={0.4}
-          speed={2}
-          roughness={0.2}
-          metalness={0.9}
+    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+      <mesh ref={mesh}>
+        <icosahedronGeometry args={[2.5, 3]} />
+        <MeshTransmissionMaterial
+          backside
+          samples={16}
+          thickness={0.5}
+          chromaticAberration={0.06}
+          anisotropy={0.1}
+          distortion={0.5}
+          distortionScale={0.3}
+          temporalDistortion={0.5}
+          clearcoat={1}
+          attenuationDistance={0.5}
+          attenuationColor="#ffffff"
+          color="#ffffff"
         />
       </mesh>
-      <gridHelper args={[30, 30, 0x222222, 0x111111]} position={[0, -5, 0]} />
-    </group>
+    </Float>
   );
 }
 
-export default function HeroSection() {
-  const [mounted, setMounted] = useState(false);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 250]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+const HeroSection = () => {
   return (
-    <section className="relative w-full h-screen bg-black overflow-hidden flex flex-col justify-center items-center">
+    <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+      {/* 3D Scene */}
       <div className="absolute inset-0 z-0">
-        {mounted && (
-          <Canvas dpr={[1, 2]}>
-            <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={50} />
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <Suspense fallback={null}>
-              <HeroBackground />
-              <ContactShadows position={[0, -5, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
-            </Suspense>
-          </Canvas>
-        )}
+        <Canvas shadows>
+          <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={50} />
+          <ambientLight intensity={0.5} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} castShadow />
+          <pointLight position={[-10, -10, -10]} intensity={1} />
+          <Suspense fallback={null}>
+            <CentralShape />
+            <Environment preset="city" />
+            <ContactShadows position={[0, -4, 0]} opacity={0.4} scale={20} blur={2.5} far={4} />
+          </Suspense>
+        </Canvas>
       </div>
 
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/0 via-black/20 to-black pointer-events-none" />
+      {/* Content */}
+      <div className="container mx-auto px-4 z-10 pointer-events-none">
+        <div className="flex flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="mb-8"
+          >
+            <span className="font-technical text-[10px] tracking-[1em] text-white/30 uppercase">
+              ESTABLISHED 2025
+            </span>
+          </motion.div>
 
-      <motion.div 
-        style={{ y, opacity }}
-        className="container relative z-10 flex flex-col items-center text-center pointer-events-none"
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="mb-6"
-        >
-          <span className="text-[10px] font-technical text-white/40 tracking-[1em] uppercase block">CCNA // DOCKER // NEXTJS</span>
-        </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="text-[15vw] md:text-[12vw] font-black leading-none text-white uppercase tracking-tighter"
+          >
+            ROUABAH<br />
+            <span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.4)" }}>ZINE EDDINE</span>
+          </motion.h1>
 
-        <h1 className="text-[15vw] md:text-[12vw] font-black text-white leading-[0.75] tracking-tighter uppercase mb-12">
-          <div className="overflow-hidden">
-            <motion.span 
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="block"
-            >
-              ROUABAH
-            </motion.span>
-          </div>
-          <div className="overflow-hidden">
-            <motion.span 
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="block text-white/20 italic"
-            >
-              ZINE EDDINE
-            </motion.span>
-          </div>
-        </h1>
-
-        <div className="flex flex-col md:flex-row gap-12 items-center pointer-events-auto">
-          <a href="#projects" className="group flex items-center gap-6 bg-white px-10 py-5 rounded-full hover:scale-105 transition-all duration-500">
-            <span className="text-black font-black uppercase text-[10px] tracking-widest">Selected Works</span>
-            <div className="w-2 h-2 bg-black rounded-full group-hover:animate-ping" />
-          </a>
-          
-          <a href="/ROUABAH-ZIN-EDDINE.pdf" target="_blank" className="group flex items-center gap-4 border border-white/10 px-10 py-5 rounded-full hover:bg-white/5 transition-all">
-            <span className="text-white font-black uppercase text-[10px] tracking-widest">Download CV</span>
-            <div className="w-px h-4 bg-white/20 group-hover:h-8 transition-all" />
-          </a>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="mt-12 flex flex-col items-center gap-4"
+          >
+            <span className="font-technical text-sm text-white/40 uppercase tracking-[0.5em]">
+              Software Engineer
+            </span>
+            <div className="h-24 w-px bg-gradient-to-b from-white/0 via-white/40 to-white/0" />
+          </motion.div>
         </div>
-      </motion.div>
-
-      <div className="absolute bottom-12 left-[5vw] flex items-center gap-4">
-        <div className="w-[1px] h-12 bg-white/10 relative overflow-hidden">
-          <motion.div 
-            animate={{ y: ["-100%", "100%"] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 bg-white"
-          />
-        </div>
-        <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest rotate-90 origin-left">Scroll</span>
       </div>
+
+      {/* Decorative Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none opacity-20" />
     </section>
   );
-}
+};
+
+export default HeroSection;
