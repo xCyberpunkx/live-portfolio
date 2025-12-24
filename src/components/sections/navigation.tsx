@@ -23,34 +23,34 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/#about" },
-    { name: "Tech", href: "/#tech" },
-    { name: "Work", href: "/#projects" },
-    { name: "Formula 1", href: "/f1", highlight: true },
-    { name: "Contact", href: "/#contact" },
-  ];
+    const navLinks = [
+      { name: "Home", href: "/#top" },
+      { name: "About", href: "/#about" },
+      { name: "Tech", href: "/#tech" },
+      { name: "Work", href: "/#projects" },
+      { name: "Formula 1", href: "/f1", highlight: true },
+      { name: "Contact", href: "/#contact" },
+    ];
 
-  return (
-    <>
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-white z-[110] origin-left"
-        style={{ scaleX }}
-      />
-      <nav
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:py-8 flex items-center justify-between ${
-          isScrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3 md:py-6" : "bg-transparent"
-        }`}
-      >
-        <Link href="/" className="relative z-[120] group flex items-center gap-2">
-          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center group-hover:rotate-[360deg] transition-transform duration-700">
-            <span className="text-black font-black text-xs">O</span>
-          </div>
-          <span className="text-white font-bold tracking-tighter text-xl group-hover:tracking-[0.2em] transition-all duration-500">
-            ORCHIDS
-          </span>
-        </Link>
+    return (
+      <>
+        <motion.div 
+          className="fixed top-0 left-0 right-0 h-1 bg-white z-[110] origin-left"
+          style={{ scaleX }}
+        />
+        <nav
+          className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:py-8 flex items-center justify-between ${
+            isScrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3 md:py-6" : "bg-transparent"
+          }`}
+        >
+          <Link href="/" className="relative z-[120] group flex items-center gap-2">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center group-hover:rotate-[360deg] transition-transform duration-700">
+              <span className="text-black font-black text-xs">T</span>
+            </div>
+            <span className="text-white font-bold tracking-tighter text-xl group-hover:tracking-[0.2em] transition-all duration-500">
+              TUX
+            </span>
+          </Link>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-12">
