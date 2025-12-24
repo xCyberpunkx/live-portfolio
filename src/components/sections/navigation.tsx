@@ -24,13 +24,32 @@ const Navigation = () => {
   }, []);
 
     const navLinks = [
-      { name: "Home", href: "#top" },
-      { name: "About", href: "#about" },
-      { name: "Tech", href: "#tech" },
-      { name: "Work", href: "#projects" },
+      { name: "Home", href: "/#top" },
+      { name: "About", href: "/#about" },
+      { name: "Tech", href: "/#tech" },
+      { name: "Work", href: "/#projects" },
       { name: "Formula 1", href: "/f1", highlight: true },
-      { name: "Contact", href: "#contact" },
+      { name: "Contact", href: "/#contact" },
     ];
+
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (href.startsWith("/#")) {
+        const id = href.replace("/#", "");
+        const element = document.getElementById(id);
+        
+        if (pathname === "/") {
+          e.preventDefault();
+          if (element) {
+            const offset = element.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+              top: offset,
+              behavior: "smooth",
+            });
+          }
+          setIsOpen(false);
+        }
+      }
+    };
 
     return (
       <>
@@ -58,6 +77,7 @@ const Navigation = () => {
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative group ${
                   link.highlight 
                     ? "bg-white text-black px-4 py-2 rounded-full hover:bg-zinc-200" 
@@ -122,7 +142,7 @@ const Navigation = () => {
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className={`text-4xl md:text-6xl font-black uppercase tracking-tighter hover:italic transition-all ${
                       link.highlight ? "text-red-500" : "text-white/20 hover:text-white"
                     }`}
