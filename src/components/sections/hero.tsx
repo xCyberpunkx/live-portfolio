@@ -6,12 +6,12 @@ import Image from "next/image";
 
 const FloatingLogos = () => {
   const logos = [
-    { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/0/04/Pirelli_logo.svg", x: "10%", y: "15%", size: 60, mdSize: 100 },
-    { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/9/94/Red_Bull_Racing_Logo.svg", x: "75%", y: "10%", size: 80, mdSize: 140 },
-    { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Mercedes_Benz_logo.svg", x: "5%", y: "75%", size: 40, mdSize: 80 },
-    { name: "Vercel", src: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png", x: "80%", y: "70%", size: 50, mdSize: 70, invert: true },
-    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg", x: "45%", y: "5%", size: 60, mdSize: 100 },
-    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg", x: "70%", y: "85%", size: 60, mdSize: 100 },
+    { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/0/04/Pirelli_logo.svg", x: "15%", y: "20%", size: 80 },
+    { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/9/94/Red_Bull_Racing_Logo.svg", x: "80%", y: "15%", size: 120 },
+    { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Mercedes_Benz_logo.svg", x: "10%", y: "70%", size: 60 },
+    { name: "Vercel", src: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png", x: "85%", y: "65%", size: 70, invert: true },
+    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg", x: "50%", y: "10%", size: 100 },
+    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg", x: "75%", y: "80%", size: 100 },
   ];
 
   return (
