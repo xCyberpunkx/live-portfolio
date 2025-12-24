@@ -81,9 +81,14 @@ export default function MyProjects() {
                   <h3 className="text-3xl font-black text-white uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
                     {project.title}
                   </h3>
-                  <p className="text-sm font-technical text-white/40 uppercase tracking-wider line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    {project.desc}
-                  </p>
+                    <p className="text-sm font-technical text-white/40 uppercase tracking-wider line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      {project.desc}
+                    </p>
+                    <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                      <span className="text-[9px] font-technical text-white/60 bg-white/10 px-2 py-1 uppercase tracking-widest border border-white/5">
+                        {project.tech}
+                      </span>
+                    </div>
                 </div>
               </div>
             </motion.div>
