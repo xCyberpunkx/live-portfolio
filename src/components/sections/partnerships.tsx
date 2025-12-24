@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const partners = [
@@ -48,7 +47,7 @@ export default function Partnerships() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className="relative w-32 md:w-48 h-16 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+              className="relative w-32 md:w-48 h-16 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-crosshair"
             >
               <img
                 src={partner.logo}
@@ -62,4 +61,3 @@ export default function Partnerships() {
     </section>
   );
 }
-
