@@ -1,7 +1,7 @@
 import Navigation from "@/components/sections/navigation";
 import HeroSection from "@/components/sections/hero";
 import ImpactMarquee from "@/components/sections/impact-marquee";
-import HelmetGallery from "@/components/sections/helmet-gallery";
+import MyProjects from "@/components/sections/projects";
 import ChampionCollection from "@/components/sections/champion-collection";
 import Partnerships from "@/components/sections/partnerships";
 import Footer from "@/components/sections/footer";
@@ -11,14 +11,14 @@ import TechExperience from "@/components/sections/tech-experience";
 
 export default function Home() {
   return (
-    <main className="bg-deep-olive selection:bg-neon-lime selection:text-rich-black">
+    <main className="bg-deep-midnight selection:bg-neon-cyan selection:text-deep-midnight">
       <SplashScreen />
       <Navigation />
       <SmoothScroll>
         <HeroSection />
         <ImpactMarquee />
         <TechExperience />
-        <HelmetGallery />
+        <MyProjects />
         <ChampionCollection />
         <Partnerships />
         <Footer />
