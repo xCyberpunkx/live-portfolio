@@ -37,16 +37,16 @@ const projects = [
 
 export default function MyProjects() {
   return (
-    <section id="projects" className="bg-black py-24 md:py-64 border-t border-white/5 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col mb-32">
-          <span className="text-[10px] font-technical text-white/20 tracking-[1em] uppercase block mb-8">PROJECT ARCHIVE</span>
-          <h2 className="text-[12vw] md:text-[10vw] font-black text-white leading-[0.8] uppercase tracking-tighter">
+    <section id="projects" className="bg-black py-20 md:py-64 border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col mb-16 md:mb-32">
+          <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8">PROJECT ARCHIVE</span>
+          <h2 className="text-[16vw] md:text-[10vw] font-black text-white leading-[0.8] uppercase tracking-tighter">
             SELECTED<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>MISSIONS</span>
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -66,9 +66,9 @@ export default function MyProjects() {
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
                 
-                <div className="absolute bottom-0 left-0 right-0 p-8 space-y-4">
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 space-y-4">
                   <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-technical text-white/40 uppercase tracking-widest">{project.category}</span>
+                    <span className="text-[8px] md:text-[10px] font-technical text-white/40 uppercase tracking-widest">{project.category}</span>
                     <div className="flex gap-4">
                       <a href={project.github} className="text-white/40 hover:text-white transition-colors">
                         <Github size={18} />
@@ -78,14 +78,14 @@ export default function MyProjects() {
                       </a>
                     </div>
                   </div>
-                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
+                  <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
                     {project.title}
                   </h3>
-                    <p className="text-sm font-technical text-white/40 uppercase tracking-wider line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <p className="text-[10px] md:text-sm font-technical text-white/40 uppercase tracking-wider line-clamp-2 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       {project.desc}
                     </p>
-                    <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                      <span className="text-[9px] font-technical text-white/60 bg-white/10 px-2 py-1 uppercase tracking-widest border border-white/5">
+                    <div className="pt-2 md:opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                      <span className="text-[8px] md:text-[9px] font-technical text-white/60 bg-white/10 px-2 py-1 uppercase tracking-widest border border-white/5">
                         {project.tech}
                       </span>
                     </div>

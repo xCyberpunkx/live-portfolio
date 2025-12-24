@@ -41,36 +41,36 @@ export default function TechExperience() {
   });
 
   return (
-    <section id="experience" className="bg-black py-24 md:py-64 relative overflow-hidden border-t border-white/5">
-      <div className="absolute top-24 right-[5vw] opacity-5 pointer-events-none">
-        <span className="text-[20vw] font-black text-white leading-none uppercase tracking-tighter">
+    <section id="tech" className="bg-black py-20 md:py-64 relative overflow-hidden border-t border-white/5">
+      <div className="absolute top-12 md:top-24 right-[5vw] opacity-5 pointer-events-none">
+        <span className="text-[30vw] md:text-[20vw] font-black text-white leading-none uppercase tracking-tighter">
           PATH
         </span>
       </div>
 
-      <div className="container mx-auto px-4 relative">
-        <div className="grid grid-cols-12 gap-12">
-          <div className="col-span-12 lg:col-span-4 mb-24 lg:mb-0">
-            <div className="sticky top-32">
-              <span className="text-[10px] font-technical text-white/20 tracking-[1em] uppercase block mb-8">Professional Record</span>
-              <h2 className="text-[12vw] lg:text-[6vw] font-black text-white uppercase leading-[0.85] tracking-tighter mb-12">
+      <div className="container mx-auto px-6 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+          <div className="lg:col-span-4 mb-16 lg:mb-0">
+            <div className="lg:sticky lg:top-32">
+              <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8">Professional Record</span>
+              <h2 className="text-[16vw] lg:text-[6vw] font-black text-white uppercase leading-[0.85] tracking-tighter mb-8 md:mb-12">
                 THE<br />
                 <span className="text-white/20 italic">JOURNEY</span>
               </h2>
-              <p className="text-white/40 font-technical text-sm uppercase tracking-[0.3em] max-w-xs leading-relaxed">
+              <p className="text-white/40 font-technical text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] max-w-xs leading-relaxed">
                 A chronological sequence of technical challenges delivered by a Software Engineer.
               </p>
             </div>
           </div>
 
-          <div ref={containerRef} className="col-span-12 lg:col-span-8 relative">
+          <div ref={containerRef} className="lg:col-span-8 relative">
             <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-white/10 hidden md:block" />
             <motion.div 
               style={{ scaleY, originY: 0 }}
               className="absolute left-0 top-0 bottom-0 w-[1px] bg-white hidden md:block z-10"
             />
 
-            <div className="space-y-32 md:pl-24">
+            <div className="space-y-20 md:space-y-32 md:pl-24">
               {experiences.map((exp, idx) => (
                 <motion.div
                   key={exp.id}
@@ -82,27 +82,27 @@ export default function TechExperience() {
                 >
                   <div className="absolute -left-[101px] top-4 w-2 h-2 rounded-full bg-black border border-white group-hover:scale-150 transition-transform duration-500 hidden md:block z-20" />
                   
-                  <div className="flex flex-col gap-8">
-                    <div className="flex items-center gap-6">
-                      <span className="text-[10px] font-technical text-white/20 group-hover:text-white transition-colors duration-500">
+                  <div className="flex flex-col gap-6 md:gap-8">
+                    <div className="flex items-center gap-4 md:gap-6">
+                      <span className="text-[8px] md:text-[10px] font-technical text-white/20 group-hover:text-white transition-colors duration-500">
                         [{exp.id}]
                       </span>
-                      <span className="h-px w-12 bg-white/10" />
-                      <span className="text-[10px] font-technical text-white/40 uppercase tracking-widest">
+                      <span className="h-px w-8 md:w-12 bg-white/10" />
+                      <span className="text-[8px] md:text-[10px] font-technical text-white/40 uppercase tracking-widest">
                         {exp.date}
                       </span>
                     </div>
 
-                    <div className="space-y-4">
-                      <h4 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter group-hover:pl-4 transition-all duration-700 ease-expo">
+                    <div className="space-y-2 md:space-y-4">
+                      <h4 className="text-3xl md:text-6xl font-black text-white uppercase tracking-tighter group-hover:pl-4 transition-all duration-700 ease-expo">
                         {exp.title}
                       </h4>
-                      <p className="text-xl font-black text-white/20 uppercase tracking-tight group-hover:text-white transition-colors duration-700">
+                      <p className="text-lg md:text-xl font-black text-white/20 uppercase tracking-tight group-hover:text-white transition-colors duration-700">
                         @ {exp.company}
                       </p>
                     </div>
 
-                    <p className="text-white/40 font-technical text-lg uppercase tracking-wider leading-relaxed max-w-2xl group-hover:text-white/60 transition-colors duration-700">
+                    <p className="text-white/40 font-technical text-sm md:text-lg uppercase tracking-wider leading-relaxed max-w-2xl group-hover:text-white/60 transition-colors duration-700">
                       {exp.desc}
                     </p>
                   </div>

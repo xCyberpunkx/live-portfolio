@@ -1,130 +1,60 @@
 "use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 
-const techStack = [
-  { name: 'C++', category: 'SYSTEMS', status: 'STABLE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg' },
-  { name: 'C#', category: 'ENTERPRISE', status: 'ACTIVE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg' },
-  { name: '.NET Core', category: 'FRAMEWORK', status: 'CORE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg' },
-  { name: 'TypeScript', category: 'LANGUAGE', status: 'OPTIMIZED', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
-  { name: 'Next.js', category: 'FRONTEND', status: 'STABLE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg' },
-  { name: 'Node.js', category: 'BACKEND', status: 'SCALABLE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg' },
-  { name: 'PostgreSQL', category: 'DATABASE', status: 'CORE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
-  { name: 'Docker', category: 'DEVOPS', status: 'DEPLOYED', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg' },
-  { name: 'Python', category: 'SCRIPTS', status: 'ACTIVE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
-  { name: 'Tailwind', category: 'STYLING', status: 'STABLE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
+const partners = [
+  { 
+    name: 'Formula 1', 
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg',
+    invert: false 
+  },
+  { 
+    name: 'Vercel', 
+    logo: 'https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png',
+    invert: true 
+  },
+  { 
+    name: 'Oracle', 
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg',
+    invert: true 
+  },
 ];
-
-function TechCard({ tech, index }: { tech: typeof techStack[0], index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05 }}
-      className="group relative flex flex-col items-center justify-center p-8 md:p-16 bg-black hover:bg-white/[0.02] transition-all duration-500 overflow-hidden border border-white/5"
-    >
-      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/10 group-hover:border-white/40 transition-colors" />
-      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/10 group-hover:border-white/40 transition-colors" />
-      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/10 group-hover:border-white/40 transition-colors" />
-      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/10 group-hover:border-white/40 transition-colors" />
-
-      <div className="absolute inset-0 w-full h-[1px] bg-white/5 -translate-y-full group-hover:animate-scan z-0" />
-
-      <div 
-        className="absolute top-4 left-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      >
-        <div className="w-1 h-1 rounded-full bg-white animate-pulse" />
-        <span className="text-[7px] font-technical tracking-[0.2em] text-white/40">{tech.status}</span>
-      </div>
-
-      <div 
-        className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      >
-        <span className="text-[7px] font-technical tracking-[0.2em] text-white/40">{tech.category}</span>
-      </div>
-
-      <div 
-        className="relative w-10 h-10 md:w-14 md:h-14 mb-8 grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110 z-10"
-      >
-        <Image
-          src={tech.logo}
-          alt={tech.name}
-          fill
-          className="object-contain"
-        />
-        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:animate-pulse pointer-events-none" />
-      </div>
-      
-      <span 
-        className="text-[10px] font-technical text-white/20 group-hover:text-white transition-colors uppercase tracking-[0.4em] relative z-10"
-      >
-        {tech.name}
-      </span>
-
-      <span className="absolute bottom-2 left-4 text-[6px] font-technical text-white/[0.02] uppercase select-none">
-        TECH_ID: 0x{index.toString(16).toUpperCase()}
-      </span>
-    </motion.div>
-  );
-}
 
 export default function Partnerships() {
   return (
-    <section className="bg-black py-24 md:py-64 overflow-hidden border-t border-white/5 relative">
-      {/* 2D Technical Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(circle at center, white 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
-          }}
-        />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black via-transparent to-black" />
-        
-        {/* Animated Circuits */}
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[pulse_4s_infinite]" />
-        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[pulse_4s_infinite_1s]" />
+    <section className="bg-black py-32 md:py-64 border-t border-white/5 relative overflow-hidden">
+      <div className="absolute inset-0 z-0 opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div 
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col mb-32 items-center text-center"
+          className="text-center mb-24"
         >
-          <div className="flex items-center gap-4 mb-8">
-            <div className="h-[1px] w-8 bg-white/20" />
-            <span className="font-technical text-[10px] tracking-[1em] text-white/40 uppercase block">SYSTEM_ARCHITECTURE</span>
-            <div className="h-[1px] w-8 bg-white/20" />
-          </div>
-          
-          <h2 className="text-[12vw] md:text-[10vw] leading-[0.8] font-black uppercase text-white mb-12 tracking-tighter">
-            TECHNICAL<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>ARSENAL</span>
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto border-t border-b border-white/5 py-8">
-            <div className="flex flex-col items-center">
-              <span className="text-white font-black text-2xl mb-1">01</span>
-              <span className="text-[8px] font-technical text-white/40 tracking-widest">INFRASTRUCTURE</span>
-            </div>
-            <div className="flex flex-col items-center border-x border-white/5">
-              <span className="text-white font-black text-2xl mb-1">02</span>
-              <span className="text-[8px] font-technical text-white/40 tracking-widest">CORE_ENGINEERING</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-white font-black text-2xl mb-1">03</span>
-              <span className="text-[8px] font-technical text-white/40 tracking-widest">SYSTEM_OPTIMIZATION</span>
-            </div>
-          </div>
+          <span className="font-technical text-[10px] tracking-[1em] text-white/20 uppercase block mb-4">STRATEGIC_PARTNERS</span>
+          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white">TRUSTED_BY_LEADERS</h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-[1px] bg-white/5 border border-white/5">
-          {techStack.map((tech, index) => (
-            <TechCard key={index} tech={tech} index={index} />
+        <div className="flex flex-wrap justify-center items-center gap-16 md:gap-32">
+          {partners.map((partner, index) => (
+            <motion.div
+              key={partner.name}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+              className="relative w-32 md:w-48 h-16 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-crosshair"
+            >
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className={`w-full h-full object-contain ${partner.invert ? 'invert' : ''}`}
+              />
+            </motion.div>
           ))}
         </div>
       </div>

@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { X, Github, Linkedin, Mail, Download } from "lucide-react";
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { X, Menu, Download, Github, Linkedin, Mail } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -17,124 +18,146 @@ const Navigation = () => {
   });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menuLinks = [
-    { name: "Works", href: "#projects" },
-    { name: "Journey", href: "#experience" },
-    { name: "Identity", href: "#about" },
-    { name: "Inquire", href: "#contact" },
-  ];
+    const navLinks = [
+      { name: "Home", href: "/#top" },
+      { name: "About", href: "/#about" },
+      { name: "Tech", href: "/#tech" },
+      { name: "Work", href: "/#projects" },
+      { name: "Formula 1", href: "/f1", highlight: true },
+      { name: "Contact", href: "/#contact" },
+    ];
 
-  return (
-    <>
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-white z-[110] origin-left"
-        style={{ scaleX }}
-      />
-      <nav
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ease-in-out px-[5vw] py-8 flex items-center justify-between ${
-          scrolled ? "glass-nav py-6" : "bg-transparent"
-        }`}
-      >
-        <Link href="/" className="relative z-[120] group">
-          <div className="flex flex-col">
-            <span className="text-2xl font-black tracking-tighter uppercase text-white leading-none">ZR</span>
-            <span className="text-[8px] font-technical text-white/40 tracking-[0.4em] group-hover:text-white transition-colors">ARCHIVE // 2025</span>
-          </div>
-        </Link>
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (href.startsWith("/#")) {
+        const id = href.replace("/#", "");
+        const element = document.getElementById(id);
+        
+        if (pathname === "/") {
+          e.preventDefault();
+          if (element) {
+            const offset = element.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+              top: offset,
+              behavior: "smooth",
+            });
+          }
+          setIsOpen(false);
+        }
+      }
+    };
 
-        <div className="flex items-center gap-16 relative z-[120]">
-          <div className="hidden lg:flex items-center gap-12">
-            {menuLinks.map((item) => (
-              <Link 
-                key={item.name} 
-                href={item.href}
-                className="text-[9px] font-technical text-white/40 hover:text-white transition-all uppercase tracking-[0.4em] relative group"
+    return (
+      <>
+        <motion.div 
+          className="fixed top-0 left-0 right-0 h-1 bg-white z-[110] origin-left"
+          style={{ scaleX }}
+        />
+        <nav
+          className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:py-8 flex items-center justify-between ${
+            isScrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3 md:py-6" : "bg-transparent"
+          }`}
+        >
+          <Link href="/" className="relative z-[120] group flex items-center gap-2">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center group-hover:rotate-[360deg] transition-transform duration-700">
+              <span className="text-black font-black text-xs">T</span>
+            </div>
+            <span className="text-white font-bold tracking-tighter text-xl group-hover:tracking-[0.2em] transition-all duration-500">
+              TUX
+            </span>
+          </Link>
+
+        {/* Desktop Nav */}
+        <div className="hidden lg:flex items-center gap-12">
+          {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
+                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative group ${
+                  link.highlight 
+                    ? "bg-white text-black px-4 py-2 rounded-full hover:bg-zinc-200" 
+                    : "text-white/40 hover:text-white"
+                }`}
               >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-500" />
+                {link.name}
+                {!link.highlight && (pathname === link.href || (pathname === "/" && link.href === pathname)) && (
+                  <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-white" />
+                )}
+                {!link.highlight && !(pathname === link.href || (pathname === "/" && link.href === pathname)) && (
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+                )}
               </Link>
-            ))}
-          </div>
+          ))}
+        </div>
 
-          <div className="flex items-center gap-8">
-            <a 
-              href="/resume.pdf" 
-              target="_blank"
-              className="hidden sm:flex items-center gap-4 border border-white/10 px-6 py-3 hover:bg-white hover:text-black transition-all group"
-            >
-              <Download size={14} className="group-hover:animate-bounce" />
-              <span className="text-[9px] font-technical uppercase tracking-[0.3em]">CV (PDF)</span>
-            </a>
+        <div className="flex items-center gap-4 relative z-[120]">
+          <a 
+            href="/resume.pdf" 
+            target="_blank"
+            className="hidden sm:flex items-center gap-3 border border-white/10 px-5 py-2 hover:bg-white hover:text-black transition-all group rounded-full"
+          >
+            <Download size={14} className="group-hover:animate-bounce" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">CV</span>
+          </a>
 
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="group flex items-center gap-6 border border-white/10 px-8 py-4 hover:bg-white transition-all overflow-hidden relative"
-            >
-              <span className="text-[10px] font-technical uppercase tracking-[0.3em] group-hover:text-black transition-colors relative z-10">
-                {isOpen ? "Close" : "Menu"}
-              </span>
-              <div className="w-5 h-[1px] bg-white group-hover:bg-black transition-colors relative z-10" />
-            </button>
-          </div>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-3 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all text-white"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[105] bg-black overflow-hidden flex flex-col items-center justify-center p-[5vw]"
-          >
-            <div className="absolute inset-0 grid-pattern opacity-5 pointer-events-none" />
-            
-            <div className="flex flex-col items-center gap-12">
-              {menuLinks.map((link, idx) => (
+            <motion.div
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-0 z-[105] bg-black flex flex-col items-center justify-center p-6"
+            >
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="absolute top-10 right-10 flex items-center gap-2 text-white/40 hover:text-white transition-all group"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em]">EXIT_MENU</span>
+                <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+
+              <div className="flex flex-col items-center gap-8">
+                {navLinks.map((link, idx) => (
                 <motion.div
                   key={link.name}
-                  initial={{ y: 50, opacity: 0 }}
+                  initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 + idx * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ delay: 0.1 * idx }}
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="group relative"
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`text-4xl md:text-6xl font-black uppercase tracking-tighter hover:italic transition-all ${
+                      link.highlight ? "text-red-500" : "text-white/20 hover:text-white"
+                    }`}
                   >
-                    <span className="text-[12vw] md:text-[7vw] font-black uppercase text-white/5 hover:text-white transition-all tracking-tighter block leading-none hover:italic hover:translate-x-4">
-                      {link.name}
-                    </span>
+                    {link.name}
                   </Link>
                 </motion.div>
               ))}
             </div>
 
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="absolute bottom-12 left-[5vw] right-[5vw] flex flex-col md:flex-row justify-between items-center gap-8 pt-12 border-t border-white/10"
-            >
-              <div className="flex gap-12 text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">
-                <a href="https://github.com/xCyberpunkx" target="_blank" className="hover:text-white transition-all">Github</a>
-                <a href="https://www.linkedin.com/in/zine-eddine-rouabah/" target="_blank" className="hover:text-white transition-all">Linkedin</a>
-                <a href="mailto:rouabah.zineedinee@gmail.com" className="hover:text-white transition-all">Email</a>
-              </div>
-              <div className="text-[9px] font-technical text-white/10 uppercase tracking-[0.4em] flex gap-4">
-                <span>EST. 2024</span>
-                <span className="w-12 h-[1px] bg-white/10 my-auto" />
-                <span>ALGERIA</span>
-              </div>
-            </motion.div>
+            <div className="absolute bottom-12 flex gap-8">
+              <a href="#" className="text-white/20 hover:text-white transition-colors"><Github size={20} /></a>
+              <a href="#" className="text-white/20 hover:text-white transition-colors"><Linkedin size={20} /></a>
+              <a href="#" className="text-white/20 hover:text-white transition-colors"><Mail size={20} /></a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

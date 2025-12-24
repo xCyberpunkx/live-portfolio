@@ -1,77 +1,141 @@
 "use client";
 
-import React from "react";
+import React, { Suspense, useMemo, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Float, MeshDistortMaterial, PerspectiveCamera } from "@react-three/drei";
 import { motion } from "framer-motion";
+import * as THREE from "three";
+
+function Scene() {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2;
+      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
+    }
+  });
+
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} intensity={1} />
+      <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
+      
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+        <mesh ref={meshRef}>
+          <torusKnotGeometry args={[1, 0.3, 128, 32]} />
+          <MeshDistortMaterial
+            color="#ffffff"
+            speed={3}
+            distort={0.4}
+            radius={1}
+            wireframe
+            opacity={0.1}
+            transparent
+          />
+        </mesh>
+      </Float>
+
+      <Particles count={500} />
+    </>
+  );
+}
+
+function Particles({ count }: { count: number }) {
+  const points = useMemo(() => {
+    const p = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      p[i * 3] = (Math.random() - 0.5) * 15;
+      p[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      p[i * 3 + 2] = (Math.random() - 0.5) * 15;
+    }
+    return p;
+  }, [count]);
+
+  const pointsRef = useRef<THREE.Points>(null);
+
+  useFrame((state) => {
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y = state.clock.getElapsedTime() * 0.05;
+    }
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={points.length / 3}
+          array={points}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.02} color="#ffffff" transparent opacity={0.3} sizeAttenuation />
+    </points>
+  );
+}
 
 const HeroSection = () => {
   return (
-    <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
-      {/* Animated Background Elements */}
+    <section id="top" className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+        <Canvas>
+          <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+          <Suspense fallback={null}>
+            <Scene />
+          </Suspense>
+        </Canvas>
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 z-10 pointer-events-none">
-        <div className="flex flex-col items-center text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="mb-8"
-          >
-            <span className="font-technical text-[10px] tracking-[1em] text-white/30 uppercase">
-              NODE_DZ // PROTOCOL_01
-            </span>
-          </motion.div>
+      <div className="container mx-auto px-6 z-10 text-center pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="mb-8"
+        >
+          <span className="font-technical text-[10px] tracking-[1.2em] text-white/40 uppercase">
+            ENGINEERING_THE_FUTURE
+          </span>
+        </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[14vw] md:text-[11vw] font-black leading-[0.85] text-white uppercase tracking-tighter"
-          >
-            ROUABAH<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.4)" }}>ZINE EDDINE</span>
-          </motion.h1>
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[10vw] font-black leading-[0.85] text-white uppercase tracking-tighter"
+        >
+          ZINE_EDDINE<br />
+          <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>ROUABAH</span>
+        </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="mt-12 flex flex-col items-center gap-6"
-          >
-            <div className="px-6 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
-              <span className="font-technical text-[10px] text-white/60 uppercase tracking-[0.5em]">
-                Software Engineer
-              </span>
-            </div>
-            
-            <div className="h-20 w-px bg-gradient-to-b from-white/0 via-white/40 to-white/0 animate-pulse" />
-          </motion.div>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.5, duration: 1.5, ease: "circOut" }}
+          className="h-px w-32 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto mt-12"
+        />
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="mt-8"
+        >
+          <span className="font-technical text-[8px] text-white/20 uppercase tracking-[0.8em]">
+            SYSTEM_ARCHITECT // CREATIVE_DEVELOPER
+          </span>
+        </motion.div>
+      </div>
+
+      <div className="absolute bottom-12 left-12 z-10 hidden md:block opacity-20">
+        <div className="font-technical text-[8px] text-white space-y-2">
+          <p>OBJECT: TORUS_KNOT_01</p>
+          <p>MATERIAL: DISTORT_GLASS_V2</p>
+          <p>RENDER: WEBGL_2.0</p>
         </div>
       </div>
-
-      {/* Floating UI Elements */}
-      <div className="absolute bottom-12 left-12 z-10 hidden md:block">
-        <div className="flex flex-col gap-2 font-technical text-[8px] text-white/20 uppercase tracking-widest">
-          <span>LATENCY: 12MS</span>
-          <span>UPTIME: 99.9%</span>
-          <span>STATUS: ONLINE</span>
-        </div>
-      </div>
-
-      <div className="absolute bottom-12 right-12 z-10 hidden md:block">
-        <div className="flex flex-col items-end gap-2 font-technical text-[8px] text-white/20 uppercase tracking-widest text-right">
-          <span>CORE_V4.0</span>
-          <span>STABLE_BUILD</span>
-          <span>AUTH: VERIFIED</span>
-        </div>
-      </div>
-
-      {/* Decorative Grid */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none opacity-20" />
     </section>
   );
 };
