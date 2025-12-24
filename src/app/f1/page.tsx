@@ -87,27 +87,27 @@ export default function FormulaOnePage() {
             <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80" />
           </motion.div>
 
-            {/* Floating Branding Logos */}
-            <div className="absolute inset-0 pointer-events-none opacity-40">
-              <motion.img 
-                animate={{ y: [0, -30, 0] }} 
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                src="https://upload.wikimedia.org/wikipedia/commons/0/04/Pirelli_logo.svg" 
-                className="absolute top-[20%] left-[10%] w-24 drop-shadow-lg" 
-              />
-              <motion.img 
-                animate={{ y: [0, 30, 0] }} 
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" 
-                className="absolute top-[15%] right-[15%] w-12 drop-shadow-lg" 
-              />
-              <motion.img 
-                animate={{ y: [0, -20, 0] }} 
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" 
-                className="absolute bottom-[20%] left-[15%] w-16 drop-shadow-lg" 
-              />
-            </div>
+              {/* Floating Branding Logos */}
+              <div className="absolute inset-0 pointer-events-none opacity-40">
+                <motion.img 
+                  animate={{ y: [0, -30, 0] }} 
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  src="https://images.unsplash.com/photo-1547919307-1ecb10702e6f?q=80&w=100&auto=format&fit=crop" 
+                  className="absolute top-[20%] left-[10%] w-24 drop-shadow-lg rounded-full" 
+                />
+                <motion.img 
+                  animate={{ y: [0, 30, 0] }} 
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=100&auto=format&fit=crop" 
+                  className="absolute top-[15%] right-[15%] w-12 drop-shadow-lg rounded-full" 
+                />
+                <motion.img 
+                  animate={{ y: [0, -20, 0] }} 
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=100&auto=format&fit=crop" 
+                  className="absolute bottom-[20%] left-[15%] w-16 drop-shadow-lg rounded-full" 
+                />
+              </div>
 
           <div className="container mx-auto px-6 relative z-10">
             <Link href="/" className="inline-flex items-center gap-4 mb-12 text-[10px] font-technical text-white/40 hover:text-white transition-colors group uppercase tracking-[0.4em]">
