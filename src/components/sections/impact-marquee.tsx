@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function ImpactMarquee() {
   return (
-    <section className="bg-white py-12 md:py-24 overflow-hidden rotate-[-2deg] scale-105 z-20 relative">
+    <section className="bg-white py-12 md:py-24 overflow-hidden z-20 relative border-y border-black">
       <div className="flex whitespace-nowrap overflow-hidden">
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
