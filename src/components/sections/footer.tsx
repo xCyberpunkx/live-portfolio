@@ -10,18 +10,18 @@ export default function Footer() {
       <div className="container mx-auto px-[5vw]">
         <div className="grid lg:grid-cols-2 gap-24 items-start mb-24">
           <div className="space-y-12">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="space-y-4"
-            >
-              <span className="text-[10px] font-technical text-white/20 tracking-[0.5em] uppercase block">INITIATE SYNAPSE</span>
-              <h2 className="text-[10vw] font-black text-white uppercase tracking-tighter leading-none">
-                INITIATE<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPSE</span>
-              </h2>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPSE</span>
+                <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
+                  INITIATE<br />
+                  <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPSE</span>
+                </h2>
+              </motion.div>
 
             <div className="flex flex-col gap-6">
               <a href="mailto:rouabah.zineedinee@gmail.com" className="group flex items-center gap-6 p-8 border border-white/5 hover:border-white transition-all">
