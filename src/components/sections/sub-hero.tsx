@@ -18,8 +18,8 @@ export default function SubHeroSection() {
       <div className="container mx-auto relative">
         <div className="flex flex-col gap-8 mb-32">
           <motion.div style={{ x: x1 }} className="flex whitespace-nowrap">
-            <span className="text-[15vw] font-black text-white uppercase tracking-tighter leading-none">SYSTEMS ARCHITECT // </span>
-            <span className="text-[15vw] font-black text-white/10 uppercase tracking-tighter leading-none italic"> SYSTEMS ARCHITECT // </span>
+            <span className="text-[15vw] font-black text-white uppercase tracking-tighter leading-none">SOFTWARE ENGINEER // </span>
+            <span className="text-[15vw] font-black text-white/10 uppercase tracking-tighter leading-none italic"> SOFTWARE ENGINEER // </span>
           </motion.div>
           <motion.div style={{ x: x2 }} className="flex whitespace-nowrap ml-[-50%]">
             <span className="text-[15vw] font-black text-white/10 uppercase tracking-tighter leading-none italic">ENGINEERING EXCELLENCE // </span>
