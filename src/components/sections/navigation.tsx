@@ -6,20 +6,73 @@ import { X, Github, Linkedin, Mail, Download } from "lucide-react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "#about" },
+    { name: "Tech", href: "#tech" },
+    { name: "Work", href: "#projects" },
+    { name: "Formula 1", href: "/f1", highlight: true },
+    { name: "Contact", href: "#contact" },
+  ];
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+        isScrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-6"
+      }`}
+    >
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="group flex items-center space-x-2">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center group-hover:rotate-[360deg] transition-transform duration-700">
+              <span className="text-black font-black text-xs">O</span>
+            </div>
+            <span className="text-white font-bold tracking-tighter text-xl group-hover:tracking-[0.2em] transition-all duration-500">
+              ORCHIDS
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`relative text-xs font-bold uppercase tracking-widest transition-colors ${
+                  link.highlight 
+                    ? "px-4 py-2 bg-white text-black rounded-full hover:bg-zinc-200" 
+                    : "text-zinc-400 hover:text-white"
+                } ${pathname === link.href && !link.highlight ? "text-white" : ""}`}
+              >
+                {link.name}
+                {pathname === link.href && !link.highlight && (
+                  <motion.div
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1 left-0 right-0 h-px bg-white"
+                  />
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile Menu Trigger (Simple for now) */}
+          <button className="md:hidden text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+};
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
