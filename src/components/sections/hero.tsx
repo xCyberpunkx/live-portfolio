@@ -1,124 +1,48 @@
 "use client";
 
-import React, { Suspense, useRef, useState, useEffect, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, ContactShadows, Sparkles, Float as FloatDrei } from '@react-three/drei';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import * as THREE from 'three';
-
-function ParticleField() {
-  const points = useMemo(() => {
-    const p = new Float32Array(2000 * 3);
-    for (let i = 0; i < 2000; i++) {
-      p[i * 3] = (Math.random() - 0.5) * 20;
-      p[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      p[i * 3 + 2] = (Math.random() - 0.5) * 20;
-    }
-    return p;
-  }, []);
-
-  const ref = useRef<THREE.Points>(null);
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.05;
-      ref.current.rotation.x = state.clock.getElapsedTime() * 0.02;
-    }
-  });
-
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={points.length / 3}
-          array={points}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial size={0.015} color="#ffffff" transparent opacity={0.4} sizeAttenuation />
-    </points>
-  );
-}
-
-function TechGrid() {
-  return (
-    <group rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]}>
-      <gridHelper args={[40, 40, 0x222222, 0x111111]} />
-    </group>
-  );
-}
-
-function FloatingCore() {
-  const mesh = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
-    if (mesh.current) {
-      mesh.current.rotation.z = state.clock.getElapsedTime() * 0.5;
-      mesh.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-    }
-  });
-
-  return (
-    <FloatDrei speed={2} rotationIntensity={1} floatIntensity={1}>
-      <mesh ref={mesh} scale={1.5}>
-        <torusKnotGeometry args={[1, 0.3, 128, 32]} />
-        <meshStandardMaterial color="#ffffff" wireframe transparent opacity={0.3} />
-      </mesh>
-    </FloatDrei>
-  );
-}
 
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const rotate = useTransform(scrollY, [0, 1000], [0, 45]);
 
   return (
     <section className="relative w-full h-screen bg-black overflow-hidden flex flex-col justify-center items-center">
+      {/* Dynamic Background (CSS/SVG based) */}
       <div className="absolute inset-0 z-0">
-        {mounted && (
-          <Canvas dpr={[1, 2]}>
-            <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={50} />
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
-            <pointLight position={[-10, -10, -10]} intensity={1} color="#ffffff" />
-            <Suspense fallback={null}>
-              <ParticleField />
-              <TechGrid />
-              <FloatingCore />
-              <Sparkles count={50} scale={10} size={1} speed={0.4} opacity={0.2} />
-              <ContactShadows position={[0, -4, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
-            </Suspense>
-          </Canvas>
-        )}
+        <div className="absolute inset-0 grid-pattern opacity-10" />
+        <motion.div 
+          style={{ rotate }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] border border-white/5 rounded-full"
+        />
+        <motion.div 
+          style={{ rotate: rotate, scale: 1.2 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-white/5 rounded-full"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_80%)]" />
       </div>
 
-      <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_90%)]" />
-      </div>
-
+      {/* Content Layer */}
       <motion.div 
         style={{ y: y1, opacity }}
         className="container relative z-10 h-full flex flex-col justify-center items-center pointer-events-none"
       >
         <div className="w-full flex flex-col items-center text-center">
-          <div className="overflow-hidden mb-4">
+          <div className="overflow-hidden mb-8">
             <motion.span
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[10px] font-technical text-white/40 tracking-[0.8em] uppercase block"
+              className="text-[10px] font-technical text-white/40 tracking-[1em] uppercase block"
             >
               System Architect & Network Engineer
             </motion.span>
           </div>
 
-          <h1 className="text-[14vw] md:text-[10vw] font-black text-white leading-[0.8] tracking-tighter uppercase mb-12">
+          <h1 className="text-[14vw] md:text-[11vw] font-black text-white leading-[0.8] tracking-tighter uppercase mb-16">
             <div className="overflow-hidden">
               <motion.span 
                 initial={{ y: "100%" }}
@@ -145,40 +69,38 @@ export default function HeroSection() {
           <div className="flex flex-col md:flex-row gap-12 items-center pointer-events-auto">
             <motion.a
               href="#projects"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1 }}
-              className="group flex items-center gap-6"
+              className="group flex items-center gap-8 px-12 py-6 bg-white text-black font-black uppercase tracking-[0.4em] text-[10px] hover:scale-105 transition-all duration-500"
             >
-              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white transition-all duration-500">
-                <div className="w-2 h-2 bg-white group-hover:bg-black rounded-full" />
-              </div>
-              <span className="text-[10px] font-technical text-white uppercase tracking-[0.4em]">Explore Archive</span>
+              Explore Archive
             </motion.a>
 
             <motion.a
               href="/resume.pdf"
               target="_blank"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 }}
-              className="group border-b border-white/20 pb-2 hover:border-white transition-all"
+              className="group border border-white/10 px-12 py-6 text-white font-black uppercase tracking-[0.4em] text-[10px] hover:bg-white/5 transition-all duration-500"
             >
-              <span className="text-[10px] font-technical text-white uppercase tracking-[0.4em]">Download CV (PDF)</span>
+              Download CV
             </motion.a>
           </div>
         </div>
       </motion.div>
 
+      {/* Floating HUD Elements */}
       <div className="absolute left-[5vw] bottom-12 hidden md:block overflow-hidden">
         <motion.div
           initial={{ x: -100 }}
           animate={{ x: 0 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-2 border-l border-white/20 pl-4"
         >
-          <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Core Stack</span>
-          <span className="text-[10px] font-technical text-white uppercase tracking-widest">NEXTJS / CISCO / C++</span>
+          <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Stack Verification</span>
+          <span className="text-[10px] font-technical text-white uppercase tracking-widest animate-pulse">SYSTEM_STABLE // 2025</span>
         </motion.div>
       </div>
 
@@ -187,10 +109,10 @@ export default function HeroSection() {
           initial={{ x: 100 }}
           animate={{ x: 0 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="flex flex-col items-end gap-2"
+          className="flex flex-col items-end gap-2 border-r border-white/20 pr-4"
         >
-          <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Project Version</span>
-          <span className="text-[10px] font-technical text-white uppercase tracking-widest">2025 // EDITION 1.0</span>
+          <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Global Location</span>
+          <span className="text-[10px] font-technical text-white uppercase tracking-widest">ALGERIA // NODE_DZ</span>
         </motion.div>
       </div>
     </section>
