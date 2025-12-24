@@ -51,21 +51,38 @@ export default function Partnerships() {
         </Canvas>
       </div>
 
-      <div className="container mx-auto relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col mb-32 items-center text-center"
-        >
-          <span className="font-technical text-[10px] tracking-[1em] text-white/20 uppercase mb-8 block">TECHNICAL GENOME</span>
-          <h2 className="text-[12vw] md:text-[10vw] leading-[0.8] font-black uppercase text-white mb-12 tracking-tighter">
-            TECHNICAL<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>ARSENAL</span>
-          </h2>
-          <p className="text-white/40 font-technical text-sm uppercase tracking-[0.3em] max-w-xl">
-            A battle-tested foundation for high-availability systems and mission-critical network architectures.
-          </p>
-        </motion.div>
+        <div className="container mx-auto relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col mb-32 items-center text-center"
+          >
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] w-8 bg-white/20" />
+              <span className="font-technical text-[10px] tracking-[1em] text-white/40 uppercase block">SYSTEM_ARCHITECTURE</span>
+              <div className="h-[1px] w-8 bg-white/20" />
+            </div>
+            
+            <h2 className="text-[12vw] md:text-[10vw] leading-[0.8] font-black uppercase text-white mb-12 tracking-tighter">
+              TECHNICAL<br /><span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>ARSENAL</span>
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto border-t border-b border-white/5 py-8">
+              <div className="flex flex-col items-center">
+                <span className="text-white font-black text-2xl mb-1">01</span>
+                <span className="text-[8px] font-technical text-white/40 tracking-widest">INFRASTRUCTURE</span>
+              </div>
+              <div className="flex flex-col items-center border-x border-white/5">
+                <span className="text-white font-black text-2xl mb-1">02</span>
+                <span className="text-[8px] font-technical text-white/40 tracking-widest">CORE_ENGINEERING</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="text-white font-black text-2xl mb-1">03</span>
+                <span className="text-[8px] font-technical text-white/40 tracking-widest">SYSTEM_OPTIMIZATION</span>
+              </div>
+            </div>
+          </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-[1px] bg-white/5 border border-white/5">
             {techStack.map((tech, index) => (
