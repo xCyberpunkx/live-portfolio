@@ -55,23 +55,23 @@ const Navigation = () => {
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-12">
           {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative group ${
-                link.highlight 
-                  ? "bg-white text-black px-4 py-2 rounded-full hover:bg-zinc-200" 
-                  : "text-white/40 hover:text-white"
-              }`}
-            >
-              {link.name}
-              {!link.highlight && pathname === link.href && (
-                <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-white" />
-              )}
-              {!link.highlight && pathname !== link.href && (
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
-              )}
-            </Link>
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative group ${
+                  link.highlight 
+                    ? "bg-white text-black px-4 py-2 rounded-full hover:bg-zinc-200" 
+                    : "text-white/40 hover:text-white"
+                }`}
+              >
+                {link.name}
+                {!link.highlight && (pathname === link.href || (pathname === "/" && link.href.startsWith("/#"))) && (
+                  <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-white" />
+                )}
+                {!link.highlight && !(pathname === link.href || (pathname === "/" && link.href.startsWith("/#"))) && (
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+                )}
+              </Link>
           ))}
         </div>
 
