@@ -5,18 +5,12 @@ import Image from 'next/image';
 
 /**
  * ImpactMarquee Component
- * 
- * Clones the horizontal scrolling impact section.
- * Features:
- * - Dark green background (Deep Olive: rgb(40, 44, 32))
- * - High-impact statement with bold highlights
- * - Infinite horizontal marquee of technical and systems images
  */
 const ImpactMarquee: React.FC = () => {
   const marqueeImages = [
-    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop"
   ];
 
@@ -31,11 +25,11 @@ const ImpactMarquee: React.FC = () => {
           
           <div className="flex flex-col">
             <span className="text-[10px] uppercase tracking-[0.2em] text-[#F4F4F1] opacity-60 font-medium">
-              Systems Engineering
+              Message from Zine Eddine
             </span>
             <div className="mt-1 flex items-center gap-2">
               <span className="text-[10px] uppercase tracking-[0.2em] text-[#D9FF00] font-bold">
-                Security Research & Development
+                Software Engineer & Network Associate
               </span>
               <div className="h-[1px] w-8 bg-[#D9FF00] align-middle" />
             </div>
@@ -46,9 +40,9 @@ const ImpactMarquee: React.FC = () => {
         <div className="max-w-[1200px] mb-24">
           <h2 className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.9] text-[#F4F4F1] uppercase font-black tracking-tighter">
             <span className="inline-block relative">
-              Redefining
+              Building
               <span className="absolute -bottom-1 left-0 w-full h-[0.05em] bg-[#D9FF00] transform scale-x-0 transition-transform duration-500 origin-left group-hover:scale-x-100"></span>
-            </span> systems, fighting for <span className="text-[#D9FF00]">security</span>, bringing it all in all ways. Defining a <span className="italic">legacy</span> in software on and off the grid.
+            </span> scalable systems and <span className="text-[#D9FF00]">resilient</span> networks that power the digital world. Defining a <span className="italic">legacy</span> through engineering precision.
           </h2>
         </div>
       </div>
@@ -64,7 +58,7 @@ const ImpactMarquee: React.FC = () => {
             >
               <Image 
                 src={src} 
-                alt={`Technical visualization ${idx + 1}`}
+                alt={`Portfolio visual ${idx + 1}`}
                 fill
                 sizes="(max-width: 768px) 45vw, 30vw"
                 className="object-cover transition-transform duration-700 hover:scale-105"
@@ -79,7 +73,7 @@ const ImpactMarquee: React.FC = () => {
             >
               <Image 
                 src={src} 
-                alt={`Technical visualization ${idx + 1}`}
+                alt={`Portfolio visual ${idx + 1}`}
                 fill
                 sizes="(max-width: 768px) 45vw, 30vw"
                 className="object-cover transition-transform duration-700 hover:scale-105"

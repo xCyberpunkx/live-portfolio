@@ -4,9 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 
 /**
- * Hero component for Zinedine Rouabah's portfolio.
- * Features a minimalist light background with topographic line patterns,
- * a technical widget, and large background portrait silhouettes.
+ * Hero component for Zine Eddine Rouabah's portfolio.
  */
 export default function HeroSection() {
   return (
@@ -15,8 +13,8 @@ export default function HeroSection() {
       <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center opacity-10">
         <div className="relative w-full h-full max-w-[1440px]">
           <Image
-            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
-            alt="Zinedine Silhouette"
+            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+            alt="Zine Eddine Silhouette"
             fill
             className="object-cover object-center scale-150"
             priority
@@ -27,29 +25,29 @@ export default function HeroSection() {
       {/* Main Container */}
       <div className="container relative z-10 flex flex-col md:flex-row items-center justify-between h-full min-h-screen py-24 md:py-0">
         
-        {/* Left Side: Technical Widget */}
+        {/* Left Side: Next Race Widget -> Rebranded to Next System/Status */}
         <div className="w-full md:w-auto self-start md:self-center mt-20 md:mt-0">
           <div className="flex flex-col items-start space-y-4">
             <div className="border border-[#4A4D43] rounded-lg p-6 bg-white/40 backdrop-blur-sm max-w-[240px]">
               <div className="mb-4">
                 <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#4A4D43] block mb-1">
-                  Status
+                  Available for work
                 </span>
                 <div className="h-[1px] w-full bg-[#4A4D43]/20 mb-4" />
               </div>
               
               <div className="flex flex-col space-y-6">
-                {/* Tech Stack Interface */}
+                {/* Circuit Map Interface (Simulated) */}
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-12 relative opacity-80">
                     <svg viewBox="0 0 100 80" className="w-full h-full fill-none stroke-[#282C20] stroke-[1.5]">
                       <path d="M10,40 C10,20 30,10 50,10 C70,10 90,20 90,40 C90,60 70,70 50,70 C30,70 10,60 10,40 Z" />
-                      <path d="M30,30 L70,50 M30,50 L70,30" strokeOpacity="0.3" />
+                      <circle cx="50" cy="40" r="5" fill="#D9FF00" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-sans font-black text-xl leading-none text-[#282C20] uppercase">Secure</h3>
-                    <p className="font-mono text-[10px] tracking-widest text-[#4A4D43] uppercase">Systems</p>
+                    <h3 className="font-sans font-black text-xl leading-none text-[#282C20] uppercase">Algeria</h3>
+                    <p className="font-mono text-[10px] tracking-widest text-[#4A4D43] uppercase">Location</p>
                   </div>
                 </div>
 
@@ -64,7 +62,7 @@ export default function HeroSection() {
                   </div>
                   <div>
                     <p className="font-mono text-[10px] leading-tight tracking-wider text-[#4A4D43] uppercase">
-                      Systems & Security<br />Researcher
+                      Software Engineer &<br />Network Associate
                     </p>
                   </div>
                 </div>
@@ -73,19 +71,16 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Center/Right: Core Focus Area */}
+        {/* Center/Right: Visual Area */}
         <div className="flex-1 flex items-center justify-center relative h-[400px] md:h-screen w-full">
           <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px]">
-             {/* Abstract Tech Visual */}
+             {/* Abstract System Visual */}
              <div className="absolute inset-0 flex items-center justify-center">
                <div className="relative w-4/5 h-4/5 animate-hover items-center justify-center flex">
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <div className="absolute inset-0 bg-[#D9FF00]/20 blur-[100px] rounded-full" />
-                    <svg viewBox="0 0 200 200" className="w-full h-full text-[#282C20]">
-                      <path d="M100,20 L180,60 L180,140 L100,180 L20,140 L20,60 Z" fill="none" stroke="currentColor" strokeWidth="2" />
-                      <path d="M100,40 L160,70 L160,130 L100,160 L40,130 L40,70 Z" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="5,5" />
-                      <circle cx="100" cy="100" r="10" fill="#D9FF00" />
-                    </svg>
+                  <div className="text-center">
+                    <h1 className="text-8xl md:text-[12rem] font-black text-[#282C20] leading-none tracking-tighter uppercase opacity-10">
+                      Zine<br />Eddine
+                    </h1>
                   </div>
                </div>
              </div>
@@ -94,21 +89,22 @@ export default function HeroSection() {
 
         {/* Mobile Large Text Overlay */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[90%] md:hidden z-20">
-          <h1 className="text-6xl font-black text-[#282C20] opacity-20 uppercase text-center leading-none">
-            Zinedine<br />Rouabah
-          </h1>
+          <div className="text-center">
+            <h2 className="text-4xl font-black text-[#282C20] uppercase">Rouabah</h2>
+          </div>
         </div>
       </div>
 
-      {/* Hero Desktop Title Hidden but SEO friendly */}
       <div className="sr-only">
-        <h1>Zinedine Rouabah</h1>
-        <h2>Systems Programmer & Security Researcher</h2>
+        <h1>Zine Eddine Rouabah</h1>
+        <h2>Software Engineer & Network Associate</h2>
       </div>
 
       {/* Decorative Signature (bottom right on desktop) */}
       <div className="hidden lg:block absolute bottom-12 right-12 z-20 opacity-40">
-        <div className="font-black text-4xl text-[#282C20] italic tracking-tighter">ZR</div>
+        <div className="font-mono text-sm tracking-widest text-[#282C20] font-bold uppercase">
+          Building systems that scale
+        </div>
       </div>
 
       <style jsx global>{`
