@@ -65,10 +65,10 @@ const Navigation = () => {
                 }`}
               >
                 {link.name}
-                {!link.highlight && (pathname === link.href || (pathname === "/" && link.href.startsWith("/#"))) && (
+                {!link.highlight && (pathname === link.href || (pathname === "/" && link.href === pathname)) && (
                   <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-white" />
                 )}
-                {!link.highlight && !(pathname === link.href || (pathname === "/" && link.href.startsWith("/#"))) && (
+                {!link.highlight && !(pathname === link.href || (pathname === "/" && link.href === pathname)) && (
                   <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
                 )}
               </Link>
