@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { X, Github, Linkedin, Mail } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +20,10 @@ const Navigation = () => {
 
   const menuLinks = [
     { name: "Home", href: "/", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop" },
-    { name: "Code", href: "/code", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" },
-    { name: "Research", href: "/research", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2070&auto=format&fit=crop" },
-    { name: "Security", href: "/security", img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop" },
-    { name: "Contact", href: "/contact", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" },
+    { name: "About", href: "#about", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" },
+    { name: "Projects", href: "#projects", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" },
+    { name: "Experience", href: "#experience", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop" },
+    { name: "Contact", href: "#contact", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" },
   ];
 
   return (
@@ -36,23 +36,26 @@ const Navigation = () => {
         {/* Logo */}
         <Link href="/" className="relative z-[60]">
           <div className="flex flex-col leading-none">
-            <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">ZINEDINE</span>
+            <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">ZINE EDDINE</span>
             <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">ROUABAH</span>
           </div>
         </Link>
 
-        {/* Center ZR Icon */}
+        {/* Center Root@Arch Icon */}
         <div className="absolute left-1/2 -translate-x-1/2 hidden md:block opacity-80">
-          <div className="text-off-white font-black text-xl tracking-tighter">ZR</div>
+          <div className="font-mono text-[10px] tracking-[0.2em] text-off-white uppercase">root@arch</div>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-4 relative z-[60]">
           <a
-            href="https://github.com/zineddine"
+            href="https://github.com/xCyberpunkx"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 bg-neon-lime text-rich-black px-5 py-2.5 rounded-full font-bold text-sm tracking-tight btn-primary-hover"
           >
-            <span className="uppercase pt-0.5">GITHUB</span>
+            <Github size={18} strokeWidth={2.5} />
+            <span className="uppercase pt-0.5">GitHub</span>
           </a>
 
           <button
@@ -85,7 +88,7 @@ const Navigation = () => {
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-rich-black/20 grayscale hover:grayscale-0 transition-all duration-700 border border-muted-gray/20">
                  <Image 
                     src={hoveredLink !== null ? menuLinks[hoveredLink].img : menuLinks[0].img}
-                    alt="Zinedine Dynamic"
+                    alt="Zine Dynamic"
                     fill
                     className="object-cover transition-transform duration-1000 scale-105 hover:scale-110"
                  />
@@ -93,7 +96,7 @@ const Navigation = () => {
               <div className="relative aspect-video rounded-2xl overflow-hidden bg-rich-black/20 border border-muted-gray/20">
                  <Image 
                     src={menuLinks[2].img}
-                    alt="Zinedine Static"
+                    alt="Zine Static"
                     fill
                     className="object-cover opacity-40"
                  />
@@ -103,7 +106,7 @@ const Navigation = () => {
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-rich-black/20 border border-muted-gray/20">
                 <Image 
                     src={menuLinks[1].img}
-                    alt="Zinedine Dynamic"
+                    alt="Zine Dynamic"
                     fill
                     className="object-cover opacity-60"
                  />
@@ -111,7 +114,7 @@ const Navigation = () => {
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-rich-black/20 border border-muted-gray/20">
                 <Image 
                     src={menuLinks[4].img}
-                    alt="Zinedine Dynamic"
+                    alt="Zine Dynamic"
                     fill
                     className="object-cover grayscale"
                  />
@@ -144,30 +147,26 @@ const Navigation = () => {
             {/* Footer Items in Menu */}
             <div className="mt-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div className="flex flex-col gap-6">
-                 {/* Icon Concept */}
+                 {/* Helmet Section Icon Concept */}
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 relative bg-rich-black rounded-full flex items-center justify-center border border-muted-gray/30 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-tr from-neon-lime/20 to-transparent"></div>
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-neon-lime z-10 animate-bounce">
-                      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 4C14.76 4 17.13 5.48 18.42 7.71C17.5 8.5 16.3 9 15 9C12.24 9 10 6.76 10 4.18C10.65 4.06 11.32 4 12 4Z" fill="currentColor" />
-                    </svg>
+                    <Github size={30} className="text-neon-lime z-10" />
                   </div>
                   <div className="text-[10px] font-technical text-muted-gray uppercase tracking-widest leading-relaxed">
-                    Systems & Security<br />Researcher
+                    Software Engineer &<br />Network Associate
                   </div>
                 </div>
 
                 <div className="flex gap-6">
-                  {['GitHub', 'LinkedIn', 'Twitter', 'Vercel'].map(social => (
-                    <a key={social} href="#" className="text-[11px] font-technical uppercase tracking-widest text-muted-gray hover:text-off-white transition-colors">
-                      {social}
-                    </a>
-                  ))}
+                  <a href="https://github.com/xCyberpunkx" target="_blank" rel="noopener noreferrer" className="text-[11px] font-technical uppercase tracking-widest text-muted-gray hover:text-off-white transition-colors">GitHub</a>
+                  <a href="https://linkedin.com/in/zine-eddine-rouabah-992b16265" target="_blank" rel="noopener noreferrer" className="text-[11px] font-technical uppercase tracking-widest text-muted-gray hover:text-off-white transition-colors">LinkedIn</a>
+                  <a href="mailto:rouabah.zineedinee@gmail.com" className="text-[11px] font-technical uppercase tracking-widest text-muted-gray hover:text-off-white transition-colors">Email</a>
                 </div>
               </div>
 
               <div className="text-[11px] font-technical uppercase tracking-widest text-muted-gray text-right">
-                <a href="mailto:zineddine@example.com" className="hover:text-neon-lime transition-colors">Contact Enquiries</a>
+                <a href="mailto:rouabah.zineedinee@gmail.com" className="hover:text-neon-lime transition-colors">Get in touch</a>
               </div>
             </div>
           </div>
