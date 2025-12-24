@@ -6,12 +6,12 @@ import Image from "next/image";
 
 const FloatingLogos = () => {
     const logos = [
-      { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Pirelli_logo.svg/1200px-Pirelli_logo.svg.png", x: "15%", y: "20%", size: 30, mdSize: 50 },
-      { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png", x: "80%", y: "15%", size: 40, mdSize: 80 },
-      { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Mercedes_Benz_logo.svg/1200px-Mercedes_Benz_logo.svg.png", x: "10%", y: "70%", size: 25, mdSize: 40 },
+      { name: "Tech 1", src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=100&auto=format&fit=crop", x: "15%", y: "20%", size: 30, mdSize: 50 },
+      { name: "Tech 2", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=100&auto=format&fit=crop", x: "80%", y: "15%", size: 40, mdSize: 80 },
+      { name: "Tech 3", src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=100&auto=format&fit=crop", x: "10%", y: "70%", size: 25, mdSize: 40 },
       { name: "Vercel", src: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png", x: "85%", y: "65%", size: 15, mdSize: 25, invert: true },
-      { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/F1.svg/1200px-F1.svg.png", x: "50%", y: "10%", size: 20, mdSize: 40 },
-      { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1200px-Oracle_logo.svg.png", x: "75%", y: "80%", size: 20, mdSize: 40 },
+      { name: "Tech 4", src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=100&auto=format&fit=crop", x: "50%", y: "10%", size: 20, mdSize: 40 },
+      { name: "Tech 5", src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=100&auto=format&fit=crop", x: "75%", y: "80%", size: 20, mdSize: 40 },
     ];
 
   return (
