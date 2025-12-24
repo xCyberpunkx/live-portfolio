@@ -9,7 +9,7 @@ const projects = [
     {
       title: "SnovaTech Solar Simulation Platform",
       category: "Energy Technology • Web Application",
-      image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=2074&auto=format&fit=crop",
       link: "#",
       github: "#",
       desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis. 2024",
