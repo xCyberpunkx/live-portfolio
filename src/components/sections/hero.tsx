@@ -61,10 +61,10 @@ const HeroSection = () => {
         className="absolute inset-0 z-0"
       >
           <Image 
-            src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop"
-            alt="Engineering Background"
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+            alt="Global Tech Background"
             fill
-            className="object-cover grayscale brightness-50"
+            className="object-cover grayscale opacity-60 mix-blend-overlay"
             priority
           />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80" />
