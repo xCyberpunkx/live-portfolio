@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
@@ -49,6 +50,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <body className={`${jakarta.variable} font-sans antialiased bg-black text-white`}>
+        <Script
+          id="orchids-browser-logs"
+          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
+          strategy="afterInteractive"
+          data-orchids-project-id="c99fa3a9-7f61-4053-a892-9a79b5387a9e"
+        />
         {children}
       </body>
     </html>
