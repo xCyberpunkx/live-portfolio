@@ -68,28 +68,28 @@ export default function Partnerships() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-white/5 border border-white/5">
-          {techStack.map((tech, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              className="group relative flex flex-col items-center justify-center p-16 bg-black hover:bg-white transition-all duration-700"
-            >
-              <div className="relative w-12 h-12 mb-8 brightness-0 invert group-hover:invert-0 transition-all duration-700 group-hover:scale-110">
-                <Image
-                  src={tech.logo}
-                  alt={tech.name}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-[9px] font-technical text-white/20 group-hover:text-black transition-colors uppercase tracking-[0.3em]">
-                {tech.name}
-              </span>
-            </motion.div>
-          ))}
+            {techStack.map((tech, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="group relative flex flex-col items-center justify-center p-16 bg-black hover:bg-white/5 transition-all duration-700 border-r border-b border-white/5"
+              >
+                <div className="relative w-12 h-12 mb-8 grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                  <Image
+                    src={tech.logo}
+                    alt={tech.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span className="text-[9px] font-technical text-white/20 group-hover:text-white transition-colors uppercase tracking-[0.3em]">
+                  {tech.name}
+                </span>
+              </motion.div>
+            ))}
         </div>
       </div>
     </section>
