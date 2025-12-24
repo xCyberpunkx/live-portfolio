@@ -9,7 +9,7 @@ export default function SplashScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -20,38 +20,54 @@ export default function SplashScreen() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ 
-            y: "-100%",
-            transition: { duration: 1, ease: [0.76, 0, 0.24, 1] }
+            clipPath: "inset(0 0 100% 0)",
+            transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
           }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
+          className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black overflow-hidden"
         >
-          <div className="relative overflow-hidden">
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-2xl font-black text-white tracking-[0.5em] uppercase"
-            >
-              Rouabah Zine Eddine
-            </motion.div>
+          <div className="absolute inset-0 grid-pattern opacity-10 pointer-events-none" />
+          
+          <div className="relative">
+            <div className="overflow-hidden mb-8">
+              <motion.h1
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase"
+              >
+                ROUABAH ZINE EDDINE
+              </motion.h1>
+            </div>
+            
+            <div className="w-full h-px bg-white/10 relative overflow-hidden">
+              <motion.div 
+                initial={{ x: "-100%" }}
+                animate={{ x: "100%" }}
+                transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity }}
+                className="absolute inset-0 bg-white"
+              />
+            </div>
           </div>
           
-          <motion.div 
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="w-32 h-[1px] bg-white mt-8 origin-left"
-          />
-          
-          <div className="absolute bottom-12 overflow-hidden">
+          <div className="absolute bottom-12 overflow-hidden flex flex-col items-center gap-4">
             <motion.span 
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="text-[10px] font-technical text-white/20 uppercase tracking-[0.4em]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              transition={{ delay: 0.8 }}
+              className="text-[10px] font-technical text-white uppercase tracking-[0.5em]"
             >
-              Initializing Digital Archive 2025
+              Establishing Secure Connection
             </motion.span>
+            <div className="flex gap-2">
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ opacity: [0.2, 1, 0.2] }}
+                  transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                  className="w-1 h-1 bg-white"
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
       )}
