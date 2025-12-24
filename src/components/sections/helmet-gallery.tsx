@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
-interface HelmetData {
+interface ProjectData {
   id: string;
   name: string;
   year: string;
@@ -12,69 +12,40 @@ interface HelmetData {
   hoverImg: string;
 }
 
-const helmetGallery: HelmetData[] = [
+const projectGallery: ProjectData[] = [
   {
-    id: "season-2025",
-    name: "Season",
+    id: "kernel-research",
+    name: "Kernel",
     year: "2025",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b3e6c7ab86033cf172c_In-helm-2025-Season-base-20.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b411c575b2f777125f6_In-helm-2025-Season-hover-21.webp",
+    baseImg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    id: "discoball-2025",
-    name: "Discoball",
+    id: "compiler-tech",
+    name: "Compiler",
     year: "2025",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b2259159e5170d2b923_In-helm-2025-Discoball-ba-22.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b24037a1e7681195c20_In-helm-2025-Discoball-ho-23.webp",
+    baseImg: "https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2070&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    id: "dark-glitter-2025",
-    name: "Dark Glitter",
-    year: "2025",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b3e6c7ab86033cf172c_In-helm-2025-Season-base-20.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b411c575b2f777125f6_In-helm-2025-Season-hover-21.webp",
-  },
-  {
-    id: "porcelain-2024",
-    name: "Porcelain",
+    id: "security-audit",
+    name: "Audit",
     year: "2024",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b2259159e5170d2b923_In-helm-2025-Discoball-ba-22.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b24037a1e7681195c20_In-helm-2025-Discoball-ho-23.webp",
+    baseImg: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop",
   },
   {
-    id: "gif-2024",
-    name: "GIF",
+    id: "distributed-systems",
+    name: "DistSys",
     year: "2024",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b3e6c7ab86033cf172c_In-helm-2025-Season-base-20.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b411c575b2f777125f6_In-helm-2025-Season-hover-21.webp",
-  },
-  {
-    id: "japan-2024",
-    name: "Japan",
-    year: "2024",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b2259159e5170d2b923_In-helm-2025-Discoball-ba-22.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b24037a1e7681195c20_In-helm-2025-Discoball-ho-23.webp",
-  },
-  {
-    id: "chrome-2023",
-    name: "Chrome",
-    year: "2023",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b3e6c7ab86033cf172c_In-helm-2025-Season-base-20.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b411c575b2f777125f6_In-helm-2025-Season-hover-21.webp",
-  },
-  {
-    id: "darkmode-2024",
-    name: "Dark Mode",
-    year: "2024",
-    baseImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b2259159e5170d2b923_In-helm-2025-Discoball-ba-22.webp",
-    hoverImg: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68305b24037a1e7681195c20_In-helm-2025-Discoball-ho-23.webp",
+    baseImg: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2070&auto=format&fit=crop",
+    hoverImg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
   }
 ];
 
-const HelmetCard = ({ helmet, index }: { helmet: HelmetData; index: number }) => {
+const ProjectCard = ({ project, index }: { project: ProjectData; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Replicate the staggered/offset layout pattern from screenshot
   const getAlignmentClass = () => {
     if (index % 4 === 0) return "mt-0";
     if (index % 4 === 1) return "mt-24";
@@ -89,33 +60,31 @@ const HelmetCard = ({ helmet, index }: { helmet: HelmetData; index: number }) =>
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative aspect-square w-full max-w-[340px] bg-[#0A0A0A] rounded-2xl overflow-hidden border border-[#4A4D43]/20 flex items-center justify-center p-8 transition-all duration-500 hover:border-[#D9FF00]/50">
-        {/* Subtle Inner Frame - Bottom Left Mask Effect mentioned in CSS */}
         <div className="absolute inset-0 pointer-events-none border-[1px] border-[#4A4D43]/10 m-2 rounded-xl" />
         
         <div className="relative w-full h-full">
           <Image
-            src={helmet.baseImg}
-            alt={`${helmet.name} base`}
+            src={project.baseImg}
+            alt={`${project.name} base`}
             fill
-            className={`object-contain transition-opacity duration-500 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+            className={`object-cover transition-opacity duration-500 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
             priority={index < 4}
           />
           <Image
-            src={helmet.hoverImg}
-            alt={`${helmet.name} detail`}
+            src={project.hoverImg}
+            alt={`${project.name} detail`}
             fill
-            className={`object-contain transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+            className={`object-cover transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
 
-        {/* Label Overlay */}
         <div className="absolute bottom-4 right-6 text-right">
           <div className="flex items-center justify-end gap-2">
-            <span className="text-[10px] sm:text-[12px] font- technical text-[#F4F4F1] uppercase tracking-wider">
-              {helmet.name}
+            <span className="text-[10px] sm:text-[12px] font-technical text-[#F4F4F1] uppercase tracking-wider">
+              {project.name}
             </span>
             <span className="text-[10px] sm:text-[12px] font-technical text-[#D9FF00] font-bold">
-              {helmet.year}
+              {project.year}
             </span>
           </div>
         </div>
@@ -127,16 +96,14 @@ const HelmetCard = ({ helmet, index }: { helmet: HelmetData; index: number }) =>
 export default function HelmetGallery() {
   return (
     <section className="bg-[#0A0A0A] pt-24 pb-32 overflow-hidden relative">
-      {/* Topographic Background Overlay */}
       <div className="absolute inset-0 topographic-bg opacity-10 pointer-events-none" />
 
       <div className="container relative z-10">
-        {/* Introduction Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32">
           <div className="relative rounded-2xl overflow-hidden aspect-[4/5] lg:aspect-square">
             <Image
-              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/c99fa3a9-7f61-4053-a892-9a79b5387a9e-landonorris-com/assets/images/68302ff5ff89a9a4afb8c19e_ln-home-helm-large-19.webp"
-              alt="Lando Norris holding helmet"
+              src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
+              alt="Systems visualization"
               fill
               className="object-cover"
               priority
@@ -146,32 +113,30 @@ export default function HelmetGallery() {
           <div className="max-w-xl">
             <div className="mb-8">
               <h2 className="text-[12px] font-technical tracking-[0.2em] text-[#D9FF00] mb-4">
-                Helmets
+                Research
               </h2>
               <h3 className="text-6xl md:text-8xl font-black text-[#F4F4F1] leading-[0.85] mb-8">
-                Hall of <br />Fame
+                Systems <br />Archive
               </h3>
               <p className="text-[#A1A1AA] text-lg leading-relaxed max-w-md font-sans">
-                From his iconic blobs to innovative one-off designs, Lando has always been passionate about designing innovative and memorable helmets.
+                A selection of high-performance systems and security research projects developed across various hardware architectures.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Helmet Bento Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-0">
-          {helmetGallery.map((helmet, idx) => (
-            <HelmetCard key={helmet.id} helmet={helmet} index={idx} />
+          {projectGallery.map((project, idx) => (
+            <ProjectCard key={project.id} project={project} index={idx} />
           ))}
         </div>
 
-        {/* View on Track CTA */}
         <div className="mt-40 flex justify-center">
           <a
-            href="/on-track"
+            href="https://github.com/zineddine"
             className="group relative flex items-center justify-between bg-[#D9FF00] text-[#0A0A0A] font-technical font-bold text-sm px-6 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(217,255,0,0.4)]"
           >
-            <span className="mr-6 uppercase tracking-widest">View On Track</span>
+            <span className="mr-6 uppercase tracking-widest">View GitHub</span>
             <div className="bg-[#0A0A0A] text-[#D9FF00] rounded-full p-2 transition-transform duration-300 group-hover:rotate-45">
               <ArrowUpRight size={18} strokeWidth={3} />
             </div>
@@ -179,10 +144,9 @@ export default function HelmetGallery() {
         </div>
       </div>
 
-      {/* Background Decorative Text Section Separator */}
       <div className="absolute bottom-[-10%] left-0 w-full select-none pointer-events-none overflow-hidden whitespace-nowrap opacity-[0.03]">
         <span className="text-[25vw] font-black italic text-white uppercase leading-none">
-          LN4 REBEL
+          SECURE SYSTEMS
         </span>
       </div>
     </section>
