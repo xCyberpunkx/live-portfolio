@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 const experiences = [
   {
     id: "01",
     date: "2025 — PRES",
-    title: "Frontend Developer",
+    title: "Software Engineer",
     company: "Snovatech",
-    desc: "Architecting high-performance solar simulation platforms. Optimizing UI for massive dataset rendering and real-time ROI calculations."
+    desc: "Architecting high-performance solar simulation platforms. Optimizing UI for massive dataset rendering and real-time ROI calculations using C++ and .NET for core computation engines."
   },
   {
     id: "02",
     date: "2024 — 25",
     title: "Software Engineer Intern",
     company: "P.I Design",
-    desc: "Led the digital transformation of patient management systems. Translated complex medical workflows into resilient software solutions."
+    desc: "Led the digital transformation of patient management systems. Translated complex medical workflows into resilient software solutions using C# and .NET frameworks."
   },
   {
     id: "03",
@@ -42,7 +42,6 @@ export default function TechExperience() {
 
   return (
     <section id="experience" className="bg-black py-24 md:py-64 relative overflow-hidden border-t border-white/5">
-      {/* Decorative background ID */}
       <div className="absolute top-24 right-[5vw] opacity-5 pointer-events-none">
         <span className="text-[20vw] font-black text-white leading-none uppercase tracking-tighter">
           PATH
@@ -51,7 +50,6 @@ export default function TechExperience() {
 
       <div className="container mx-auto px-4 relative">
         <div className="grid grid-cols-12 gap-12">
-          {/* Header */}
           <div className="col-span-12 lg:col-span-4 mb-24 lg:mb-0">
             <div className="sticky top-32">
               <span className="text-[10px] font-technical text-white/20 tracking-[1em] uppercase block mb-8">Professional Record</span>
@@ -60,14 +58,12 @@ export default function TechExperience() {
                 <span className="text-white/20 italic">JOURNEY</span>
               </h2>
               <p className="text-white/40 font-technical text-sm uppercase tracking-[0.3em] max-w-xs leading-relaxed">
-                A chronological sequence of technical challenges and system architectures delivered across diverse industries.
+                A chronological sequence of technical challenges delivered by a Software Engineer.
               </p>
             </div>
           </div>
 
-          {/* Timeline */}
           <div ref={containerRef} className="col-span-12 lg:col-span-8 relative">
-            {/* Progress Line */}
             <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-white/10 hidden md:block" />
             <motion.div 
               style={{ scaleY, originY: 0 }}
@@ -84,7 +80,6 @@ export default function TechExperience() {
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                   className="group relative"
                 >
-                  {/* Item indicator */}
                   <div className="absolute -left-[101px] top-4 w-2 h-2 rounded-full bg-black border border-white group-hover:scale-150 transition-transform duration-500 hidden md:block z-20" />
                   
                   <div className="flex flex-col gap-8">
