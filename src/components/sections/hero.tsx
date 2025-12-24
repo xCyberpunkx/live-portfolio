@@ -2,7 +2,7 @@
 
 import React, { Suspense, useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, PerspectiveCamera, ContactShadows, Sparkles, Float as FloatDrei } from '@react-three/drei';
+import { PerspectiveCamera, ContactShadows, Sparkles, Float as FloatDrei } from '@react-three/drei';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 
@@ -53,6 +53,7 @@ function FloatingCore() {
   useFrame((state) => {
     if (mesh.current) {
       mesh.current.rotation.z = state.clock.getElapsedTime() * 0.5;
+      mesh.current.rotation.x = state.clock.getElapsedTime() * 0.2;
     }
   });
 
@@ -60,14 +61,7 @@ function FloatingCore() {
     <FloatDrei speed={2} rotationIntensity={1} floatIntensity={1}>
       <mesh ref={mesh} scale={1.5}>
         <torusKnotGeometry args={[1, 0.3, 128, 32]} />
-        <MeshDistortMaterial
-          color="#ffffff"
-          distort={0.3}
-          speed={3}
-          roughness={0}
-          metalness={1}
-          wireframe
-        />
+        <meshStandardMaterial color="#ffffff" wireframe transparent opacity={0.3} />
       </mesh>
     </FloatDrei>
   );
@@ -89,7 +83,7 @@ export default function HeroSection() {
         {mounted && (
           <Canvas dpr={[1, 2]}>
             <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={50} />
-            <ambientLight intensity={0.2} />
+            <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
             <pointLight position={[-10, -10, -10]} intensity={1} color="#ffffff" />
             <Suspense fallback={null}>
