@@ -151,16 +151,6 @@ export default function FormulaOnePage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/5 border border-white/5">
               {cars.map((car) => (
                 <div key={car.name} className="bg-black p-12 group hover:bg-red-600/5 transition-colors relative overflow-hidden">
-                  <div className="relative h-[400px] mb-12 overflow-hidden">
-                    <Image 
-                      src={car.image} 
-                      alt={car.name} 
-                      fill 
-                      className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60" />
-                  </div>
-                  
                   <div className="flex justify-between items-end mb-8">
                     <div>
                       <span className="text-white/40 font-technical text-[10px] tracking-[0.4em] uppercase block mb-2">{car.team}</span>
@@ -190,37 +180,21 @@ export default function FormulaOnePage() {
 
         {/* CIRCUITS MARQUEE */}
         <section className="py-48 overflow-hidden border-b border-white/5">
-          <div className="container mx-auto px-6 mb-24">
-            <h2 className="text-6xl font-black italic tracking-tighter uppercase">WORLD_TOUR_2024</h2>
+          <div className="container mx-auto px-6 mb-24 text-center">
+            <h2 className="text-6xl font-black italic tracking-tighter uppercase mb-4">WORLD_TOUR_2024</h2>
+            <p className="text-red-600 font-technical text-xs tracking-[0.5em] uppercase">The Global Racing Calendar</p>
           </div>
           
-          <div className="flex gap-8 px-6 animate-scroll whitespace-nowrap">
+          <div className="flex gap-24 px-6 animate-scroll whitespace-nowrap">
             {[...circuits, ...circuits].map((track, i) => (
-              <div key={i} className="relative w-[600px] h-[400px] flex-shrink-0 group overflow-hidden border border-white/10">
-                <Image 
-                  src={track.image} 
-                  alt={track.name} 
-                  fill 
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80" />
-                
-                <div className="absolute bottom-0 left-0 p-8 w-full">
+              <div key={i} className="flex-shrink-0 group">
+                <div className="flex flex-col">
                   <span className="text-red-600 font-technical text-[10px] tracking-[0.4em] uppercase block mb-2">{track.type}</span>
-                  <h3 className="text-4xl font-black italic uppercase tracking-tighter">{track.name}</h3>
-                  <div className="mt-6 pt-6 border-t border-white/10 flex gap-8">
-                    <div className="flex flex-col">
-                      <span className="text-[8px] font-technical text-white/40 uppercase">TURNS</span>
-                      <span className="text-lg font-black italic">{track.turns}</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[8px] font-technical text-white/40 uppercase">LENGTH</span>
-                      <span className="text-lg font-black italic">{track.length}</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[8px] font-technical text-white/40 uppercase">LOCATION</span>
-                      <span className="text-lg font-black italic">{track.location}</span>
-                    </div>
+                  <h3 className="text-7xl font-black italic uppercase tracking-tighter text-white/20 group-hover:text-white transition-colors duration-500">{track.name}</h3>
+                  <div className="mt-4 flex gap-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-[10px] font-technical text-white/40 uppercase">{track.location}</span>
+                    <span className="text-[10px] font-technical text-white/40 uppercase">{track.turns} TURNS</span>
+                    <span className="text-[10px] font-technical text-white/40 uppercase">{track.length}</span>
                   </div>
                 </div>
               </div>
