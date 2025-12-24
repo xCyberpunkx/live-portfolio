@@ -25,11 +25,11 @@ const Navigation = () => {
   }, []);
 
     const menuLinks = [
-      { name: "Works", href: "#projects" },
-      { name: "Journey", href: "#experience" },
-      { name: "Identity", href: "#about" },
+      { name: "Works", href: "/#projects" },
+      { name: "Journey", href: "/#experience" },
+      { name: "Identity", href: "/#about" },
       { name: "Formula 1", href: "/f1" },
-      { name: "Inquire", href: "#contact" },
+      { name: "Inquire", href: "/#contact" },
     ];
 
   return (
