@@ -140,30 +140,86 @@ export default function FormulaOnePage() {
           </div>
         </section>
 
+        {/* MACHINES SECTION */}
+        <section className="py-48 border-y border-white/5">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col items-center mb-32 text-center">
+              <span className="text-red-600 font-technical text-[10px] tracking-[1em] uppercase mb-8">THE_ENGINEERING_PINNACLE</span>
+              <h2 className="text-8xl md:text-[10vw] font-black italic tracking-tighter uppercase leading-none">THE_MACHINES</h2>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/5 border border-white/5">
+              {cars.map((car) => (
+                <div key={car.name} className="bg-black p-12 group hover:bg-red-600/5 transition-colors relative overflow-hidden">
+                  <div className="relative h-[400px] mb-12 overflow-hidden">
+                    <Image 
+                      src={car.image} 
+                      alt={car.name} 
+                      fill 
+                      className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60" />
+                  </div>
+                  
+                  <div className="flex justify-between items-end mb-8">
+                    <div>
+                      <span className="text-white/40 font-technical text-[10px] tracking-[0.4em] uppercase block mb-2">{car.team}</span>
+                      <h3 className="text-5xl font-black italic uppercase tracking-tighter">{car.name}</h3>
+                    </div>
+                    <Zap size={32} className="text-red-600" />
+                  </div>
+
+                  <div className="space-y-6 pt-8 border-t border-white/10">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[8px] font-technical text-white/40 uppercase tracking-widest">POWER_UNIT</span>
+                      <span className="text-sm font-black italic">{car.engine}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {car.tech.map(t => (
+                        <span key={t} className="px-3 py-1 bg-white/5 text-[8px] font-technical uppercase tracking-widest border border-white/10">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CIRCUITS MARQUEE */}
-        <section className="py-48 overflow-hidden border-y border-white/5">
+        <section className="py-48 overflow-hidden border-b border-white/5">
           <div className="container mx-auto px-6 mb-24">
             <h2 className="text-6xl font-black italic tracking-tighter uppercase">WORLD_TOUR_2024</h2>
           </div>
           
           <div className="flex gap-8 px-6 animate-scroll whitespace-nowrap">
             {[...circuits, ...circuits].map((track, i) => (
-              <div key={i} className="relative w-[400px] h-[300px] flex-shrink-0 group overflow-hidden border border-white/10 bg-neutral-900/50 p-8 flex flex-col justify-end">
-                <div className="relative z-10">
-                  <span className="text-red-600 font-technical text-[8px] tracking-[0.4em] uppercase block mb-2">{track.type}</span>
-                  <h3 className="text-3xl font-black italic uppercase tracking-tighter">{track.name}</h3>
-                  <div className="mt-4 pt-4 border-t border-white/10 flex gap-6">
+              <div key={i} className="relative w-[600px] h-[400px] flex-shrink-0 group overflow-hidden border border-white/10">
+                <Image 
+                  src={track.image} 
+                  alt={track.name} 
+                  fill 
+                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80" />
+                
+                <div className="absolute bottom-0 left-0 p-8 w-full">
+                  <span className="text-red-600 font-technical text-[10px] tracking-[0.4em] uppercase block mb-2">{track.type}</span>
+                  <h3 className="text-4xl font-black italic uppercase tracking-tighter">{track.name}</h3>
+                  <div className="mt-6 pt-6 border-t border-white/10 flex gap-8">
                     <div className="flex flex-col">
-                      <span className="text-[7px] font-technical text-white/40 uppercase">TURNS</span>
-                      <span className="text-sm font-black italic">{track.turns}</span>
+                      <span className="text-[8px] font-technical text-white/40 uppercase">TURNS</span>
+                      <span className="text-lg font-black italic">{track.turns}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[7px] font-technical text-white/40 uppercase">LENGTH</span>
-                      <span className="text-sm font-black italic">{track.length}</span>
+                      <span className="text-[8px] font-technical text-white/40 uppercase">LENGTH</span>
+                      <span className="text-lg font-black italic">{track.length}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[7px] font-technical text-white/40 uppercase">LOCATION</span>
-                      <span className="text-sm font-black italic">{track.location}</span>
+                      <span className="text-[8px] font-technical text-white/40 uppercase">LOCATION</span>
+                      <span className="text-lg font-black italic">{track.location}</span>
                     </div>
                   </div>
                 </div>
