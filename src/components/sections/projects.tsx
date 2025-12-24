@@ -6,15 +6,15 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
 
 const projects = [
-  {
-    title: "SnovaTech Solar Simulation Platform",
-    category: "Energy Technology • Web Application",
-    image: "https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?q=80&w=2070&auto=format&fit=crop",
-    link: "#",
-    github: "#",
-    desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis. 2024",
-    tech: "Next.js 14, TypeScript, +4"
-  },
+    {
+      title: "SnovaTech Solar Simulation Platform",
+      category: "Energy Technology • Web Application",
+      image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop",
+      link: "#",
+      github: "#",
+      desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis. 2024",
+      tech: "Next.js 14, TypeScript, +4"
+    },
   {
     title: "Photographer & Client Reservation Platform",
     category: "Marketplace Platform",
