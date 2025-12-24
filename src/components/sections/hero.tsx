@@ -1,75 +1,15 @@
 "use client";
 
-import React, { Suspense, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { 
-  PerspectiveCamera, 
-  MeshTransmissionMaterial,
-  Environment,
-  ContactShadows,
-  Stars,
-  Sparkles
-} from "@react-three/drei";
-import * as THREE from "three";
-
-function TechCore() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    if (meshRef.current) {
-      meshRef.current.rotation.y = time * 0.2;
-      meshRef.current.rotation.x = time * 0.1;
-    }
-  });
-
-  return (
-    <group>
-      <mesh ref={meshRef}>
-        <tetrahedronGeometry args={[4, 0]} />
-        <MeshTransmissionMaterial
-          backside
-          samples={16}
-          thickness={1}
-          chromaticAberration={0.06}
-          anisotropy={0.1}
-          distortion={0.5}
-          distortionScale={0.3}
-          temporalDistortion={0.5}
-          clearcoat={1}
-          attenuationDistance={0.5}
-          attenuationColor="#ffffff"
-          color="#ffffff"
-          transparent
-          opacity={0.6}
-        />
-      </mesh>
-
-      <Sparkles count={50} scale={10} size={1} speed={0.5} opacity={0.3} color="white" />
-    </group>
-  );
-}
 
 const HeroSection = () => {
   return (
     <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
-      {/* 3D Scene */}
+      {/* Animated Background Elements */}
       <div className="absolute inset-0 z-0">
-        <Canvas shadows gl={{ antialias: true, alpha: true }}>
-          <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={45} />
-          <ambientLight intensity={0.2} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} castShadow />
-          <pointLight position={[-10, -10, -10]} intensity={1} />
-          
-          <Suspense fallback={null}>
-            <TechCore />
-            <Environment preset="night" />
-            <ContactShadows position={[0, -5, 0]} opacity={0.4} scale={20} blur={2.5} far={4} />
-          </Suspense>
-          
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        </Canvas>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Content */}
