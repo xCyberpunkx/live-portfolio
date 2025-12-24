@@ -140,58 +140,6 @@ export default function FormulaOnePage() {
           </div>
         </section>
 
-        {/* CARS SHOWCASE */}
-        <section className="py-48 bg-neutral-950">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col mb-32">
-              <span className="text-red-600 font-technical text-[10px] tracking-[1em] uppercase mb-4">THE_ENGINEERING_PINNACLE</span>
-              <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter">THE_MACHINES</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
-              {cars.map((car, i) => (
-                <motion.div 
-                  key={car.name}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  className="bg-black p-8 md:p-16 group cursor-crosshair"
-                >
-                  <div className="relative aspect-square md:aspect-video mb-12 overflow-hidden bg-neutral-900 border border-white/5">
-                    <Image 
-                      src={car.image}
-                      alt={car.name}
-                      fill
-                      className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-[1.5s]"
-                    />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-700" />
-                    <img src={car.logo} className="absolute top-8 right-8 w-16 opacity-30 invert grayscale" alt="" />
-                  </div>
-
-                  <div className="flex justify-between items-end mb-12">
-                    <div>
-                      <span className="text-red-600 font-technical text-[10px] tracking-[0.4em] uppercase block mb-2">{car.team}</span>
-                      <h3 className="text-5xl font-black italic uppercase tracking-tighter">{car.name}</h3>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-white/20 font-technical text-[8px] tracking-[0.4em] uppercase block mb-2">POWER_UNIT</span>
-                      <span className="text-xl font-black uppercase">{car.engine}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    {car.tech.map(t => (
-                      <div key={t} className="flex items-center gap-4 py-3 border-b border-white/5 last:border-0">
-                        <Zap size={12} className="text-red-600" />
-                        <span className="text-[10px] font-technical text-white/40 uppercase tracking-[0.2em]">{t}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* CIRCUITS MARQUEE */}
         <section className="py-48 overflow-hidden border-y border-white/5">
           <div className="container mx-auto px-6 mb-24">
@@ -200,25 +148,22 @@ export default function FormulaOnePage() {
           
           <div className="flex gap-8 px-6 animate-scroll whitespace-nowrap">
             {[...circuits, ...circuits].map((track, i) => (
-              <div key={i} className="relative w-[400px] h-[500px] flex-shrink-0 group overflow-hidden border border-white/5">
-                <Image 
-                  src={track.image}
-                  alt={track.name}
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-colors" />
-                <div className="absolute bottom-8 left-8 right-8">
+              <div key={i} className="relative w-[400px] h-[300px] flex-shrink-0 group overflow-hidden border border-white/10 bg-neutral-900/50 p-8 flex flex-col justify-end">
+                <div className="relative z-10">
                   <span className="text-red-600 font-technical text-[8px] tracking-[0.4em] uppercase block mb-2">{track.type}</span>
                   <h3 className="text-3xl font-black italic uppercase tracking-tighter">{track.name}</h3>
-                  <div className="mt-4 pt-4 border-t border-white/20 flex gap-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="mt-4 pt-4 border-t border-white/10 flex gap-6">
                     <div className="flex flex-col">
-                      <span className="text-[7px] font-technical text-white/40">TURNS</span>
+                      <span className="text-[7px] font-technical text-white/40 uppercase">TURNS</span>
                       <span className="text-sm font-black italic">{track.turns}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[7px] font-technical text-white/40">LENGTH</span>
+                      <span className="text-[7px] font-technical text-white/40 uppercase">LENGTH</span>
                       <span className="text-sm font-black italic">{track.length}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[7px] font-technical text-white/40 uppercase">LOCATION</span>
+                      <span className="text-sm font-black italic">{track.location}</span>
                     </div>
                   </div>
                 </div>
