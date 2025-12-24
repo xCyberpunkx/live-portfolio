@@ -62,13 +62,13 @@ const HeroSection = () => {
         transition={{ duration: 2, ease: "easeOut" }}
         className="absolute inset-0 z-0"
       >
-        <Image 
-          src="https://images.unsplash.com/photo-1547432420-96696d04944d?q=80&w=2072&auto=format&fit=crop"
-          alt="Engineering Background"
-          fill
-          className="object-cover grayscale brightness-50"
-          priority
-        />
+          <Image 
+            src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop"
+            alt="Engineering Background"
+            fill
+            className="object-cover grayscale brightness-50"
+            priority
+          />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80" />
       </motion.div>
 
