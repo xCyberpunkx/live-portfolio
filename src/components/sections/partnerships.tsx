@@ -1,8 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { MeshDistortMaterial, PerspectiveCamera, Float, MeshWobbleMaterial } from '@react-three/drei';
+import * as THREE from 'three';
 
 const techStack = [
   { name: 'Next.js', logo: 'https://cdn.worldvectorlogo.com/logos/next-js.svg' },
@@ -17,22 +20,50 @@ const techStack = [
   { name: 'Cisco', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg' },
 ];
 
+function FloatingDna() {
+  const mesh = useRef<THREE.Mesh>(null);
+  useFrame((state) => {
+    if (mesh.current) {
+      mesh.current.rotation.z = state.clock.getElapsedTime() * 0.1;
+    }
+  });
+
+  return (
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+      <mesh ref={mesh}>
+        <torusKnotGeometry args={[3, 0.4, 128, 32]} />
+        <MeshWobbleMaterial color="#ffffff" factor={0.6} speed={2} wireframe opacity={0.1} transparent />
+      </mesh>
+    </Float>
+  );
+}
+
 export default function Partnerships() {
   return (
-    <section className="bg-black py-24 md:py-64 overflow-hidden border-t border-white/5">
-      <div className="container mx-auto">
+    <section className="bg-black py-24 md:py-64 overflow-hidden border-t border-white/5 relative">
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+        <Canvas>
+          <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+          <ambientLight intensity={0.5} />
+          <Suspense fallback={null}>
+            <FloatingDna />
+          </Suspense>
+        </Canvas>
+      </div>
+
+      <div className="container mx-auto relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="flex flex-col mb-32 items-center text-center"
         >
-          <span className="font-technical text-[10px] tracking-[0.8em] text-white/20 uppercase mb-8 block">Integrated Stack</span>
+          <span className="font-technical text-[10px] tracking-[1em] text-white/20 uppercase mb-8 block">TECHNICAL GENOME</span>
           <h2 className="text-[12vw] md:text-[10vw] leading-[0.8] font-black uppercase text-white mb-12 tracking-tighter">
-            Digital<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>Arsenal</span>
+            ARCHITECTURAL<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>MASTERY</span>
           </h2>
-          <p className="text-white/40 font-technical text-sm uppercase tracking-widest max-w-xl">
-            A meticulously curated selection of technologies for building high-availability systems and resilient network architectures.
+          <p className="text-white/40 font-technical text-sm uppercase tracking-[0.3em] max-w-xl">
+            A battle-tested foundation for high-availability systems and mission-critical network architectures.
           </p>
         </motion.div>
 
@@ -44,7 +75,7 @@ export default function Partnerships() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="group relative flex flex-col items-center justify-center p-16 bg-black hover:bg-white transition-all duration-700 cursor-none"
+              className="group relative flex flex-col items-center justify-center p-16 bg-black hover:bg-white transition-all duration-700"
             >
               <div className="relative w-12 h-12 mb-8 brightness-0 invert group-hover:invert-0 transition-all duration-700 group-hover:scale-110">
                 <Image
@@ -57,10 +88,6 @@ export default function Partnerships() {
               <span className="text-[9px] font-technical text-white/20 group-hover:text-black transition-colors uppercase tracking-[0.3em]">
                 {tech.name}
               </span>
-              
-              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="w-1 h-1 bg-black rounded-full" />
-              </div>
             </motion.div>
           ))}
         </div>
