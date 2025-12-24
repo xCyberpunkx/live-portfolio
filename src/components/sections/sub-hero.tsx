@@ -14,7 +14,7 @@ export default function SubHeroSection() {
     const x2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
-    <section id="about" ref={container} className="bg-black py-24 md:py-48 overflow-hidden">
+    <section ref={container} className="bg-black py-24 md:py-48 overflow-hidden">
       <div className="container mx-auto relative">
         <div className="flex flex-col gap-8 mb-32">
           <motion.div style={{ x: x1 }} className="flex whitespace-nowrap">
