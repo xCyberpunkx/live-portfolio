@@ -25,7 +25,7 @@ const cars = [
     engine: "Honda RBPTH002",
     tech: ["Triple-element rear wing", "Pull-rod front suspension", "Ground effect floor V3"],
     image: "https://images.unsplash.com/photo-1629813296155-703274976793?q=80&w=2070&auto=format&fit=crop",
-    logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png"
+    logo: "https://upload.wikimedia.org/wikipedia/en/9/94/Red_Bull_Racing_Logo.svg"
   }
 ];
 
