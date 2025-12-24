@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (
@@ -10,26 +11,35 @@ const Footer = () => {
 
       <div className="container relative z-10 flex flex-col items-center">
         
-        <div className="w-full flex justify-between items-start mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="w-full flex justify-between items-start mb-12"
+        >
           <div className="flex gap-4">
-            <a 
+            <motion.a 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               href="https://github.com/xCyberpunkx" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-[#D9FF00] p-3 rounded-xl hover:scale-105 transition-transform"
+              className="bg-[#D9FF00] p-3 rounded-xl hover:scale-105 transition-transform shadow-lg shadow-black/20"
             >
               <Github className="w-6 h-6 text-black" />
-            </a>
-            <a 
+            </motion.a>
+            <motion.a 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               href="https://linkedin.com/in/zine-eddine-rouabah-992b16265" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-[#D9FF00] p-3 rounded-xl hover:scale-105 transition-transform"
+              className="bg-[#D9FF00] p-3 rounded-xl hover:scale-105 transition-transform shadow-lg shadow-black/20"
             >
               <Linkedin className="w-6 h-6 text-black" />
-            </a>
+            </motion.a>
           </div>
-        </div>
+        </motion.div>
 
         <div className="relative w-full max-w-4xl flex flex-col items-center justify-center">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -rotate-90 origin-left hidden lg:block">
@@ -39,28 +49,38 @@ const Footer = () => {
             <span className="text-[10px] uppercase tracking-[0.3em] font-technical text-[#4A4D43]">Connect</span>
           </div>
 
-          <div className="relative w-full aspect-[4/3] max-h-[500px] flex items-center justify-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative w-full aspect-[4/3] max-h-[500px] flex items-center justify-center"
+          >
              <div className="text-center">
                 <h2 className="text-[15vw] font-black text-[#D9FF00] leading-none tracking-tighter opacity-10 uppercase">ZR</h2>
                 <div className="text-off-white font-technical text-sm tracking-widest mt-4">SOFTWARE ENGINEER & NETWORK ASSOCIATE</div>
              </div>
-          </div>
+          </motion.div>
 
-          <div className="mt-8 mb-24 z-20">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-8 mb-24 z-20"
+          >
             <a 
               href="mailto:rouabah.zineedinee@gmail.com"
-              className="bg-[#D9FF00] hover:bg-[#c6e900] text-black font-technical font-bold text-[13px] py-3.5 px-8 rounded-full flex items-center gap-3 transition-all transform hover:-translate-y-1"
+              className="bg-[#D9FF00] hover:bg-[#c6e900] text-black font-technical font-bold text-[13px] py-3.5 px-8 rounded-full flex items-center gap-3 transition-all transform hover:-translate-y-1 shadow-2xl shadow-neon-lime/20"
             >
               GET IN TOUCH
               <ArrowUpRight className="w-4 h-4" />
             </a>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-60 mb-12">
+        <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-40 mb-12">
           {['Next.js', 'TypeScript', 'PHP', 'CCNA', 'Linux', 'React'].map((brand, idx) => (
             <div key={idx} className="h-6 w-full relative flex items-center justify-center">
-              <span className="text-white font-technical text-[10px] tracking-widest uppercase">{brand}</span>
+              <span className="text-white font-technical text-[10px] tracking-widest uppercase hover:text-neon-lime transition-colors cursor-default">{brand}</span>
             </div>
           ))}
         </div>
@@ -68,12 +88,12 @@ const Footer = () => {
 
       <div className="relative z-20 w-full">
         <div className="mx-4 mb-4">
-          <div className="bg-[#D9FF00] h-[60px] rounded-2xl flex items-center justify-between px-6 md:px-10 overflow-hidden">
+          <div className="bg-[#D9FF00] h-[60px] rounded-2xl flex items-center justify-between px-6 md:px-10 overflow-hidden shadow-2xl">
             <div className="text-black text-[11px] font-technical tracking-wider">
               © 2025 Zine Eddine Rouabah. All rights reserved
             </div>
             <div className="flex gap-6 md:gap-10">
-              <span className="text-black text-[11px] font-technical font-bold uppercase tracking-wider">Meticulously crafted with Next.js</span>
+              <span className="text-black text-[11px] font-technical font-bold uppercase tracking-wider hidden md:block">Meticulously crafted with Next.js</span>
             </div>
           </div>
         </div>

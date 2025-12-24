@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 /**
  * ImpactMarquee Component
@@ -11,16 +12,21 @@ const ImpactMarquee: React.FC = () => {
     "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop"
   ];
 
   return (
     <section className="bg-[#282C20] pt-[120px] pb-0 overflow-hidden select-none">
-      {/* Top Content: Logo and Eyebrow */}
       <div className="container mx-auto px-[4vw]">
-        <div className="flex flex-col items-start gap-4 mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-start gap-4 mb-20"
+        >
           <div className="text-4xl font-black text-off-white tracking-tighter">
-            ZR
+            ZR<span className="text-neon-lime">.0x</span>
           </div>
           
           <div className="flex flex-col">
@@ -34,54 +40,50 @@ const ImpactMarquee: React.FC = () => {
               <div className="h-[1px] w-8 bg-[#D9FF00] align-middle" />
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Impact Statement */}
-        <div className="max-w-[1200px] mb-24">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-[1200px] mb-24"
+        >
           <h2 className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.9] text-[#F4F4F1] uppercase font-black tracking-tighter">
-            <span className="inline-block relative">
+            <span className="inline-block relative group cursor-default">
               Building
               <span className="absolute -bottom-1 left-0 w-full h-[0.05em] bg-[#D9FF00] transform scale-x-0 transition-transform duration-500 origin-left group-hover:scale-x-100"></span>
-            </span> scalable systems and <span className="text-[#D9FF00]">resilient</span> networks that power the digital world. Defining a <span className="italic">legacy</span> through engineering precision.
+            </span> scalable systems and <span className="text-[#D9FF00] italic">resilient</span> networks that power the digital world. Defining a <span className="italic underline decoration-neon-lime decoration-2 underline-offset-8">legacy</span> through engineering precision.
           </h2>
-        </div>
+        </motion.div>
       </div>
 
       {/* Horizontal Image Marquee */}
-      <div className="relative w-full overflow-hidden py-10">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.5 }}
+        className="relative w-full overflow-hidden py-10"
+      >
         <div className="flex gap-4 animate-marquee whitespace-nowrap">
-          {/* First set of images */}
-          {marqueeImages.map((src, idx) => (
+          {[...marqueeImages, ...marqueeImages].map((src, idx) => (
             <div 
-              key={`marquee-1-${idx}`} 
-              className="relative flex-none w-[45vw] md:w-[30vw] aspect-[16/10] overflow-hidden rounded-[12px]"
+              key={idx} 
+              className="relative flex-none w-[45vw] md:w-[30vw] aspect-[16/10] overflow-hidden rounded-[12px] group"
             >
               <Image 
                 src={src} 
                 alt={`Portfolio visual ${idx + 1}`}
                 fill
                 sizes="(max-width: 768px) 45vw, 30vw"
-                className="object-cover transition-transform duration-700 hover:scale-105"
+                className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
               />
-            </div>
-          ))}
-          {/* Duplicate set for seamless loop */}
-          {marqueeImages.map((src, idx) => (
-            <div 
-              key={`marquee-2-${idx}`} 
-              className="relative flex-none w-[45vw] md:w-[30vw] aspect-[16/10] overflow-hidden rounded-[12px]"
-            >
-              <Image 
-                src={src} 
-                alt={`Portfolio visual ${idx + 1}`}
-                fill
-                sizes="(max-width: 768px) 45vw, 30vw"
-                className="object-cover transition-transform duration-700 hover:scale-105"
-              />
+              <div className="absolute inset-0 bg-neon-lime/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       <style jsx global>{`
         @keyframes marquee {
