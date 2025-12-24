@@ -19,55 +19,41 @@ const techStack = [
 
 export default function Partnerships() {
   return (
-    <section className="bg-deep-midnight py-24 md:py-48 overflow-hidden border-t border-white/5">
+    <section className="bg-black py-24 md:py-48 overflow-hidden border-t border-white/10">
       <div className="container mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="flex flex-col items-center text-center mb-24"
+          className="flex flex-col mb-24"
         >
-          <div className="inline-flex items-center gap-4 mb-8">
-            <div className="w-12 h-[1px] bg-neon-cyan/50"></div>
-            <span className="font-technical text-[10px] tracking-[0.2em] uppercase text-neon-cyan">
-              Technical Arsenal
-            </span>
-            <div className="w-12 h-[1px] bg-neon-cyan/50"></div>
-          </div>
-          <h2 className="text-[clamp(3rem,8vw,6rem)] leading-[0.85] font-black uppercase text-white mb-8">
-            Core<br /><span className="text-neon-cyan">Technologies</span>
+          <span className="font-technical text-[10px] tracking-[0.4em] text-white/20 uppercase mb-4 block">Stack</span>
+          <h2 className="text-[8vw] leading-[0.85] font-black uppercase text-white mb-8 tracking-tighter">
+            Technical<br /><span className="text-white/20">Arsenal</span>
           </h2>
-          <p className="max-w-2xl text-muted-foreground text-lg leading-relaxed">
-            A diverse toolkit specialized in building scalable full-stack applications, automated systems, and high-performance network infrastructures.
-          </p>
         </motion.div>
 
-        {/* Logo Cloud */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-white/10 border border-white/10">
           {techStack.map((tech, index) => (
             <motion.div 
               key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              whileHover={{ y: -5, scale: 1.05 }}
-              className="group relative flex flex-col items-center justify-center p-8 rounded-2xl bg-white/5 border border-white/5 hover:border-neon-cyan/30 transition-all cursor-default"
+              className="group relative flex flex-col items-center justify-center p-12 bg-black hover:bg-white transition-all duration-500 cursor-default"
             >
-              <div className="relative w-12 h-12 mb-4">
+              <div className="relative w-10 h-10 mb-6 brightness-0 invert group-hover:invert-0 transition-all duration-500">
                 <Image
                   src={tech.logo}
                   alt={tech.name}
                   fill
-                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-500 brightness-200 group-hover:brightness-100"
+                  className="object-contain"
                 />
               </div>
-              <span className="text-[10px] font-technical text-white/40 group-hover:text-neon-cyan transition-colors">
+              <span className="text-[8px] font-technical text-white/20 group-hover:text-black transition-colors uppercase tracking-widest">
                 {tech.name}
               </span>
-              
-              {/* Corner Accent */}
-              <div className="absolute top-2 right-2 w-1 h-1 rounded-full bg-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
             </motion.div>
           ))}
         </div>
