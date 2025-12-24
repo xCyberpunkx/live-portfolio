@@ -78,7 +78,7 @@ export default function FormulaOnePage() {
             className="absolute inset-0 z-0"
           >
             <Image 
-              src="https://images.unsplash.com/photo-1547432420-96696d04944d?q=80&w=2072&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=2070&auto=format&fit=crop"
               alt="F1 Engineering"
               fill
               className="object-cover grayscale brightness-50"
