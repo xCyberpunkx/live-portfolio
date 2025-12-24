@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ProjectData {
   id: string;
@@ -59,12 +60,16 @@ const ProjectCard = ({ project, index }: { project: ProjectData; index: number }
   };
 
   return (
-    <div 
+    <motion.div 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
       className={`relative group ${getAlignmentClass()} transition-transform duration-500`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative aspect-square w-full max-w-[340px] bg-[#0A0A0A] rounded-2xl overflow-hidden border border-[#4A4D43]/20 flex items-center justify-center p-8 transition-all duration-500 hover:border-[#D9FF00]/50">
+      <div className="relative aspect-square w-full max-w-[340px] bg-[#0A0A0A] rounded-2xl overflow-hidden border border-[#4A4D43]/20 flex items-center justify-center p-8 transition-all duration-500 hover:border-[#D9FF00]/50 shadow-2xl shadow-black">
         <div className="absolute inset-0 pointer-events-none border-[1px] border-[#4A4D43]/10 m-2 rounded-xl" />
         
         <div className="relative w-full h-full">
@@ -72,18 +77,18 @@ const ProjectCard = ({ project, index }: { project: ProjectData; index: number }
             src={project.baseImg}
             alt={`${project.name} base`}
             fill
-            className={`object-cover transition-opacity duration-500 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+            className={`object-cover transition-all duration-700 ${isHovered ? 'opacity-0 scale-110' : 'opacity-100 scale-100'}`}
             priority={index < 4}
           />
           <Image
             src={project.hoverImg}
             alt={`${project.name} detail`}
             fill
-            className={`object-cover transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+            className={`object-cover transition-all duration-700 ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
           />
         </div>
 
-        <div className="absolute bottom-4 right-6 text-right">
+        <div className="absolute bottom-4 right-6 text-right z-10">
           <div className="flex flex-col items-end">
             <span className="text-[10px] font-technical text-[#F4F4F1] opacity-60 uppercase tracking-widest">
               {project.category}
@@ -99,7 +104,7 @@ const ProjectCard = ({ project, index }: { project: ProjectData; index: number }
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -110,7 +115,12 @@ export default function HelmetGallery() {
 
       <div className="container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32">
-          <div className="relative rounded-2xl overflow-hidden aspect-[4/5] lg:aspect-square border border-muted-gray/20">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative rounded-2xl overflow-hidden aspect-[4/5] lg:aspect-square border border-muted-gray/20 shadow-2xl"
+          >
             <Image
               src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
               alt="Project visualization"
@@ -118,21 +128,27 @@ export default function HelmetGallery() {
               className="object-cover"
               priority
             />
-          </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          </motion.div>
           
-          <div className="max-w-xl">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="max-w-xl"
+          >
             <div className="mb-8">
-              <h2 className="text-[12px] font-technical tracking-[0.2em] text-[#D9FF00] mb-4">
+              <h2 className="text-[12px] font-technical tracking-[0.2em] text-[#D9FF00] mb-4 uppercase">
                 02 — Selected Works
               </h2>
-              <h3 className="text-6xl md:text-8xl font-black text-[#F4F4F1] leading-[0.85] mb-8">
+              <h3 className="text-6xl md:text-8xl font-black text-[#F4F4F1] leading-[0.85] mb-8 uppercase">
                 Featured <br />Projects
               </h3>
               <p className="text-[#A1A1AA] text-lg leading-relaxed max-w-md font-sans">
                 Production systems and innovative solutions demonstrating technical excellence in Energy, Marketplace, and Healthcare sectors.
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-0">
@@ -141,7 +157,12 @@ export default function HelmetGallery() {
           ))}
         </div>
 
-        <div className="mt-40 flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-40 flex justify-center"
+        >
           <a
             href="https://github.com/xCyberpunkx"
             target="_blank"
@@ -153,7 +174,7 @@ export default function HelmetGallery() {
               <ArrowUpRight size={18} strokeWidth={3} />
             </div>
           </a>
-        </div>
+        </motion.div>
       </div>
 
       <div className="absolute bottom-[-10%] left-0 w-full select-none pointer-events-none overflow-hidden whitespace-nowrap opacity-[0.03]">
