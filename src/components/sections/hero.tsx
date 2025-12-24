@@ -1,9 +1,9 @@
 "use client";
 
 import React, { Suspense, useRef, useState, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Text, Float, MeshDistortMaterial, PerspectiveCamera, ContactShadows, Stars, Sparkles, Float as FloatDrei } from '@react-three/drei';
-import { motion as motion2d, useScroll, useTransform } from 'framer-motion';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { MeshDistortMaterial, PerspectiveCamera, ContactShadows, Sparkles, Float as FloatDrei } from '@react-three/drei';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 
 function ParticleField() {
@@ -85,7 +85,6 @@ export default function HeroSection() {
 
   return (
     <section className="relative w-full h-screen bg-black overflow-hidden flex flex-col justify-center items-center">
-      {/* 3D Background Layer */}
       <div className="absolute inset-0 z-0">
         {mounted && (
           <Canvas dpr={[1, 2]}>
@@ -104,42 +103,40 @@ export default function HeroSection() {
         )}
       </div>
 
-      {/* Cinematic Overlays */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_90%)]" />
       </div>
 
-      {/* Content Layer */}
-      <motion2d.div 
+      <motion.div 
         style={{ y: y1, opacity }}
         className="container relative z-10 h-full flex flex-col justify-center items-center pointer-events-none"
       >
         <div className="w-full flex flex-col items-center text-center">
           <div className="overflow-hidden mb-4">
-            <motion2d.span
+            <motion.span
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="text-[10px] font-technical text-white/40 tracking-[0.8em] uppercase block"
             >
               System Architect & Network Engineer
-            </motion2d.span>
+            </motion.span>
           </div>
 
           <h1 className="text-[14vw] md:text-[10vw] font-black text-white leading-[0.8] tracking-tighter uppercase mb-12">
             <div className="overflow-hidden">
-              <motion2d.span 
+              <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="block"
               >
                 ROUABAH
-              </motion2d.span>
+              </motion.span>
             </div>
             <div className="overflow-hidden">
-              <motion2d.span 
+              <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -147,12 +144,12 @@ export default function HeroSection() {
                 style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}
               >
                 ZINE EDDINE
-              </motion2d.span>
+              </motion.span>
             </div>
           </h1>
 
           <div className="flex flex-col md:flex-row gap-12 items-center pointer-events-auto">
-            <motion2d.a
+            <motion.a
               href="#projects"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -163,9 +160,9 @@ export default function HeroSection() {
                 <div className="w-2 h-2 bg-white group-hover:bg-black rounded-full" />
               </div>
               <span className="text-[10px] font-technical text-white uppercase tracking-[0.4em]">Explore Archive</span>
-            </motion2d.a>
+            </motion.a>
 
-            <motion2d.a
+            <motion.a
               href="/resume.pdf"
               target="_blank"
               initial={{ opacity: 0 }}
@@ -174,14 +171,13 @@ export default function HeroSection() {
               className="group border-b border-white/20 pb-2 hover:border-white transition-all"
             >
               <span className="text-[10px] font-technical text-white uppercase tracking-[0.4em]">Download CV (PDF)</span>
-            </motion2d.a>
+            </motion.a>
           </div>
         </div>
-      </motion2d.div>
+      </motion.div>
 
-      {/* Side HUD Elements */}
       <div className="absolute left-[5vw] bottom-12 hidden md:block overflow-hidden">
-        <motion2d.div
+        <motion.div
           initial={{ x: -100 }}
           animate={{ x: 0 }}
           transition={{ delay: 1.5, duration: 1 }}
@@ -189,11 +185,11 @@ export default function HeroSection() {
         >
           <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Core Stack</span>
           <span className="text-[10px] font-technical text-white uppercase tracking-widest">NEXTJS / CISCO / C++</span>
-        </motion2d.div>
+        </motion.div>
       </div>
 
       <div className="absolute right-[5vw] bottom-12 hidden md:block overflow-hidden">
-        <motion2d.div
+        <motion.div
           initial={{ x: 100 }}
           animate={{ x: 0 }}
           transition={{ delay: 1.5, duration: 1 }}
@@ -201,7 +197,7 @@ export default function HeroSection() {
         >
           <span className="text-[8px] font-technical text-white/20 uppercase tracking-widest">Project Version</span>
           <span className="text-[10px] font-technical text-white uppercase tracking-widest">2025 // EDITION 1.0</span>
-        </motion2d.div>
+        </motion.div>
       </div>
     </section>
   );
