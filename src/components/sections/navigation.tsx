@@ -24,12 +24,13 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menuLinks = [
-    { name: "Works", href: "#projects" },
-    { name: "Journey", href: "#experience" },
-    { name: "Identity", href: "#about" },
-    { name: "Inquire", href: "#contact" },
-  ];
+    const menuLinks = [
+      { name: "Works", href: "#projects" },
+      { name: "Journey", href: "#experience" },
+      { name: "Identity", href: "#about" },
+      { name: "Formula 1", href: "#f1" },
+      { name: "Inquire", href: "#contact" },
+    ];
 
   return (
     <>
