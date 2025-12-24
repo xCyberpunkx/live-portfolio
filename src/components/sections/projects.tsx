@@ -2,105 +2,90 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { X, Globe, ArrowUpRight } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
 
 const projects = [
   {
-    id: "snovatech",
-    title: "SnovaTech Solar",
-    year: "2025",
-    category: "Energy Tech",
-    description: "Lead Engineer for Algeria's premier solar simulation engine.",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop",
-    tech: ["Next.js", "D3.js", "API Integration"],
+    title: "Quantum Solar Engine",
+    category: "C++ / .NET / React",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    link: "#",
+    github: "#",
+    desc: "Real-time solar irradiance simulation engine built with C++ for high-performance raytracing calculations."
   },
   {
-    id: "healthcare",
-    title: "DentalCore System",
-    year: "2024",
-    category: "HealthTech",
-    description: "Full-scale patient management system digitizing clinical workflows.",
-    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
-    tech: ["PHP", "Laravel", "PostgreSQL"],
+    title: "Patient Nexus",
+    category: "C# / .NET / SQL",
+    image: "https://images.unsplash.com/photo-1576091160550-2173bdb999ef?q=80&w=2070&auto=format&fit=crop",
+    link: "#",
+    github: "#",
+    desc: "Enterprise-grade healthcare management system utilizing .NET core for secure, low-latency data processing."
   },
   {
-    id: "lensmarket",
-    title: "LensMarket",
-    year: "2024",
-    category: "Marketplace",
-    description: "Algeria's first verified photographer & client reservation platform.",
-    image: "https://images.unsplash.com/photo-1452784444945-3f422708fe5e?q=80&w=2072&auto=format&fit=crop",
-    tech: ["React", "Express.js", "System Architecture"],
+    title: "Neuro Dynamic UI",
+    category: "TypeScript / Next.js",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop",
+    link: "#",
+    github: "#",
+    desc: "Experimental UI framework focusing on motion-first interactions and complex technical visualizations."
   }
 ];
 
-const ProjectCard = ({ project, index }: { project: any, index: number }) => {
-  const container = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ["start end", "end start"]
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-
-  return (
-    <div ref={container} className="h-screen sticky top-0 bg-black flex items-center justify-center overflow-hidden border-t border-white/5">
-      <motion.div 
-        style={{ scale }}
-        className="container grid lg:grid-cols-2 gap-24 items-center"
-      >
-        <div className="relative aspect-video group overflow-hidden bg-white/5 rounded-2xl">
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-          />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-        </div>
-
-        <div className="space-y-12">
-          <div className="space-y-4">
-            <span className="text-[10px] font-technical text-white/40 uppercase tracking-[0.5em]">{project.year} // {project.category}</span>
-            <h3 className="text-[8vw] lg:text-[5vw] font-black text-white uppercase tracking-tighter leading-none">{project.title}</h3>
-          </div>
-          
-          <p className="text-white/40 text-xl font-technical uppercase tracking-widest leading-relaxed">
-            {project.description}
-          </p>
-
-          <div className="flex gap-4">
-            {project.tech.map((t: string) => (
-              <span key={t} className="text-[8px] font-technical border border-white/10 px-4 py-2 rounded-full text-white/60">
-                {t}
-              </span>
-            ))}
-          </div>
-
-          <button className="group flex items-center gap-6 text-white hover:text-white/60 transition-colors">
-            <span className="text-[10px] font-technical uppercase tracking-[0.5em]">View Project</span>
-            <ArrowUpRight size={20} className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
-          </button>
-        </div>
-      </motion.div>
-    </div>
-  );
-};
-
 export default function MyProjects() {
   return (
-    <section id="projects" className="bg-black relative">
-      <div className="h-[40vh] flex flex-col items-center justify-center bg-black">
-        <span className="text-[10px] font-technical text-white/20 uppercase tracking-[1em] mb-4 block">Case Studies</span>
-        <h2 className="text-[10vw] font-black text-white uppercase tracking-tighter">Archive</h2>
-      </div>
-      
-      <div className="relative">
-        {projects.map((project, idx) => (
-          <ProjectCard key={project.id} project={project} index={idx} />
-        ))}
+    <section id="projects" className="bg-black py-24 md:py-64 border-t border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col mb-32">
+          <span className="text-[10px] font-technical text-white/20 tracking-[1em] uppercase block mb-8">PROJECT ARCHIVE</span>
+          <h2 className="text-[12vw] md:text-[10vw] font-black text-white leading-[0.8] uppercase tracking-tighter">
+            SELECTED<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>MISSIONS</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {projects.map((project, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden border border-white/5 bg-white/5">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:scale-110 group-hover:grayscale-0 transition-all duration-700 ease-expo"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+                
+                <div className="absolute bottom-0 left-0 right-0 p-8 space-y-4">
+                  <div className="flex justify-between items-start">
+                    <span className="text-[10px] font-technical text-white/40 uppercase tracking-widest">{project.category}</span>
+                    <div className="flex gap-4">
+                      <a href={project.github} className="text-white/40 hover:text-white transition-colors">
+                        <Github size={18} />
+                      </a>
+                      <a href={project.link} className="text-white/40 hover:text-white transition-colors">
+                        <ExternalLink size={18} />
+                      </a>
+                    </div>
+                  </div>
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm font-technical text-white/40 uppercase tracking-wider line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    {project.desc}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
