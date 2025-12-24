@@ -15,14 +15,14 @@ interface ProjectData {
 }
 
 const projectGallery: ProjectData[] = [
-  {
-    id: "snovatech",
-    name: "SnovaTech",
-    year: "2024",
-    category: "Solar Simulation",
-    baseImg: "https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?q=80&w=2070&auto=format&fit=crop",
-    hoverImg: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop",
-  },
+    {
+      id: "snovatech",
+      name: "SnovaTech",
+      year: "2024",
+      category: "Solar Simulation",
+      baseImg: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop",
+      hoverImg: "https://images.unsplash.com/photo-1466611653911-954ff21caafc?q=80&w=2070&auto=format&fit=crop",
+    },
   {
     id: "photographer",
     name: "Photographer",
