@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Github, Twitter, Linkedin, Instagram, Send, Loader2 } from "lucide-react";
+import { Github, Linkedin, Send, Loader2 } from "lucide-react";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/xCyberpunkx", label: "Github" },
@@ -61,8 +61,8 @@ export default function Footer() {
               <div className="space-y-6">
                 <div className="group cursor-pointer">
                   <p className="text-xs font-technical text-white/40 uppercase mb-2">Email</p>
-                  <a href="mailto:rouabah.zineedinee@gmail.com" className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
-                    rouabah.zineedinee@gmail.com
+                  <a href="mailto:peeplil6666@gmail.com" className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
+                    peeplil6666@gmail.com
                   </a>
                 </div>
               </div>
