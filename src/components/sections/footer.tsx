@@ -1,17 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-"use client";
-
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github, Twitter, Linkedin, Instagram, Mail, MapPin, Phone, Send, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { Github, Twitter, Linkedin, Instagram, Send, Loader2 } from "lucide-react";
 
 const socialLinks = [
-  { icon: Github, href: "#", label: "Github" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Github, href: "https://github.com/xCyberpunkx", label: "Github" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/zine-eddine-rouabah/", label: "LinkedIn" },
 ];
 
 export default function Footer() {
@@ -45,10 +40,9 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
+    <footer id="contact" className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          {/* Left Column - Contact Info */}
           <div className="space-y-12">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -67,24 +61,9 @@ export default function Footer() {
               <div className="space-y-6">
                 <div className="group cursor-pointer">
                   <p className="text-xs font-technical text-white/40 uppercase mb-2">Email</p>
-                  <a href="mailto:hello@synapse.tech" className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
-                    hello@synapse.tech
+                  <a href="mailto:rouabah.zineedinee@gmail.com" className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
+                    rouabah.zineedinee@gmail.com
                   </a>
-                </div>
-                <div className="group cursor-pointer">
-                  <p className="text-xs font-technical text-white/40 uppercase mb-2">Phone</p>
-                  <a href="tel:+1234567890" className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
-                    +1 (234) 567-890
-                  </a>
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div className="group cursor-pointer">
-                  <p className="text-xs font-technical text-white/40 uppercase mb-2">Location</p>
-                  <p className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
-                    San Francisco, CA<br />
-                    United States
-                  </p>
                 </div>
               </div>
             </div>
@@ -104,7 +83,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Right Column - Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -169,18 +147,15 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Bottom Footer */}
-        <div className="mt-32 pt-12 border-t border-white/5 flex flex-col md:row items-center justify-between gap-6">
-          <p className="text-sm text-white/30 font-technical">
-            © 2024 SYNAPSE. ALL RIGHTS RESERVED.
+        <div className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">
+            © 2025 ROUABAH ZINE EDDINE // ALL RIGHTS RESERVED
           </p>
           <div className="flex gap-8">
-            <a href="#" className="text-xs font-technical text-white/20 hover:text-white transition-colors uppercase tracking-widest">Privacy Policy</a>
-            <a href="#" className="text-xs font-technical text-white/20 hover:text-white transition-colors uppercase tracking-widest">Terms of Service</a>
+            <p className="text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">BUILT FOR PERFORMANCE // NODE_DZ</p>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-
