@@ -99,13 +99,13 @@ export default function FormulaOnePage() {
               animate={{ y: [0, 30, 0] }} 
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
               src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" 
-              className="absolute top-[15%] right-[15%] w-24 drop-shadow-lg" 
+              className="absolute top-[15%] right-[15%] w-16 drop-shadow-lg" 
             />
             <motion.img 
               animate={{ y: [0, -20, 0] }} 
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
               src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" 
-              className="absolute bottom-[20%] left-[15%] w-32 drop-shadow-lg" 
+              className="absolute bottom-[20%] left-[15%] w-20 drop-shadow-lg" 
             />
           </div>
 
