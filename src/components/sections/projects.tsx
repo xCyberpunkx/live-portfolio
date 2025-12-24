@@ -71,10 +71,10 @@ export default function MyProjects() {
                     <span className="text-[8px] md:text-[10px] font-technical text-white/40 uppercase tracking-widest">{project.category}</span>
                     <div className="flex gap-4">
                       <a href={project.github} className="text-white/40 hover:text-white transition-colors">
-                        <Github size={16} md:size={18} />
+                        <Github size={18} />
                       </a>
                       <a href={project.link} className="text-white/40 hover:text-white transition-colors">
-                        <ExternalLink size={16} md:size={18} />
+                        <ExternalLink size={18} />
                       </a>
                     </div>
                   </div>
