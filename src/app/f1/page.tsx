@@ -92,7 +92,7 @@ export default function FormulaOnePage() {
             <motion.img 
               animate={{ y: [0, -30, 0] }} 
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Pirelli_logo.svg" 
+              src="https://upload.wikimedia.org/wikipedia/commons/0/04/Pirelli_logo.svg" 
               className="absolute top-[20%] left-[10%] w-32 drop-shadow-lg" 
             />
             <motion.img 
