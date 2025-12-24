@@ -2,7 +2,7 @@
 
 import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Text, Float, MeshDistortMaterial, PerspectiveCamera, Environment, ContactShadows } from '@react-three/drei';
+import { Text, Float, MeshDistortMaterial, PerspectiveCamera, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion-3d';
 import { motion as motion2d, AnimatePresence } from 'framer-motion';
 import * as THREE from 'three';
@@ -73,14 +73,14 @@ export default function HeroSection() {
           <Canvas dpr={[1, 2]}>
             <PerspectiveCamera makeDefault position={[0, 0, 8]} fov={50} />
             <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
+            <pointLight position={[-10, -10, -10]} intensity={1} />
+            <pointLight position={[0, 5, 5]} intensity={0.5} color="white" />
             <Suspense fallback={null}>
               <FloatingText />
               <Sphere />
               <Rig />
               <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
-              <Environment preset="city" />
             </Suspense>
           </Canvas>
         )}
