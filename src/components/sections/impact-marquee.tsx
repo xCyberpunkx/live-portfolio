@@ -1,48 +1,33 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
-const ImpactMarquee: React.FC = () => {
+export default function ImpactMarquee() {
   return (
-    <section className="bg-black pt-32 pb-0 overflow-hidden select-none border-t border-white/10">
-      <div className="container mx-auto">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="max-w-5xl mb-32"
+    <section className="bg-white py-12 md:py-24 overflow-hidden rotate-[-2deg] scale-105 z-20 relative">
+      <div className="flex whitespace-nowrap overflow-hidden">
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="flex gap-12 items-center"
         >
-          <h2 className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.9] text-white uppercase font-black tracking-tighter">
-            Architecting <span className="text-white/20 italic">scalable</span> systems and resilient networks. Defining digital <span className="underline decoration-white/20 underline-offset-8">excellence</span> through engineering precision.
-          </h2>
-        </motion.div>
-      </div>
-
-      <div className="relative w-full overflow-hidden border-y border-white/10 py-12">
-        <div className="flex gap-4 animate-marquee whitespace-nowrap">
-          {[...Array(10)].map((_, idx) => (
-            <div 
-              key={idx} 
-              className="text-[15vw] font-black text-white uppercase tracking-tighter opacity-5 px-8"
-            >
-              Rouabah Zine Eddine
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="flex gap-12 items-center">
+              <span className="text-[8vw] md:text-[5vw] font-black text-black uppercase tracking-tighter">
+                ROUABAH ZINE EDDINE
+              </span>
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 md:w-6 md:h-6 bg-white rounded-full" />
+              </div>
+              <span className="text-[8vw] md:text-[5vw] font-black text-transparent stroke-black" style={{ WebkitTextStroke: "2px #000" }}>
+                SYSTEM ARCHITECT
+              </span>
+              <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-black rounded-full" />
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
-
-      <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 30s linear infinite;
-        }
-      `}</style>
     </section>
   );
-};
-
-export default ImpactMarquee;
+}
