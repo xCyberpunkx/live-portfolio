@@ -5,88 +5,73 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const techStack = [
-  { name: 'Next.js', logo: 'https://cdn.worldvectorlogo.com/logos/next-js.svg', width: 60, height: 60 },
-  { name: 'React', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg', width: 60, height: 60 },
-  { name: 'TypeScript', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg', width: 60, height: 60 },
-  { name: 'C++', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg', width: 60, height: 60 },
-  { name: 'PHP', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg', width: 60, height: 60 },
-  { name: 'Cisco CCNA', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg', width: 60, height: 60 },
+  { name: 'Next.js', logo: 'https://cdn.worldvectorlogo.com/logos/next-js.svg' },
+  { name: 'React', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg' },
+  { name: 'TypeScript', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg' },
+  { name: 'Node.js', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg' },
+  { name: 'PostgreSQL', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_logo.svg' },
+  { name: 'Prisma', logo: 'https://cdn.worldvectorlogo.com/logos/prisma-2.svg' },
+  { name: 'Python', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg' },
+  { name: 'Docker', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg' },
+  { name: 'Tailwind', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg' },
+  { name: 'Cisco', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg' },
 ];
 
 export default function Partnerships() {
   return (
-    <section className="bg-[#282C20] py-[100px] md:py-[150px] overflow-hidden">
-      <div className="container mx-auto px-[4vw]">
+    <section className="bg-deep-midnight py-24 md:py-48 overflow-hidden border-t border-white/5">
+      <div className="container mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col mb-16 space-y-4"
+          className="flex flex-col items-center text-center mb-24"
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-[1px] bg-[#4A4D43]"></div>
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#4A4D43]">
-              Competencies
+          <div className="inline-flex items-center gap-4 mb-8">
+            <div className="w-12 h-[1px] bg-neon-cyan/50"></div>
+            <span className="font-technical text-[10px] tracking-[0.2em] uppercase text-neon-cyan">
+              Technical Arsenal
             </span>
+            <div className="w-12 h-[1px] bg-neon-cyan/50"></div>
           </div>
-          <div className="flex flex-col">
-            <h2 className="text-[clamp(3.5rem,10vw,7rem)] leading-[0.85] font-black uppercase m-0 p-0 text-[#F4F4F1]">
-              Core
-            </h2>
-            <h2 className="text-[clamp(3.5rem,10vw,7rem)] leading-[0.85] font-black uppercase m-0 p-0 text-[#F4F4F1] ml-[5vw] md:ml-[10vw]">
-              &Technologies
-            </h2>
-          </div>
-          <p className="max-w-[480px] mt-8 text-[#A1A1AA] font-sans text-lg leading-relaxed">
-            Specializing in building reliable, scalable applications with clean architecture, efficient algorithms, and secure network infrastructure.
+          <h2 className="text-[clamp(3rem,8vw,6rem)] leading-[0.85] font-black uppercase text-white mb-8">
+            Core<br /><span className="text-neon-cyan">Technologies</span>
+          </h2>
+          <p className="max-w-2xl text-muted-foreground text-lg leading-relaxed">
+            A diverse toolkit specialized in building scalable full-stack applications, automated systems, and high-performance network infrastructures.
           </p>
         </motion.div>
 
-        {/* Scrolling Logo Cloud */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="relative mt-20 flex overflow-hidden group"
-        >
-          <div className="flex animate-marquee whitespace-nowrap py-10 items-center">
-            {[...techStack, ...techStack].map((tech, index) => (
-              <motion.div 
-                key={index} 
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="flex items-center justify-center mx-12 md:mx-20 transition-opacity duration-300 hover:opacity-100 opacity-60 grayscale hover:grayscale-0"
-              >
-                <div 
-                  className="relative flex items-center justify-center bg-off-white/10 p-4 rounded-xl border border-white/5 group-hover:border-neon-lime/20 transition-colors"
-                  style={{ width: 100, height: 100 }}
-                >
-                  <Image
-                    src={tech.logo}
-                    alt={`${tech.name} logo`}
-                    fill
-                    className="object-contain p-4 brightness-0 invert"
-                    priority={index < 8}
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#282C20] to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#282C20] to-transparent z-10" />
-        </motion.div>
+        {/* Logo Cloud */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          {techStack.map((tech, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              whileHover={{ y: -5, scale: 1.05 }}
+              className="group relative flex flex-col items-center justify-center p-8 rounded-2xl bg-white/5 border border-white/5 hover:border-neon-cyan/30 transition-all cursor-default"
+            >
+              <div className="relative w-12 h-12 mb-4">
+                <Image
+                  src={tech.logo}
+                  alt={tech.name}
+                  fill
+                  className="object-contain grayscale group-hover:grayscale-0 transition-all duration-500 brightness-200 group-hover:brightness-100"
+                />
+              </div>
+              <span className="text-[10px] font-technical text-white/40 group-hover:text-neon-cyan transition-colors">
+                {tech.name}
+              </span>
+              
+              {/* Corner Accent */}
+              <div className="absolute top-2 right-2 w-1 h-1 rounded-full bg-neon-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
+            </motion.div>
+          ))}
+        </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 40s linear infinite;
-        }
-      `}</style>
     </section>
   );
 }
