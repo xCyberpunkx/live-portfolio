@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const techStack = [
   { name: 'Next.js', logo: 'https://cdn.worldvectorlogo.com/logos/next-js.svg', width: 60, height: 60 },
@@ -16,7 +17,12 @@ export default function Partnerships() {
   return (
     <section className="bg-[#282C20] py-[100px] md:py-[150px] overflow-hidden">
       <div className="container mx-auto px-[4vw]">
-        <div className="flex flex-col mb-16 space-y-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col mb-16 space-y-4"
+        >
           <div className="flex items-center gap-4">
             <div className="w-12 h-[1px] bg-[#4A4D43]"></div>
             <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#4A4D43]">
@@ -34,18 +40,25 @@ export default function Partnerships() {
           <p className="max-w-[480px] mt-8 text-[#A1A1AA] font-sans text-lg leading-relaxed">
             Specializing in building reliable, scalable applications with clean architecture, efficient algorithms, and secure network infrastructure.
           </p>
-        </div>
+        </motion.div>
 
         {/* Scrolling Logo Cloud */}
-        <div className="relative mt-20 flex overflow-hidden group">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="relative mt-20 flex overflow-hidden group"
+        >
           <div className="flex animate-marquee whitespace-nowrap py-10 items-center">
             {[...techStack, ...techStack].map((tech, index) => (
-              <div 
+              <motion.div 
                 key={index} 
+                whileHover={{ scale: 1.1, rotate: 5 }}
                 className="flex items-center justify-center mx-12 md:mx-20 transition-opacity duration-300 hover:opacity-100 opacity-60 grayscale hover:grayscale-0"
               >
                 <div 
-                  className="relative flex items-center justify-center bg-off-white/10 p-4 rounded-xl"
+                  className="relative flex items-center justify-center bg-off-white/10 p-4 rounded-xl border border-white/5 group-hover:border-neon-lime/20 transition-colors"
                   style={{ width: 100, height: 100 }}
                 >
                   <Image
@@ -56,13 +69,13 @@ export default function Partnerships() {
                     priority={index < 8}
                   />
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#282C20] to-transparent z-10" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#282C20] to-transparent z-10" />
-        </div>
+        </motion.div>
       </div>
 
       <style jsx global>{`
