@@ -16,10 +16,10 @@ export default function Footer() {
                 viewport={{ once: true }}
                 className="space-y-4"
               >
-                <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPSE</span>
+                <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPS</span>
                 <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
                   INITIATE<br />
-                  <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPSE</span>
+                  <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPS</span>
                 </h2>
               </motion.div>
 
