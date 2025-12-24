@@ -88,24 +88,24 @@ export default function FormulaOnePage() {
           </motion.div>
 
           {/* Floating Branding Logos */}
-          <div className="absolute inset-0 pointer-events-none opacity-20">
+          <div className="absolute inset-0 pointer-events-none opacity-40">
+            <motion.img 
+              animate={{ y: [0, -30, 0] }} 
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Pirelli_logo.svg" 
+              className="absolute top-[20%] left-[10%] w-32 drop-shadow-lg" 
+            />
+            <motion.img 
+              animate={{ y: [0, 30, 0] }} 
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+              src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" 
+              className="absolute top-[15%] right-[15%] w-24 drop-shadow-lg" 
+            />
             <motion.img 
               animate={{ y: [0, -20, 0] }} 
-              transition={{ duration: 4, repeat: Infinity }}
-              src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Pirelli_logo.svg" 
-              className="absolute top-[20%] left-[10%] w-32 grayscale invert" 
-            />
-            <motion.img 
-              animate={{ y: [0, 20, 0] }} 
-              transition={{ duration: 5, repeat: Infinity }}
-              src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" 
-              className="absolute top-[15%] right-[15%] w-24 grayscale invert" 
-            />
-            <motion.img 
-              animate={{ y: [0, -15, 0] }} 
-              transition={{ duration: 6, repeat: Infinity }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
               src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" 
-              className="absolute bottom-[20%] left-[15%] w-32 grayscale invert" 
+              className="absolute bottom-[20%] left-[15%] w-32 drop-shadow-lg" 
             />
           </div>
 
