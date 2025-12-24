@@ -41,7 +41,7 @@ export default function TechExperience() {
   });
 
   return (
-    <section id="experience" className="bg-black py-20 md:py-64 relative overflow-hidden border-t border-white/5">
+    <section id="tech" className="bg-black py-20 md:py-64 relative overflow-hidden border-t border-white/5">
       <div className="absolute top-12 md:top-24 right-[5vw] opacity-5 pointer-events-none">
         <span className="text-[30vw] md:text-[20vw] font-black text-white leading-none uppercase tracking-tighter">
           PATH
