@@ -6,12 +6,12 @@ import Image from "next/image";
 
 const FloatingLogos = () => {
   const logos = [
-    { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Pirelli_logo.svg", x: "15%", y: "20%", size: 60 },
-    { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png", x: "80%", y: "15%", size: 100 },
-    { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Benz_logo%2C_2010.svg", x: "10%", y: "70%", size: 50 },
-    { name: "Vercel", src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Vercel_logo_black.svg", x: "85%", y: "65%", size: 60, invert: true },
-    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg", x: "50%", y: "10%", size: 80 },
-    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg", x: "75%", y: "80%", size: 80 },
+    { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Pirelli_logo.svg", x: "15%", y: "20%", size: 80 },
+    { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png", x: "80%", y: "15%", size: 120 },
+    { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Benz_logo%2C_2010.svg", x: "10%", y: "70%", size: 60 },
+    { name: "Vercel", src: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png", x: "85%", y: "65%", size: 70, invert: true },
+    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg", x: "50%", y: "10%", size: 100 },
+    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg", x: "75%", y: "80%", size: 100 },
   ];
 
   return (
@@ -21,24 +21,24 @@ const FloatingLogos = () => {
           key={logo.name}
           initial={{ opacity: 0 }}
           animate={{ 
-            opacity: [0.1, 0.3, 0.1],
-            y: [0, -20, 0],
-            x: [0, 10, 0],
+            opacity: [0.3, 0.6, 0.3],
+            y: [0, -30, 0],
+            x: [0, 15, 0],
           }}
           transition={{
-            duration: 5 + i,
+            duration: 6 + i,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.5,
+            delay: i * 0.7,
           }}
           className="absolute z-0 hidden md:block"
           style={{ left: logo.x, top: logo.y }}
         >
-          <div style={{ width: logo.size, height: "auto" }}>
+          <div style={{ width: logo.size, height: "auto" }} className="drop-shadow-2xl">
             <img 
               src={logo.src} 
               alt={logo.name} 
-              className={`w-full h-auto opacity-40 grayscale ${logo.invert ? 'invert' : ''}`}
+              className={`w-full h-auto object-contain ${logo.name === 'Vercel' ? 'invert' : ''}`}
             />
           </div>
         </motion.div>
