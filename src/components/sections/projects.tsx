@@ -7,28 +7,31 @@ import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
 
 const projects = [
   {
-    title: "Quantum Solar Engine",
-    category: "C++ / .NET / React",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    title: "SnovaTech Solar Simulation Platform",
+    category: "Energy Technology • Web Application",
+    image: "https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?q=80&w=2070&auto=format&fit=crop",
     link: "#",
     github: "#",
-    desc: "Real-time solar irradiance simulation engine built with C++ for high-performance raytracing calculations."
+    desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis. 2024",
+    tech: "Next.js 14, TypeScript, +4"
   },
   {
-    title: "Patient Nexus",
-    category: "C# / .NET / SQL",
-    image: "https://images.unsplash.com/photo-1576091160550-2173bdb999ef?q=80&w=2070&auto=format&fit=crop",
+    title: "Photographer & Client Reservation Platform",
+    category: "Marketplace Platform",
+    image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop",
     link: "#",
     github: "#",
-    desc: "Enterprise-grade healthcare management system utilizing .NET core for secure, low-latency data processing."
+    desc: "Algeria's first marketplace connecting verified photographers with clients through automated trust scoring. 2025",
+    tech: "Next.js, TypeScript, +4"
   },
   {
-    title: "Neuro Dynamic UI",
-    category: "TypeScript / Next.js",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2070&auto=format&fit=crop",
+    title: "Clinic Management System",
+    category: "Healthcare Software",
+    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
     link: "#",
     github: "#",
-    desc: "Experimental UI framework focusing on motion-first interactions and complex technical visualizations."
+    desc: "Dental clinic management system with appointment scheduling, patient records, and billing. 2024",
+    tech: "Next.js, TypeScript, +4"
   }
 ];
 
