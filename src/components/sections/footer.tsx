@@ -63,12 +63,12 @@ export default function Footer() {
                   </div>
                 </div>
 
-                <button className="flex items-center gap-6 group">
-                  <span className="text-[10px] font-black text-white uppercase tracking-[1em]">Send Signal</span>
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all">
-                    <Send size={18} className="text-white group-hover:text-black transition-colors" />
-                  </div>
-                </button>
+                  <button className="flex items-center gap-6 group">
+                    <span className="text-[10px] font-black text-white uppercase tracking-[1em]">Send</span>
+                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all">
+                      <Send size={18} className="text-white group-hover:text-black transition-colors" />
+                    </div>
+                  </button>
               </div>
             </div>
           </div>
