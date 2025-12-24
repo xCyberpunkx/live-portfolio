@@ -84,56 +84,9 @@ export default function Partnerships() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-[1px] bg-white/5 border border-white/5">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-[1px] bg-white/5 border border-white/5 perspective-1000">
             {techStack.map((tech, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="group relative flex flex-col items-center justify-center p-8 md:p-16 bg-black hover:bg-white/[0.02] transition-all duration-500 overflow-hidden"
-              >
-                {/* Technical Corner Accents */}
-                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/10 group-hover:border-white/40 transition-colors" />
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/10 group-hover:border-white/40 transition-colors" />
-                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/10 group-hover:border-white/40 transition-colors" />
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/10 group-hover:border-white/40 transition-colors" />
-
-                {/* Scanline Effect */}
-                <div className="absolute inset-0 w-full h-[1px] bg-white/5 -translate-y-full group-hover:animate-scan z-0" />
-
-                {/* Metadata Top */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="w-1 h-1 rounded-full bg-white animate-pulse" />
-                  <span className="text-[7px] font-technical tracking-[0.2em] text-white/40">{tech.status}</span>
-                </div>
-
-                {/* Metadata Bottom */}
-                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <span className="text-[7px] font-technical tracking-[0.2em] text-white/40">{tech.category}</span>
-                </div>
-
-                <div className="relative w-10 h-10 md:w-14 md:h-14 mb-8 grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110 z-10">
-                  <Image
-                    src={tech.logo}
-                    alt={tech.name}
-                    fill
-                    className="object-contain"
-                  />
-                  {/* Glitch Overlay (Pseudo) */}
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:animate-pulse pointer-events-none" />
-                </div>
-                
-                <span className="text-[10px] font-technical text-white/20 group-hover:text-white transition-colors uppercase tracking-[0.4em] relative z-10">
-                  {tech.name}
-                </span>
-
-                {/* Background ID Tag */}
-                <span className="absolute bottom-2 left-4 text-[6px] font-technical text-white/[0.02] uppercase select-none">
-                  TECH_ID: 0x{index.toString(16).toUpperCase()}
-                </span>
-              </motion.div>
+              <TechCard key={index} tech={tech} index={index} />
             ))}
           </div>
       </div>
