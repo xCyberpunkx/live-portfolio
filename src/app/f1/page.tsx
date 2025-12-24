@@ -11,22 +11,22 @@ import CustomCursor from "@/components/ui/custom-cursor";
 import SmoothScroll from "@/components/ui/smooth-scroll";
 
 const cars = [
-  {
-    name: "SF-24",
-    team: "Scuderia Ferrari",
-    engine: "066/12 V6 Turbo",
-    tech: ["Carbon-fiber composite chassis", "8-speed semi-automatic gearbox", "ERS energy recovery"],
-    image: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?q=80&w=2070&auto=format&fit=crop",
-    logo: ""
-  },
-  {
-    name: "RB20",
-    team: "Red Bull Racing",
-    engine: "Honda RBPTH002",
-    tech: ["Triple-element rear wing", "Pull-rod front suspension", "Ground effect floor V3"],
-    image: "https://images.unsplash.com/photo-1623190833211-19343729e1f5?q=80&w=2070&auto=format&fit=crop",
-    logo: ""
-  }
+    {
+      name: "SF-24",
+      team: "Scuderia Ferrari",
+      engine: "066/12 V6 Turbo",
+      tech: ["Carbon-fiber composite chassis", "8-speed semi-automatic gearbox", "ERS energy recovery"],
+      image: "https://images.unsplash.com/photo-1644331422789-98289450849f?q=80&w=2070&auto=format&fit=crop",
+      logo: ""
+    },
+    {
+      name: "RB20",
+      team: "Red Bull Racing",
+      engine: "Honda RBPTH002",
+      tech: ["Triple-element rear wing", "Pull-rod front suspension", "Ground effect floor V3"],
+      image: "https://images.unsplash.com/photo-1547919307-1ecb10702e6f?q=80&w=2070&auto=format&fit=crop",
+      logo: ""
+    }
 ];
 
 const circuits = [
