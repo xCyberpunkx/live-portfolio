@@ -16,7 +16,7 @@ export default function Footer() {
               viewport={{ once: true }}
               className="space-y-4"
             >
-              <span className="text-[10px] font-technical text-white/20 tracking-[1em] uppercase block">CONNECTION PROTOCOL</span>
+                <span className="text-[10px] font-technical text-white/20 tracking-[1em] uppercase block">INITIATE SYNAPSE</span>
               <h2 className="text-[10vw] font-black text-white uppercase tracking-tighter leading-none">
                 INITIATE<br />
                 <span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPSE</span>
