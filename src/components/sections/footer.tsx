@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Send, Loader2 } from "lucide-react";
 import emailjs from "@emailjs/browser";
@@ -18,7 +18,7 @@ export default function Footer() {
     message: ''
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setStatus('loading');
 
