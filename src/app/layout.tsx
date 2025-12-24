@@ -49,8 +49,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark scroll-smooth">
-      <body className={`${jakarta.variable} font-sans antialiased bg-black text-white`}>
-        <Script
+        <body className={`${jakarta.variable} font-sans antialiased bg-black text-white`}>
+          <div className="grain-overlay" />
+          <Script
+
           id="orchids-browser-logs"
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
           strategy="afterInteractive"
