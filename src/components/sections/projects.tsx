@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { ArrowUpRight, X, ExternalLink, Globe } from "lucide-react";
+import { X, Globe } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 interface ProjectData {
@@ -71,12 +71,12 @@ const ProjectCard = ({ project, index }: { project: ProjectData, index: number }
 
   return (
     <div ref={container} className="h-screen flex items-center justify-center sticky top-0 bg-black border-t border-white/5">
-      <motion2d.div 
+      <motion.div 
         style={{ scale }}
         className="container grid grid-cols-12 gap-12 items-center"
       >
         <div className="col-span-12 md:col-span-7 relative group cursor-pointer overflow-hidden aspect-video bg-white/5">
-          <motion2d.div 
+          <motion.div 
             style={{ y }}
             className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"
           >
@@ -86,7 +86,7 @@ const ProjectCard = ({ project, index }: { project: ProjectData, index: number }
               fill
               className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
             />
-          </motion2d.div>
+          </motion.div>
           <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500" />
           <div className="absolute bottom-8 left-8">
             <span className="text-[8px] font-technical text-white/40 tracking-[0.5em] uppercase">0{index + 1} // Archive</span>
@@ -111,18 +111,18 @@ const ProjectCard = ({ project, index }: { project: ProjectData, index: number }
             <div className="w-12 h-[1px] bg-white/20 group-hover:w-24 group-hover:bg-white transition-all" />
           </button>
         </div>
-      </motion2d.div>
+      </motion.div>
 
       <AnimatePresence>
         {showDetails && (
-          <motion2d.div
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[200] flex items-center justify-center p-8 bg-black/98 backdrop-blur-2xl"
             onClick={() => setShowDetails(false)}
           >
-            <motion2d.div
+            <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -170,8 +170,8 @@ const ProjectCard = ({ project, index }: { project: ProjectData, index: number }
                    </button>
                 </div>
               </div>
-            </motion2d.div>
-          </motion2d.div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -182,7 +182,7 @@ export default function MyProjects() {
   return (
     <section id="projects" className="bg-black relative">
       <div className="h-[50vh] flex flex-col items-center justify-center">
-        <motion2d.div
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -190,7 +190,7 @@ export default function MyProjects() {
         >
           <span className="text-[10px] font-technical text-white/20 uppercase tracking-[1em] mb-4 block">Archive 24/25</span>
           <h2 className="text-[12vw] font-black text-white uppercase tracking-tighter leading-none">Showcases</h2>
-        </motion2d.div>
+        </motion.div>
       </div>
 
       <div className="relative">
