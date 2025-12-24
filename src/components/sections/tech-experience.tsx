@@ -26,9 +26,9 @@ const experiences = [
 
 export default function TechExperience() {
   return (
-    <section className="bg-rich-black py-24 md:py-48 relative overflow-hidden">
+    <section id="experience" className="bg-deep-midnight py-24 md:py-48 relative overflow-hidden">
       {/* Matrix-like Background */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none font-mono text-[10px] text-neon-lime flex flex-wrap gap-4 p-8">
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none font-mono text-[10px] text-neon-cyan flex flex-wrap gap-4 p-8">
         {Array.from({ length: 100 }).map((_, i) => (
           <span key={i}>0x{Math.random().toString(16).slice(2, 6)}</span>
         ))}
@@ -44,13 +44,13 @@ export default function TechExperience() {
               viewport={{ once: true }}
               className="sticky top-32"
             >
-              <h2 className="text-neon-lime font-technical text-sm tracking-[0.3em] uppercase mb-4">
+              <h2 className="text-neon-cyan font-technical text-sm tracking-[0.3em] uppercase mb-4">
                 Experience Log
               </h2>
-              <h3 className="text-4xl md:text-6xl font-black text-off-white uppercase leading-none mb-8">
+              <h3 className="text-4xl md:text-6xl font-black text-white uppercase leading-none mb-8">
                 The<br />Journey
               </h3>
-              <p className="text-muted-gray text-lg max-w-sm">
+              <p className="text-muted-foreground text-lg max-w-sm">
                 A chronicle of technical evolution, from high-level application design to low-level system architecture and network security.
               </p>
             </motion.div>
@@ -66,22 +66,22 @@ export default function TechExperience() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className="group relative pl-8 md:pl-12 border-l border-white/10 hover:border-neon-lime/50 transition-colors"
+                  className="group relative pl-8 md:pl-12 border-l border-white/10 hover:border-neon-cyan/50 transition-colors"
                 >
                   {/* Dot */}
-                  <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-white group-hover:bg-neon-lime transition-colors" />
+                  <div className="absolute left-[-5px] top-2 w-2 h-2 rounded-full bg-white group-hover:bg-neon-cyan transition-colors" />
                   
                   <div className="flex flex-col gap-2">
-                    <span className="font-technical text-[10px] text-neon-lime tracking-widest uppercase">
+                    <span className="font-technical text-[10px] text-neon-cyan tracking-widest uppercase">
                       [{exp.date}]
                     </span>
-                    <h4 className="text-2xl md:text-3xl font-black text-off-white uppercase">
+                    <h4 className="text-2xl md:text-3xl font-black text-white uppercase">
                       {exp.title}
                     </h4>
                     <span className="text-white/40 font-mono text-sm">
                       @ {exp.company}
                     </span>
-                    <p className="mt-4 text-muted-gray leading-relaxed text-lg max-w-xl">
+                    <p className="mt-4 text-muted-foreground leading-relaxed text-lg max-w-xl">
                       {exp.desc}
                     </p>
                   </div>
@@ -94,7 +94,7 @@ export default function TechExperience() {
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-24 rounded-xl border border-white/10 bg-deep-olive/20 backdrop-blur-md overflow-hidden"
+              className="mt-24 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden"
             >
               <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
                 <div className="w-2 h-2 rounded-full bg-red-500/50" />
@@ -104,17 +104,17 @@ export default function TechExperience() {
               </div>
               <div className="p-8 font-mono text-sm leading-relaxed text-white/60">
                 <div className="flex gap-4">
-                  <span className="text-neon-lime">$</span>
+                  <span className="text-neon-cyan">$</span>
                   <span>whoami</span>
                 </div>
-                <div className="mt-2 text-off-white">
+                <div className="mt-2 text-white">
                   &gt; Zine Eddine Rouabah. Engineer. Researcher. Problem Solver.
                 </div>
                 <div className="mt-4 flex gap-4">
-                  <span className="text-neon-lime">$</span>
+                  <span className="text-neon-cyan">$</span>
                   <span>cat stack.json</span>
                 </div>
-                <div className="mt-2 text-off-white/80">
+                <div className="mt-2 text-white/80">
                   <pre className="whitespace-pre-wrap">
                     {`{
   "frontend": ["Next.js", "React", "TS", "Framer Motion"],
