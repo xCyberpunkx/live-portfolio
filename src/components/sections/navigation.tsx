@@ -89,14 +89,23 @@ const Navigation = () => {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[105] bg-black overflow-hidden flex flex-col items-center justify-center p-[5vw]"
-          >
-            <div className="absolute inset-0 grid-pattern opacity-5 pointer-events-none" />
+            <motion.div
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-0 z-[105] bg-black overflow-hidden flex flex-col items-center justify-center p-[5vw]"
+            >
+              {/* EXIT BUTTON */}
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="absolute top-12 right-[5vw] group flex items-center gap-6 border border-white/10 px-8 py-4 hover:bg-white transition-all overflow-hidden z-[120]"
+              >
+                <span className="text-[10px] font-technical uppercase tracking-[0.3em] group-hover:text-black transition-colors relative z-10">EXIT</span>
+                <X size={16} className="text-white group-hover:text-black transition-colors relative z-10" />
+              </button>
+
+              <div className="absolute inset-0 grid-pattern opacity-5 pointer-events-none" />
             
             <div className="flex flex-col items-center gap-12">
               {menuLinks.map((link, idx) => (
