@@ -17,7 +17,7 @@ const cars = [
     engine: "066/12 V6 Turbo",
     tech: ["Carbon-fiber composite chassis", "8-speed semi-automatic gearbox", "ERS energy recovery"],
     image: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?q=80&w=2070&auto=format&fit=crop",
-    logo: "https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg"
+    logo: ""
   },
   {
     name: "RB20",
@@ -25,7 +25,7 @@ const cars = [
     engine: "Honda RBPTH002",
     tech: ["Triple-element rear wing", "Pull-rod front suspension", "Ground effect floor V3"],
     image: "https://images.unsplash.com/photo-1623190833211-19343729e1f5?q=80&w=2070&auto=format&fit=crop",
-    logo: "https://upload.wikimedia.org/wikipedia/en/9/94/Red_Bull_Racing_Logo.svg"
+    logo: ""
   }
 ];
 
@@ -57,9 +57,9 @@ const circuits = [
 ];
 
 const drivers = [
-    { name: "Charles Leclerc", team: "Ferrari", titles: 0, status: "Active", number: 16, logo: "https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg" },
-    { name: "Lewis Hamilton", team: "Mercedes", titles: 7, status: "Legend", number: 44, logo: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Mercedes_Benz_logo.svg" },
-    { name: "Max Verstappen", team: "Red Bull", titles: 3, status: "Champion", number: 1, logo: "https://upload.wikimedia.org/wikipedia/en/9/94/Red_Bull_Racing_Logo.svg" }
+    { name: "Charles Leclerc", team: "Ferrari", titles: 0, status: "Active", number: 16, logo: "" },
+    { name: "Lewis Hamilton", team: "Mercedes", titles: 7, status: "Legend", number: 44, logo: "" },
+    { name: "Max Verstappen", team: "Red Bull", titles: 3, status: "Champion", number: 1, logo: "" }
 ];
 
 export default function FormulaOnePage() {
