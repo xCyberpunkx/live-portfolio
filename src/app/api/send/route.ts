@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'Contact Form <onboarding@resend.dev>',
-      to: ['your-email@example.com'], // The user will likely want to change this
+      to: ['rouabah.zineedinee@gmail.com'], // The user will likely want to change this
       subject: `New Message from ${name}`,
       replyTo: email,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
