@@ -1,74 +1,33 @@
 "use client";
 
-import React, { Suspense, useRef, useMemo } from "react";
+import React, { Suspense, useRef } from "react";
 import { motion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { 
-  Float, 
   PerspectiveCamera, 
   MeshTransmissionMaterial,
   Environment,
   ContactShadows,
-  Text,
   Stars,
   Sparkles
 } from "@react-three/drei";
 import * as THREE from "three";
 
-function DataNodes() {
-  const count = 40;
-  const nodes = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < count; i++) {
-      temp.push({
-        position: [
-          (Math.random() - 0.5) * 20,
-          (Math.random() - 0.5) * 20,
-          (Math.random() - 0.5) * 10,
-        ],
-        scale: Math.random() * 0.2 + 0.05,
-      });
-    }
-    return temp;
-  }, []);
-
-  return (
-    <group>
-      {nodes.map((node, i) => (
-        <mesh key={i} position={node.position as any} scale={node.scale}>
-          <sphereGeometry args={[1, 16, 16]} />
-          <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={2} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
 function TechCore() {
-  const outerRef = useRef<THREE.Mesh>(null);
-  const innerRef = useRef<THREE.Mesh>(null);
-  const coreRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
-    if (outerRef.current) {
-      outerRef.current.rotation.y = time * 0.2;
-      outerRef.current.rotation.z = time * 0.1;
-    }
-    if (innerRef.current) {
-      innerRef.current.rotation.y = -time * 0.4;
-      innerRef.current.rotation.x = time * 0.2;
-    }
-    if (coreRef.current) {
-      coreRef.current.scale.setScalar(1 + Math.sin(time * 2) * 0.1);
+    if (meshRef.current) {
+      meshRef.current.rotation.y = time * 0.2;
+      meshRef.current.rotation.x = time * 0.1;
     }
   });
 
   return (
     <group>
-      {/* Outer Shell */}
-      <mesh ref={outerRef}>
-        <octahedronGeometry args={[3.5, 0]} />
+      <mesh ref={meshRef}>
+        <tetrahedronGeometry args={[4, 0]} />
         <MeshTransmissionMaterial
           backside
           samples={16}
@@ -83,34 +42,11 @@ function TechCore() {
           attenuationColor="#ffffff"
           color="#ffffff"
           transparent
-          opacity={0.4}
+          opacity={0.6}
         />
       </mesh>
 
-      {/* Inner Structure */}
-      <mesh ref={innerRef}>
-        <torusKnotGeometry args={[1.5, 0.4, 128, 32]} />
-        <meshStandardMaterial 
-          color="#ffffff" 
-          wireframe 
-          transparent 
-          opacity={0.2} 
-        />
-      </mesh>
-
-      {/* Central Power Core */}
-      <mesh ref={coreRef}>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshStandardMaterial 
-          color="#ffffff" 
-          emissive="#ffffff" 
-          emissiveIntensity={5} 
-          toneMapped={false}
-        />
-        <pointLight intensity={10} color="#ffffff" />
-      </mesh>
-
-      <Sparkles count={100} scale={10} size={1} speed={0.5} opacity={0.5} color="white" />
+      <Sparkles count={50} scale={10} size={1} speed={0.5} opacity={0.3} color="white" />
     </group>
   );
 }
@@ -128,7 +64,6 @@ const HeroSection = () => {
           
           <Suspense fallback={null}>
             <TechCore />
-            <DataNodes />
             <Environment preset="night" />
             <ContactShadows position={[0, -5, 0]} opacity={0.4} scale={20} blur={2.5} far={4} />
           </Suspense>
