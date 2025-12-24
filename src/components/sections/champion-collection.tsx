@@ -3,43 +3,12 @@
 import React, { Suspense, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, Float, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
-
-function AbstractModel() {
-  const mesh = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
-    if (mesh.current) {
-      mesh.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-      mesh.current.rotation.y = state.clock.getElapsedTime() * 0.3;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-      <mesh ref={mesh} scale={2}>
-        <icosahedronGeometry args={[1, 0]} />
-        <MeshDistortMaterial
-          color="#ffffff"
-          distort={0.4}
-          speed={2}
-          roughness={0}
-          metalness={1}
-          wireframe
-        />
-      </mesh>
-    </Float>
-  );
-}
 
 const ChampionCollection = () => {
   return (
     <section id="about" className="relative w-full bg-black py-24 md:py-64 overflow-hidden border-t border-white/5">
       <div className="container mx-auto">
-        
         <div className="grid grid-cols-12 gap-y-24 md:gap-x-24 relative items-center">
-          
           <div className="col-span-12 md:col-span-6 z-10 order-2 md:order-1">
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
@@ -87,15 +56,9 @@ const ChampionCollection = () => {
           </div>
 
           <div className="col-span-12 md:col-span-6 relative aspect-square order-1 md:order-2">
-            <div className="absolute inset-0 z-0">
-               <Canvas>
-                 <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                 <ambientLight intensity={0.5} />
-                 <pointLight position={[10, 10, 10]} />
-                 <Suspense fallback={null}>
-                    <AbstractModel />
-                 </Suspense>
-               </Canvas>
+            <div className="absolute inset-0 z-0 flex items-center justify-center">
+              <div className="w-full h-full border border-white/5 rounded-full animate-[spin_60s_linear_infinite] opacity-20" />
+              <div className="absolute w-4/5 h-4/5 border border-white/10 rounded-full animate-[spin_40s_linear_infinite_reverse] opacity-10" />
             </div>
             
             <motion.div 
@@ -104,13 +67,14 @@ const ChampionCollection = () => {
               viewport={{ once: true }}
               className="relative w-full h-full p-12 pointer-events-none"
             >
-              <div className="w-full h-full border border-white/5 p-4 bg-black/40 backdrop-blur-sm">
+              <div className="w-full h-full border border-white/5 p-4 bg-black/40 backdrop-blur-sm relative overflow-hidden">
                 <Image 
                   src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
                   alt="Engineering Detail"
                   fill
                   className="object-cover grayscale opacity-40 mix-blend-screen"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
               </div>
             </motion.div>
           </div>
