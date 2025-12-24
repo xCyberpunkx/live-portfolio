@@ -25,10 +25,11 @@ const Navigation = () => {
   }, []);
 
     const menuLinks = [
+      { name: "Home", href: "/" },
       { name: "Works", href: "/#projects" },
       { name: "Journey", href: "/#experience" },
       { name: "Identity", href: "/#about" },
-      { name: "Formula 1", href: "/f1" },
+      { name: "Formula 1", href: "/f1", highlight: true },
       { name: "Inquire", href: "/#contact" },
     ];
 
@@ -39,36 +40,40 @@ const Navigation = () => {
         style={{ scaleX }}
       />
       <nav
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ease-in-out px-[5vw] py-8 flex items-center justify-between ${
-          scrolled ? "glass-nav py-6" : "bg-transparent"
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ease-in-out px-[5vw] py-4 md:py-8 flex items-center justify-between ${
+          scrolled ? "glass-nav py-3 md:py-6" : "bg-transparent"
         }`}
       >
         <Link href="/" className="relative z-[120] group">
           <div className="flex flex-col">
-            <span className="text-2xl font-black tracking-tighter uppercase text-white leading-none">ZR</span>
-            <span className="text-[8px] font-technical text-white/40 tracking-[0.4em] group-hover:text-white transition-colors">ARCHIVE // 2025</span>
+            <span className="text-xl md:text-2xl font-black tracking-tighter uppercase text-white leading-none">ZR</span>
+            <span className="text-[7px] md:text-[8px] font-technical text-white/40 tracking-[0.4em] group-hover:text-white transition-colors">ARCHIVE // 2025</span>
           </div>
         </Link>
 
-        <div className="flex items-center gap-16 relative z-[120]">
-          <div className="hidden lg:flex items-center gap-12">
+        <div className="flex items-center gap-4 md:gap-16 relative z-[120]">
+          <div className="hidden xl:flex items-center gap-10">
             {menuLinks.map((item) => (
               <Link 
                 key={item.name} 
                 href={item.href}
-                className="text-[9px] font-technical text-white/40 hover:text-white transition-all uppercase tracking-[0.4em] relative group"
+                className={`text-[9px] font-technical transition-all uppercase tracking-[0.4em] relative group ${
+                  item.highlight ? "text-red-500 font-bold" : "text-white/40 hover:text-white"
+                }`}
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-500" />
+                <span className={`absolute -bottom-1 left-0 h-[1px] transition-all duration-500 ${
+                  item.highlight ? "bg-red-500 w-full" : "bg-white w-0 group-hover:w-full"
+                }`} />
               </Link>
             ))}
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-3 md:gap-8">
             <a 
               href="/resume.pdf" 
               target="_blank"
-              className="hidden sm:flex items-center gap-4 border border-white/10 px-6 py-3 hover:bg-white hover:text-black transition-all group"
+              className="hidden sm:flex items-center gap-4 border border-white/10 px-4 md:px-6 py-2 md:py-3 hover:bg-white hover:text-black transition-all group"
             >
               <Download size={14} className="group-hover:animate-bounce" />
               <span className="text-[9px] font-technical uppercase tracking-[0.3em]">CV (PDF)</span>
@@ -76,12 +81,12 @@ const Navigation = () => {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="group flex items-center gap-6 border border-white/10 px-8 py-4 hover:bg-white transition-all overflow-hidden relative"
+              className="group flex items-center gap-4 md:gap-6 border border-white/10 px-6 md:px-8 py-3 md:py-4 hover:bg-white transition-all overflow-hidden relative"
             >
-              <span className="text-[10px] font-technical uppercase tracking-[0.3em] group-hover:text-black transition-colors relative z-10">
+              <span className="text-[9px] md:text-[10px] font-technical uppercase tracking-[0.3em] group-hover:text-black transition-colors relative z-10">
                 {isOpen ? "Close" : "Menu"}
               </span>
-              <div className="w-5 h-[1px] bg-white group-hover:bg-black transition-colors relative z-10" />
+              <div className="w-4 md:w-5 h-[1px] bg-white group-hover:bg-black transition-colors relative z-10" />
             </button>
           </div>
         </div>
@@ -99,7 +104,7 @@ const Navigation = () => {
               {/* EXIT BUTTON */}
               <button 
                 onClick={() => setIsOpen(false)}
-                className="absolute top-12 right-[5vw] group flex items-center gap-6 border border-white/10 px-8 py-4 hover:bg-white transition-all overflow-hidden z-[120]"
+                className="absolute top-8 md:top-12 right-[5vw] group flex items-center gap-6 border border-white/10 px-8 py-4 hover:bg-white transition-all overflow-hidden z-[120]"
               >
                 <span className="text-[10px] font-technical uppercase tracking-[0.3em] group-hover:text-black transition-colors relative z-10">EXIT</span>
                 <X size={16} className="text-white group-hover:text-black transition-colors relative z-10" />
@@ -107,7 +112,7 @@ const Navigation = () => {
 
               <div className="absolute inset-0 grid-pattern opacity-5 pointer-events-none" />
             
-            <div className="flex flex-col items-center gap-12">
+            <div className="flex flex-col items-center gap-6 md:gap-12 text-center mt-12 md:mt-0">
               {menuLinks.map((link, idx) => (
                 <motion.div
                   key={link.name}
@@ -120,7 +125,9 @@ const Navigation = () => {
                     onClick={() => setIsOpen(false)}
                     className="group relative"
                   >
-                    <span className="text-[12vw] md:text-[7vw] font-black uppercase text-white/5 hover:text-white transition-all tracking-tighter block leading-none hover:italic hover:translate-x-4">
+                    <span className={`text-[10vw] md:text-[7vw] font-black uppercase transition-all tracking-tighter block leading-none hover:italic hover:translate-x-4 ${
+                      link.highlight ? "text-red-500 hover:text-red-400" : "text-white/5 hover:text-white"
+                    }`}>
                       {link.name}
                     </span>
                   </Link>
