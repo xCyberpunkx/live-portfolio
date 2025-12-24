@@ -57,9 +57,9 @@ const circuits = [
 ];
 
 const drivers = [
-  { name: "Charles Leclerc", team: "Ferrari", titles: 0, status: "Active", number: 16, logo: "https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg" },
-  { name: "Lewis Hamilton", team: "Mercedes", titles: 7, status: "Legend", number: 44, logo: "https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Benz_logo%2C_2010.svg" },
-  { name: "Max Verstappen", team: "Red Bull", titles: 3, status: "Champion", number: 1, logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png" }
+    { name: "Charles Leclerc", team: "Ferrari", titles: 0, status: "Active", number: 16, logo: "https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg" },
+    { name: "Lewis Hamilton", team: "Mercedes", titles: 7, status: "Legend", number: 44, logo: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Mercedes_Benz_logo.svg" },
+    { name: "Max Verstappen", team: "Red Bull", titles: 3, status: "Champion", number: 1, logo: "https://upload.wikimedia.org/wikipedia/en/9/94/Red_Bull_Racing_Logo.svg" }
 ];
 
 export default function FormulaOnePage() {
