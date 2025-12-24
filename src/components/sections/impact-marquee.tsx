@@ -20,9 +20,9 @@ export default function ImpactMarquee() {
               <div className="w-12 h-12 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center">
                 <div className="w-4 h-4 md:w-6 md:h-6 bg-white rounded-full" />
               </div>
-              <span className="text-[8vw] md:text-[5vw] font-black text-transparent stroke-black" style={{ WebkitTextStroke: "2px #000" }}>
-                SYSTEM ARCHITECT
-              </span>
+                <span className="text-[8vw] md:text-[5vw] font-black text-transparent stroke-black" style={{ WebkitTextStroke: "2px #000" }}>
+                  SOFTWARE ENGINEER
+                </span>
               <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-black rounded-full" />
             </div>
           ))}
