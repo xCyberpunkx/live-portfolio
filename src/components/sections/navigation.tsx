@@ -153,12 +153,12 @@ const Navigation = () => {
                     </svg>
                   </div>
                   <div className="text-[10px] font-technical text-muted-gray uppercase tracking-widest leading-relaxed">
-                    Mclaren F1<br />Since 2019
+                    Systems & Security<br />Researcher
                   </div>
                 </div>
 
                 <div className="flex gap-6">
-                  {['Tiktok', 'Instagram', 'Youtube', 'Twitch'].map(social => (
+                  {['GitHub', 'LinkedIn', 'Twitter', 'Vercel'].map(social => (
                     <a key={social} href="#" className="text-[11px] font-technical uppercase tracking-widest text-muted-gray hover:text-off-white transition-colors">
                       {social}
                     </a>
@@ -167,7 +167,7 @@ const Navigation = () => {
               </div>
 
               <div className="text-[11px] font-technical uppercase tracking-widest text-muted-gray text-right">
-                <a href="mailto:business@landonorris.com" className="hover:text-neon-lime transition-colors">Business Enquiries</a>
+                <a href="mailto:zineddine@example.com" className="hover:text-neon-lime transition-colors">Contact Enquiries</a>
               </div>
             </div>
           </div>
