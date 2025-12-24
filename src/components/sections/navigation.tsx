@@ -97,15 +97,23 @@ const Navigation = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[105] bg-black flex flex-col items-center justify-center p-6"
-          >
-            <div className="flex flex-col items-center gap-8">
-              {navLinks.map((link, idx) => (
+            <motion.div
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-0 z-[105] bg-black flex flex-col items-center justify-center p-6"
+            >
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="absolute top-10 right-10 flex items-center gap-2 text-white/40 hover:text-white transition-all group"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em]">EXIT_MENU</span>
+                <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+
+              <div className="flex flex-col items-center gap-8">
+                {navLinks.map((link, idx) => (
                 <motion.div
                   key={link.name}
                   initial={{ y: 20, opacity: 0 }}
