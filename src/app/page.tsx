@@ -7,6 +7,7 @@ import Partnerships from "@/components/sections/partnerships";
 import Footer from "@/components/sections/footer";
 import SplashScreen from "@/components/ui/splash-screen";
 import SmoothScroll from "@/components/ui/smooth-scroll";
+import TechExperience from "@/components/sections/tech-experience";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <SmoothScroll>
         <HeroSection />
         <ImpactMarquee />
+        <TechExperience />
         <HelmetGallery />
         <ChampionCollection />
         <Partnerships />
