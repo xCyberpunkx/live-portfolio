@@ -1,11 +1,8 @@
 "use client";
 
-import React, { Suspense, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, PerspectiveCamera, Float, MeshWobbleMaterial } from '@react-three/drei';
-import * as THREE from 'three';
 
 const techStack = [
   { name: 'C++', category: 'SYSTEMS', status: 'STABLE', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg' },
@@ -113,35 +110,22 @@ function TechCard({ tech, index }: { tech: typeof techStack[0], index: number })
   );
 }
 
-function FloatingDna() {
-  const mesh = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
-    if (mesh.current) {
-      mesh.current.rotation.z = state.clock.getElapsedTime() * 0.1;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <mesh ref={mesh}>
-        <torusKnotGeometry args={[3, 0.4, 128, 32]} />
-        <MeshWobbleMaterial color="#ffffff" factor={0.6} speed={2} wireframe opacity={0.1} transparent />
-      </mesh>
-    </Float>
-  );
-}
-
 export default function Partnerships() {
   return (
     <section className="bg-black py-24 md:py-64 overflow-hidden border-t border-white/5 relative">
-      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-        <Canvas>
-          <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-          <ambientLight intensity={0.5} />
-          <Suspense fallback={null}>
-            <FloatingDna />
-          </Suspense>
-        </Canvas>
+      {/* 2D Technical Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] opacity-[0.03]"
+          style={{
+            backgroundImage: `radial-gradient(circle at center, white 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }}
+        />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black via-transparent to-black" />
+        
+        {/* Animated Circuits */}
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[pulse_4s_infinite]" />
+        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[pulse_4s_infinite_1s]" />
       </div>
 
       <div className="container mx-auto relative z-10">
@@ -177,7 +161,7 @@ export default function Partnerships() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-[1px] bg-white/5 border border-white/5 perspective-1000">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-[1px] bg-white/5 border border-white/5">
           {techStack.map((tech, index) => (
             <TechCard key={index} tech={tech} index={index} />
           ))}
