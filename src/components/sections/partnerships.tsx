@@ -19,21 +19,24 @@ const techStack = [
 
 export default function Partnerships() {
   return (
-    <section className="bg-black py-24 md:py-48 overflow-hidden border-t border-white/10">
+    <section className="bg-black py-24 md:py-64 overflow-hidden border-t border-white/5">
       <div className="container mx-auto">
         <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col mb-24"
+          className="flex flex-col mb-32 items-center text-center"
         >
-          <span className="font-technical text-[10px] tracking-[0.4em] text-white/20 uppercase mb-4 block">Stack</span>
-          <h2 className="text-[8vw] leading-[0.85] font-black uppercase text-white mb-8 tracking-tighter">
-            Technical<br /><span className="text-white/20">Arsenal</span>
+          <span className="font-technical text-[10px] tracking-[0.8em] text-white/20 uppercase mb-8 block">Integrated Stack</span>
+          <h2 className="text-[12vw] md:text-[10vw] leading-[0.8] font-black uppercase text-white mb-12 tracking-tighter">
+            Digital<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>Arsenal</span>
           </h2>
+          <p className="text-white/40 font-technical text-sm uppercase tracking-widest max-w-xl">
+            A meticulously curated selection of technologies for building high-availability systems and resilient network architectures.
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-white/10 border border-white/10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-white/5 border border-white/5">
           {techStack.map((tech, index) => (
             <motion.div 
               key={index}
@@ -41,9 +44,9 @@ export default function Partnerships() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="group relative flex flex-col items-center justify-center p-12 bg-black hover:bg-white transition-all duration-500 cursor-default"
+              className="group relative flex flex-col items-center justify-center p-16 bg-black hover:bg-white transition-all duration-700 cursor-none"
             >
-              <div className="relative w-10 h-10 mb-6 brightness-0 invert group-hover:invert-0 transition-all duration-500">
+              <div className="relative w-12 h-12 mb-8 brightness-0 invert group-hover:invert-0 transition-all duration-700 group-hover:scale-110">
                 <Image
                   src={tech.logo}
                   alt={tech.name}
@@ -51,9 +54,13 @@ export default function Partnerships() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-[8px] font-technical text-white/20 group-hover:text-black transition-colors uppercase tracking-widest">
+              <span className="text-[9px] font-technical text-white/20 group-hover:text-black transition-colors uppercase tracking-[0.3em]">
                 {tech.name}
               </span>
+              
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="w-1 h-1 bg-black rounded-full" />
+              </div>
             </motion.div>
           ))}
         </div>
