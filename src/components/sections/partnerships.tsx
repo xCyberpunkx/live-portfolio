@@ -60,7 +60,7 @@ export default function Partnerships() {
         >
           <span className="font-technical text-[10px] tracking-[1em] text-white/20 uppercase mb-8 block">TECHNICAL GENOME</span>
           <h2 className="text-[12vw] md:text-[10vw] leading-[0.8] font-black uppercase text-white mb-12 tracking-tighter">
-            ARCHITECTURAL<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>MASTERY</span>
+            TECHNICAL<br /><span className="text-transparent stroke-white" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>ARSENAL</span>
           </h2>
           <p className="text-white/40 font-technical text-sm uppercase tracking-[0.3em] max-w-xl">
             A battle-tested foundation for high-availability systems and mission-critical network architectures.
