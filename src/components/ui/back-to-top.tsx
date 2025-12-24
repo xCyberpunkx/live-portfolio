@@ -49,9 +49,9 @@ export default function BackToTop() {
             
             <div className="absolute inset-0 bg-white/5 -translate-y-full group-hover:animate-scan opacity-30" />
             
-            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[7px] font-technical text-white/40 opacity-0 group-hover:opacity-100 transition-all duration-700 whitespace-nowrap tracking-widest">
-              ASCEND
-            </span>
+              <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[7px] font-technical text-white/40 opacity-0 group-hover:opacity-100 transition-all duration-700 whitespace-nowrap tracking-widest">
+                INITIATE
+              </span>
           </div>
         </motion.button>
       )}
