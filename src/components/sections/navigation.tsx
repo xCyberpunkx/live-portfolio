@@ -36,26 +36,23 @@ const Navigation = () => {
         {/* Logo */}
         <Link href="/" className="relative z-[60]">
           <div className="flex flex-col leading-none">
-            <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">LANDO</span>
-            <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">NORRIS</span>
+            <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">ZINEDINE</span>
+            <span className="text-[22px] font-black tracking-[-0.04em] uppercase text-off-white">ROUABAH</span>
           </div>
         </Link>
 
-        {/* Center LN Icon */}
+        {/* Center ZR Icon */}
         <div className="absolute left-1/2 -translate-x-1/2 hidden md:block opacity-80">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-off-white">
-            <path d="M4 4L8 20L12 4L16 20L20 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
-          </svg>
+          <div className="text-off-white font-black text-xl tracking-tighter">ZR</div>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-4 relative z-[60]">
           <a
-            href="https://store.landonorris.com/"
+            href="https://github.com/zineddine"
             className="flex items-center gap-2 bg-neon-lime text-rich-black px-5 py-2.5 rounded-full font-bold text-sm tracking-tight btn-primary-hover"
           >
-            <ShoppingBag size={18} strokeWidth={2.5} />
-            <span className="uppercase pt-0.5">Store</span>
+            <span className="uppercase pt-0.5">GITHUB</span>
           </a>
 
           <button
