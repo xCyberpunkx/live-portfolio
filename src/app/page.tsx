@@ -4,6 +4,7 @@ import SubHeroSection from "@/components/sections/sub-hero";
 import ImpactMarquee from "@/components/sections/impact-marquee";
 import MyProjects from "@/components/sections/projects";
 import ChampionCollection from "@/components/sections/champion-collection";
+import FormulaOne from "@/components/sections/formula-one";
 import Partnerships from "@/components/sections/partnerships";
 import Footer from "@/components/sections/footer";
 import SplashScreen from "@/components/ui/splash-screen";
