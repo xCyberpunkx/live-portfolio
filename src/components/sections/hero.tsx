@@ -9,9 +9,9 @@ const FloatingLogos = () => {
     { name: "Pirelli", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Pirelli_logo.svg/1200px-Pirelli_logo.svg.png", x: "15%", y: "20%", size: 80 },
     { name: "Red Bull", src: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Red_Bull_Racing_Logo.svg/1200px-Red_Bull_Racing_Logo.svg.png", x: "80%", y: "15%", size: 120 },
     { name: "Mercedes", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Mercedes_Benz_logo.svg/1200px-Mercedes_Benz_logo.svg.png", x: "10%", y: "70%", size: 60 },
-    { name: "Vercel", src: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png", x: "85%", y: "65%", size: 70, invert: true },
-    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/F1.svg/1200px-F1.svg.png", x: "50%", y: "10%", size: 100 },
-    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1200px-Oracle_logo.svg.png", x: "75%", y: "80%", size: 100 },
+    { name: "Vercel", src: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png", x: "85%", y: "65%", size: 40, invert: true },
+    { name: "F1", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/F1.svg/1200px-F1.svg.png", x: "50%", y: "10%", size: 60 },
+    { name: "Oracle", src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1200px-Oracle_logo.svg.png", x: "75%", y: "80%", size: 60 },
   ];
 
   return (
