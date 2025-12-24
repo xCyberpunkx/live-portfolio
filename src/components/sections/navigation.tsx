@@ -4,11 +4,19 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Github, Linkedin, Mail } from "lucide-react";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<number | null>(null);
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +36,10 @@ const Navigation = () => {
 
   return (
     <>
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-1 bg-neon-lime z-[100] origin-left"
+        style={{ scaleX }}
+      />
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out px-[4vw] py-6 flex items-center justify-between ${
           scrolled ? "glass-nav py-4" : "bg-transparent"
