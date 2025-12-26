@@ -27,15 +27,53 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     restDelta: 0.001
   });
 
-  const y = useTransform(smoothY, (value) => -value);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Default to true to avoid fixed positioning issues on initial mount
 
+  useEffect(() => {
+    setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !isMobile && contentRef.current) {
+      const observer = new ResizeObserver((entries) => {
+        // Use requestAnimationFrame to avoid "ResizeObserver loop limit exceeded" error
+        requestAnimationFrame(() => {
+          if (!entries.length) return;
+          const height = entries[0].contentRect.height;
+          setContentHeight(height);
+        });
+      });
+      observer.observe(contentRef.current);
+      return () => observer.disconnect();
+    }
+  }, [mounted, isMobile]);
+
+  const transformY = useTransform(smoothY, (value) => -value);
+
+  // Return a stable structure to prevent crashes during resize
   return (
     <>
-      <div style={{ height: contentHeight }} />
+      {mounted && !isMobile && (
+        <div 
+          aria-hidden="true"
+          style={{ height: contentHeight }} 
+          className="pointer-events-none"
+        />
+      )}
       <motion.div
         ref={contentRef}
-        style={{ y }}
-        className="fixed top-0 left-0 w-full overflow-hidden"
+        style={mounted && !isMobile ? { y: transformY } : {}}
+        className={mounted && !isMobile ? "fixed top-0 left-0 w-full overflow-hidden" : "relative w-full"}
       >
         {children}
       </motion.div>

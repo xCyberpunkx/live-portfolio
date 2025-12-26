@@ -40,15 +40,15 @@ export default function Partnerships() {
         </motion.div>
 
         <div className="flex flex-wrap justify-center items-center gap-16 md:gap-32">
-          {partners.map((partner, index) => (
-            <motion.div
-              key={partner.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className="relative w-32 md:w-48 h-16 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-crosshair"
-            >
+            {partners.map((partner, index) => (
+              <motion.div
+                key={partner.name}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="relative w-32 md:w-48 h-16 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-crosshair"
+              >
               <img
                 src={partner.logo}
                 alt={partner.name}

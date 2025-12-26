@@ -42,7 +42,7 @@ const Navigation = () => {
     { name: "Services", href: "/services" },
     { name: "Projects", href: "/projects" },
     { name: "Blog", href: "/blog" },
-    { name: "Download CV", href: "/resume.pdf", download: true, highlight: true },
+    { name: "Download CV", href: "/cv.pdf", download: true, highlight: true },
     { name: "F1", href: "/f1" },
   ];
 
@@ -190,7 +190,7 @@ return (
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+    </div>
   );
 };
 
