@@ -25,7 +25,6 @@ export default function Home() {
         <TechExperience />
         <MyProjects />
         <ChampionCollection />
-       
         <Footer />
       </SmoothScroll>
     </main>

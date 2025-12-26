@@ -2,12 +2,17 @@
 
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Github, Linkedin, Send, Loader2 } from "lucide-react";
+import { FaReddit, FaDiscord, FaWhatsapp } from "react-icons/fa6";
 import emailjs from "@emailjs/browser";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/xCyberpunkx", label: "Github" },
   { icon: Linkedin, href: "https://www.linkedin.com/in/zine-eddine-rouabah/", label: "LinkedIn" },
+  { icon: FaReddit, href: "https://www.reddit.com/user/No_Investigator4261/", label: "Reddit" },
+  { icon: FaDiscord, href: "https://discord.com/users/557172887799463937", label: "Discord" },
+  { icon: FaWhatsapp, href: "https://wa.me/213540166358", label: "WhatsApp" },
 ];
 
 export default function Footer() {
@@ -58,36 +63,52 @@ export default function Footer() {
     }
   };
 
-  return (
-    <footer id="contact" className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          <div className="space-y-12">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="space-y-4"
-            >
-              <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPS</span>
-              <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
-                INITIATE<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPS</span>
-              </h2>
-            </motion.div>
+    return (
+      <footer id="contact" className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+            <div className="space-y-12">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPS</span>
+                <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
+                  INITIATE<br />
+                  <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPS</span>
+                </h2>
+              </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="group cursor-pointer">
-                  <p className="text-xs font-technical text-white/40 uppercase mb-2">Email</p>
-                  <a href="mailto:rouabah.zineedinee@gmail.com" className="text-lg text-white group-hover:text-blue-400 transition-colors duration-300">
-                    rouabah.zineedinee@gmail.com
-                  </a>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
+                <div className="space-y-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Sitemap</p>
+                  <ul className="space-y-4">
+                    <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">About Architect</Link></li>
+                    <li><Link href="/services" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Expert Services</Link></li>
+                    <li><Link href="/projects" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Project Archive</Link></li>
+                  </ul>
+                </div>
+                <div className="space-y-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Resources</p>
+                  <ul className="space-y-4">
+                    <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Technical Blog</Link></li>
+                    <li><Link href="/contact" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Get In Touch</Link></li>
+                    <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Formula 1 Stats</Link></li>
+                  </ul>
+                </div>
+                <div className="space-y-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Legal</p>
+                  <ul className="space-y-4">
+                    <li><Link href="/privacy" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Privacy Policy</Link></li>
+                    <li><Link href="/terms" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Terms of Service</Link></li>
+                  </ul>
                 </div>
               </div>
-            </div>
 
-            <div className="flex gap-4">
+              <div className="flex gap-4">
+
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
@@ -108,42 +129,42 @@ export default function Footer() {
             viewport={{ once: true }}
             className="relative"
           >
-            <form onSubmit={handleSubmit} className="space-y-8 p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-xs font-technical text-white/40 uppercase">Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-white/10"
-                    placeholder="Your Name"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-8 p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-xs font-technical text-white/60 uppercase">Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-white/30"
+                      placeholder="Your Name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-technical text-white/60 uppercase">Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-white/30"
+                      placeholder="your@email.com"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-technical text-white/40 uppercase">Email</label>
-                  <input
-                    type="email"
+                  <label className="text-xs font-technical text-white/60 uppercase">Message</label>
+                  <textarea
                     required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-transparent border-b border-white/10 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-white/10"
-                    placeholder="your@email.com"
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full bg-transparent border-b border-white/20 py-4 text-white focus:outline-none focus:border-white transition-colors resize-none placeholder:text-white/30"
+                    placeholder="How can we help?"
                   />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-technical text-white/40 uppercase">Message</label>
-                <textarea
-                  required
-                  rows={4}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-transparent border-b border-white/10 py-4 text-white focus:outline-none focus:border-white transition-colors resize-none placeholder:text-white/10"
-                  placeholder="How can we help?"
-                />
-              </div>
               <button
                 type="submit"
                 disabled={status === 'loading'}

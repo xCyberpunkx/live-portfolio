@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import JsonLd from "@/components/seo/json-Id";
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
@@ -20,11 +21,20 @@ export const metadata: Metadata = {
     siteName: "Rouabah Zine Eddine Portfolio",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Rouabah Zine Eddine - Lead Software Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Rouabah Zine Eddine | Software Engineer",
     description: "Lead Engineer specializing in scalable architectures and systems performance.",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://zineddine.vercel.app",
@@ -50,6 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
         <body className={`${jakarta.variable} font-sans antialiased bg-black text-white`}>
+          <JsonLd />
           <div className="grain-overlay" />
           <Script
 

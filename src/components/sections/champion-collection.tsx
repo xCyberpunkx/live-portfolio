@@ -85,11 +85,11 @@ const ChampionCollection = () => {
               </div>
               
               {/* Data Overlay */}
-              <div className="absolute -bottom-4 -right-4 p-6 bg-black border border-white/10 font-technical text-[8px] text-white/40 uppercase tracking-[0.2em] space-y-1 z-30">
-                <p>LAT: 36.7538° N</p>
-                <p>LNG: 3.0588° E</p>
-                <p className="text-white/60">NODE: DZ_ALGIERS</p>
-              </div>
+                <div className="absolute -bottom-4 -right-4 p-6 bg-black border border-white/10 font-technical text-[8px] text-white/40 uppercase tracking-[0.2em] space-y-1 z-30">
+                  <p>LAT: 36.4701° N</p>
+                  <p>LNG: 2.8288° E</p>
+                  <p className="text-white/60">NODE: DZ_BLIDA</p>
+                </div>
             </motion.div>
           </div>
         </div>
