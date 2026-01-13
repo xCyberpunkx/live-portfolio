@@ -11,36 +11,106 @@ export const metadata: Metadata = {
 };
 
 const projects = [
-    {
-      title: "SnovaTech Solar Simulation Platform",
-      category: "Energy Technology • Web Application",
-      image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=2074&auto=format&fit=crop",
-      link: "https://snovatech.netlify.app/",
-      github: "https://github.com/xCyberpunkx/Snovatech-Saas",
-      desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis. Developed with high precision to help users understand solar potential based on local data.",
-      tech: ["Next.js", "TypeScript", "Tailwind CSS", "Financial Algorithms"],
-      year: "2024"
-    },
-    {
-      title: "Photographer Reservation Platform",
-      category: "Marketplace Platform",
-      image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop",
-      link: "https://sawerni.vercel.app/",
-      github: "https://github.com/xCyberpunkx/sawerni-kv",
-      desc: "Algeria's first marketplace connecting verified photographers with clients. Features automated trust scoring, secure bookings, and an elegant portfolio showcase.",
-      tech: ["Next.js", "Supabase", "TypeScript", "Framer Motion"],
-      year: "2025"
-    },
-    {
-      title: "Clinic Management System",
-      category: "Healthcare Software",
-      image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
-      link: "https://ramdani.vercel.app/",
-      github: "https://github.com/xCyberpunkx/dental-backend",
-      desc: "A comprehensive dental clinic management system designed for efficiency. Handles appointment scheduling, patient electronic health records (EHR), and automated billing.",
-      tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
-      year: "2024"
-    }
+  {
+    title: "MF BETON",
+    category: "Industrial • Manufacturing",
+    image: "/projects/mf-beton.png",
+    link: "https://mfbeton-dz.vercel.app/",
+    github: "#",
+    desc: "Industrial excellence in concrete and prefabrication. A showcase of manufacturing capability and scale with a robust catalog system.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "KTM - Kadri Transformation Metallique",
+    category: "Industrial • Metalworking",
+    image: "/projects/ktm-metal.png",
+    link: "https://www.k-tm.com/",
+    github: "#",
+    desc: "Excellence in action. Metallic transformation and industrial hangar construction. Highlighting expertise in large-scale metal structures.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "Comptoir Oasis Hydraulique",
+    category: "Plumbing • Electricity",
+    image: "/projects/coh-plomberie.png",
+    link: "https://coh-six.vercel.app/",
+    github: "#",
+    desc: "Your partner in plumbing, electricity, and hardware. Professional quality guaranteed with an extensive product catalog.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "GENELTECH Industries",
+    category: "Industrial Solutions • Innovation",
+    image: "/projects/geneltech.png",
+    link: "https://geneltech-murex.vercel.app/",
+    github: "#",
+    desc: "Industrial excellence driven by innovation. Leader in industrial solutions, providing top-tier technical services.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "DAMAC PLUS",
+    category: "Real Estate • Architecture",
+    image: "/projects/damac-plus.png",
+    link: "https://damac-plus.vercel.app/",
+    github: "#",
+    desc: "Luxury real estate platform showcasing architectural distinction and urban living standards.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "Safouane Mokhtefi",
+    category: "Portfolio • Graphic Design",
+    image: "/projects/safouane-portfolio.png",
+    link: "https://mokhtefi-safwan.vercel.app/",
+    github: "#",
+    desc: "Personal portfolio for a Graphic Designer from Algeria, specialized in visual communication and branding.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "STEREO MIND",
+    category: "Productivity • Open Source",
+    image: "/projects/stereo-mind.png",
+    link: "https://stero-mind.vercel.app/",
+    github: "#",
+    desc: "A simple, free tool to help track learning, manage tasks, and reach goals without complicated setup.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "SnovaTech Solar Simulation",
+    category: "Energy Technology • Web Application",
+    image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=2074&auto=format&fit=crop",
+    link: "https://snovatech.netlify.app/",
+    github: "https://github.com/xCyberpunkx/Snovatech-Saas",
+    desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Financial Algorithms"],
+    year: "2024"
+  },
+  {
+    title: "Photographer Marketplace",
+    category: "Marketplace Platform",
+    image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop",
+    link: "https://sawerni.vercel.app/",
+    github: "https://github.com/xCyberpunkx/sawerni-kv",
+    desc: "Algeria's first marketplace connecting verified photographers with clients.",
+    tech: ["Next.js", "Supabase", "TypeScript", "Framer Motion"],
+    year: "2025"
+  },
+  {
+    title: "Clinic Management System",
+    category: "Healthcare Software",
+    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
+    link: "https://ramdani.vercel.app/",
+    github: "https://github.com/xCyberpunkx/dental-backend",
+    desc: "A comprehensive dental clinic management system designed for efficiency.",
+    tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
+    year: "2024"
+  }
 ];
 
 export default function ProjectsPage() {
@@ -49,7 +119,7 @@ export default function ProjectsPage() {
       <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "Projects", href: "/projects" }]} />
-        
+
         <header className="mb-20">
           <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-6">
             Project <span className="text-white/40">Archive</span>
@@ -77,7 +147,7 @@ export default function ProjectsPage() {
                   <span className="text-xs font-bold uppercase tracking-widest text-white/40">{project.category} — {project.year}</span>
                   <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight">{project.title}</h2>
                 </div>
-                
+
                 <p className="text-lg text-white/60 leading-relaxed">
                   {project.desc}
                 </p>
@@ -91,9 +161,6 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="flex gap-6 pt-4">
-                  <a href={project.github} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-white/60 transition-colors">
-                    <Github size={16} /> Source Code
-                  </a>
                   <a href={project.link} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-white/60 transition-colors">
                     <ExternalLink size={16} /> Live Demo
                   </a>

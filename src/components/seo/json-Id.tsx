@@ -8,8 +8,8 @@ export default function JsonLd() {
     url: 'https://zineddine.vercel.app',
     logo: 'https://zineddine.vercel.app/og-image.png',
     sameAs: [
-      'https://github.com/zine-eddine',
-      'https://linkedin.com/in/zine-eddine-rouabah',
+      'https://github.com/xCyberpunkx',
+      'https://linkedin.com/in/rouabah-zine-eddine',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
