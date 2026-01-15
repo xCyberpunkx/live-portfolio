@@ -16,7 +16,7 @@ const projects = [
     github: "https://github.com/xCyberpunkx/Snovatech-Saas",
     desc: "Web-based simulation platform for energy distribution and ROI analysis.",
     details: "SnovaTech enables industrial consumers to simulate energy scenarios and analyze ROI. The platform handles complex calculations and presents data in an intuitive dashboard format.",
-    tech: "React, TypeScript, +4"
+    tech: "Nextjs, TypeScript, +4"
   },
   {
     title: "Safouane Mokhtefi",
