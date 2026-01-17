@@ -10,7 +10,7 @@ import { ArrowUpRight, ExternalLink, X, Maximize2 } from "lucide-react";
 const projects = [
   {
     title: "SnovaTech Simulation",
-    category: "Energy Technology • Simulation",
+    category: "Energy Technology ",
     image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=2074&auto=format&fit=crop",
     link: "https://snovatech.netlify.app/",
     github: "https://github.com/xCyberpunkx/Snovatech-Saas",
