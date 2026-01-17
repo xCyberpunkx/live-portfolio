@@ -12,46 +12,25 @@ export const metadata: Metadata = {
 
 const projects = [
   {
-    title: "MF BETON",
-    category: "Industrial • Manufacturing",
-    image: "/projects/mf-beton.png",
-    link: "https://mfbeton-dz.vercel.app/",
-    github: "#",
-    desc: "Industrial excellence in concrete and prefabrication. A showcase of manufacturing capability and scale with a robust catalog system.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    title: "Photographer Marketplace",
+    category: "Marketplace Platform",
+    image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop",
+    link: "https://sawerni.vercel.app/",
+    github: "https://github.com/xCyberpunkx/sawerni-kv",
+    desc: "Algeria's first marketplace connecting verified photographers with clients.",
+    tech: ["Next.js", "Supabase", "TypeScript", "Framer Motion"],
     year: "2025"
   },
   {
-    title: "KTM - Kadri Transformation Metallique",
-    category: "Industrial • Metalworking",
-    image: "/projects/ktm-metal.png",
-    link: "https://www.k-tm.com/",
-    github: "#",
-    desc: "Excellence in action. Metallic transformation and industrial hangar construction. Highlighting expertise in large-scale metal structures.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    year: "2025"
-  },
-  {
-    title: "Comptoir Oasis Hydraulique",
-    category: "Plumbing • Electricity",
-    image: "/projects/coh-plomberie.png",
-    link: "https://coh-six.vercel.app/",
-    github: "#",
-    desc: "Your partner in plumbing, electricity, and hardware. Professional quality guaranteed with an extensive product catalog.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    year: "2025"
-  },
-  {
-    title: "GENELTECH Industries",
-    category: "Industrial Solutions • Innovation",
-    image: "/projects/geneltech.png",
-    link: "https://geneltech-murex.vercel.app/",
-    github: "#",
-    desc: "Industrial excellence driven by innovation. Leader in industrial solutions, providing top-tier technical services.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    year: "2025"
-  },
-  {
+    title: "Clinic Management System",
+    category: "Healthcare Software",
+    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
+    link: "https://ramdani.vercel.app/",
+    github: "https://github.com/xCyberpunkx/dental-backend",
+    desc: "A comprehensive dental clinic management system designed for efficiency.",
+    tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
+    year: "2024"
+  }, {
     title: "DAMAC PLUS",
     category: "Real Estate • Architecture",
     image: "/projects/damac-plus.png",
@@ -91,26 +70,48 @@ const projects = [
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Financial Algorithms"],
     year: "2024"
   },
+ 
   {
-    title: "Photographer Marketplace",
-    category: "Marketplace Platform",
-    image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop",
-    link: "https://sawerni.vercel.app/",
-    github: "https://github.com/xCyberpunkx/sawerni-kv",
-    desc: "Algeria's first marketplace connecting verified photographers with clients.",
-    tech: ["Next.js", "Supabase", "TypeScript", "Framer Motion"],
+    title: "MF BETON",
+    category: "Industrial • Manufacturing",
+    image: "/projects/mf-beton.png",
+    link: "https://mfbeton-dz.vercel.app/",
+    github: "#",
+    desc: "Industrial excellence in concrete and prefabrication. A showcase of manufacturing capability and scale with a robust catalog system.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
     year: "2025"
   },
   {
-    title: "Clinic Management System",
-    category: "Healthcare Software",
-    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
-    link: "https://ramdani.vercel.app/",
-    github: "https://github.com/xCyberpunkx/dental-backend",
-    desc: "A comprehensive dental clinic management system designed for efficiency.",
-    tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
-    year: "2024"
-  }
+    title: "KTM - Kadri Transformation Metallique",
+    category: "Industrial • Metalworking",
+    image: "/projects/ktm-metal.png",
+    link: "https://www.k-tm.com/",
+    github: "#",
+    desc: "Excellence in action. Metallic transformation and industrial hangar construction. Highlighting expertise in large-scale metal structures.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "Comptoir Oasis Hydraulique",
+    category: "Plumbing • Electricity",
+    image: "/projects/coh-plomberie.png",
+    link: "https://coh-six.vercel.app/",
+    github: "#",
+    desc: "Your partner in plumbing, electricity, and hardware. Professional quality guaranteed with an extensive product catalog.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  {
+    title: "GENELTECH Industries",
+    category: "Industrial Solutions • Innovation",
+    image: "/projects/geneltech.png",
+    link: "https://geneltech-murex.vercel.app/",
+    github: "#",
+    desc: "Industrial excellence driven by innovation. Leader in industrial solutions, providing top-tier technical services.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
+    year: "2025"
+  },
+  
 ];
 
 export default function ProjectsPage() {
