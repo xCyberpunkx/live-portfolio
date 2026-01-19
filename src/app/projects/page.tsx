@@ -68,7 +68,7 @@ const projects = [
     github: "https://github.com/xCyberpunkx/Snovatech-Saas",
     desc: "Solar energy simulation platform for Algerian consumers with financial projections and ROI analysis.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Financial Algorithms"],
-    year: "2024"
+    year: "2025"
   },
  
   {
