@@ -1,82 +1,61 @@
 "use client";
 
-import React, { useRef, useState, useCallback, useEffect } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import React, { createContext, useContext, useEffect, useRef, type ReactNode } from "react";
+import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState(0);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
-  const handleResize = useCallback(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.getBoundingClientRect().height);
-    }
-  }, []);
+const LenisContext = createContext<Lenis | null>(null);
 
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [handleResize]);
+// Lets any component (nav links, the hero's "Contact Me" button, footer anchors)
+// trigger a real Lenis-smoothed scroll instead of racing it with native scrollTo.
+export const useLenis = () => useContext(LenisContext);
 
-  const { scrollY } = useScroll();
-  const smoothY = useSpring(scrollY, {
-    damping: 20,
-    stiffness: 100,
-    mass: 0.5,
-    restDelta: 0.001
-  });
-
-  const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(true); // Default to true to avoid fixed positioning issues on initial mount
+export default function SmoothScroll({ children }: { children: ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null);
+  const [lenis, setLenis] = React.useState<Lenis | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const instance = new Lenis({
+      duration: 1.1,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.4,
+    });
+
+    lenisRef.current = instance;
+    setLenis(instance);
+
+    // Keep every ScrollTrigger (pins, scrubs) in sync with Lenis's virtual scroll position.
+    instance.on("scroll", ScrollTrigger.update);
+
+    // Drive Lenis from GSAP's ticker so both run on the same rAF loop — avoids
+    // the double-rAF stutter you get running them independently.
+    const update = (time: number) => {
+      instance.raf(time * 1000);
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    
+    gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
+
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      gsap.ticker.remove(update);
+      instance.destroy();
+      lenisRef.current = null;
+      setLenis(null);
     };
   }, []);
 
-  useEffect(() => {
-    if (mounted && !isMobile && contentRef.current) {
-      const observer = new ResizeObserver((entries) => {
-        // Use requestAnimationFrame to avoid "ResizeObserver loop limit exceeded" error
-        requestAnimationFrame(() => {
-          if (!entries.length) return;
-          const height = entries[0].contentRect.height;
-          setContentHeight(height);
-        });
-      });
-      observer.observe(contentRef.current);
-      return () => observer.disconnect();
-    }
-  }, [mounted, isMobile]);
-
-  const transformY = useTransform(smoothY, (value) => -value);
-
-  // Return a stable structure to prevent crashes during resize
   return (
-    <>
-      {mounted && !isMobile && (
-        <div 
-          aria-hidden="true"
-          style={{ height: contentHeight }} 
-          className="pointer-events-none"
-        />
-      )}
-      <motion.div
-        ref={contentRef}
-        style={mounted && !isMobile ? { y: transformY } : {}}
-        className={mounted && !isMobile ? "fixed top-0 left-0 w-full overflow-hidden" : "relative w-full"}
-      >
-        {children}
-      </motion.div>
-    </>
+    <LenisContext.Provider value={lenis}>
+      <div className="relative w-full">{children}</div>
+    </LenisContext.Provider>
   );
 }

@@ -16,16 +16,12 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
+    setStatus("loading");
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
@@ -33,8 +29,8 @@ export default function Footer() {
 
     if (!serviceId || !templateId || !publicKey) {
       console.error("EmailJS credentials are missing");
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
       return;
     }
 
@@ -46,76 +42,76 @@ export default function Footer() {
           from_name: formData.name,
           reply_to: formData.email,
           message: formData.message,
-          to_email: 'rouabah.zineedinee@gmail.com',
+          to_email: "rouabah.zineedinee@gmail.com",
         },
         publicKey
       );
 
-      if (result.status !== 200) throw new Error('Failed to send');
-      
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setStatus('idle'), 5000);
+      if (result.status !== 200) throw new Error("Failed to send");
+
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setStatus("idle"), 5000);
     } catch (error) {
       console.error("EmailJS Error:", error);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
     }
   };
 
-    return (
-      <footer id="contact" className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-            <div className="space-y-12">
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="space-y-4"
-              >
-                <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPS</span>
-                <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
-                  INITIATE<br />
-                  <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>SYNAPS</span>
-                </h2>
-              </motion.div>
+  return (
+    <footer id="contact" className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <div className="space-y-12">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPS</span>
+              <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
+                INITIATE<br />
+                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(59,130,246,0.35)" }}>SYNAPS</span>
+              </h2>
+            </motion.div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
-                <div className="space-y-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Sitemap</p>
-                  <ul className="space-y-4">
-                    <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">About Architect</Link></li>
-                    <li><Link href="/services" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Expert Services</Link></li>
-                    <li><Link href="/projects" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Project Archive</Link></li>
-                  </ul>
-                </div>
-                <div className="space-y-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Resources</p>
-                  <ul className="space-y-4">
-                    <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Technical Blog</Link></li>
-                    <li><Link href="/contact" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Get In Touch</Link></li>
-                    <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Formula 1 Stats</Link></li>
-                  </ul>
-                </div>
-                <div className="space-y-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Legal</p>
-                  <ul className="space-y-4">
-                    <li><Link href="/privacy" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Privacy Policy</Link></li>
-                    <li><Link href="/terms" className="text-xs font-bold uppercase tracking-widest hover:text-white transition-colors text-white/60">Terms of Service</Link></li>
-                  </ul>
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
+              <div className="space-y-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Sitemap</p>
+                <ul className="space-y-4">
+                  <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">About Architect</Link></li>
+                  <li><Link href="/services" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Expert Services</Link></li>
+                  <li><Link href="/projects" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Project Archive</Link></li>
+                </ul>
               </div>
+              <div className="space-y-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Resources</p>
+                <ul className="space-y-4">
+                  <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Technical Blog</Link></li>
+                  <li><Link href="/contact" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Get In Touch</Link></li>
+                  <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Formula 1 Stats</Link></li>
+                </ul>
+              </div>
+              <div className="space-y-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Legal</p>
+                <ul className="space-y-4">
+                  <li><Link href="/privacy" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Privacy Policy</Link></li>
+                  <li><Link href="/terms" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Terms of Service</Link></li>
+                </ul>
+              </div>
+            </div>
 
-              <div className="flex gap-4">
-
+            <div className="flex gap-4">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.href}
+                  data-cursor={social.label.toUpperCase()}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:bg-white/5 transition-all duration-300"
+                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-300"
                 >
                   <social.icon className="w-5 h-5 text-white" />
                 </motion.a>
@@ -129,52 +125,53 @@ export default function Footer() {
             viewport={{ once: true }}
             className="relative"
           >
-              <form onSubmit={handleSubmit} className="space-y-8 p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                    <label className="text-xs font-technical text-white/60 uppercase">Name</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-white/30"
-                      placeholder="Your Name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-technical text-white/60 uppercase">Email</label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-white transition-colors placeholder:text-white/30"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
+            <form onSubmit={handleSubmit} className="space-y-8 p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-xs font-technical text-white/60 uppercase">Message</label>
-                  <textarea
+                  <label className="text-xs font-technical text-white/60 uppercase">Name</label>
+                  <input
+                    type="text"
                     required
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-transparent border-b border-white/20 py-4 text-white focus:outline-none focus:border-white transition-colors resize-none placeholder:text-white/30"
-                    placeholder="How can we help?"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-blue-400 transition-colors placeholder:text-white/30"
+                    placeholder="Your Name"
                   />
                 </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-technical text-white/60 uppercase">Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-blue-400 transition-colors placeholder:text-white/30"
+                    placeholder="your@email.com"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-technical text-white/60 uppercase">Message</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full bg-transparent border-b border-white/20 py-4 text-white focus:outline-none focus:border-blue-400 transition-colors resize-none placeholder:text-white/30"
+                  placeholder="How can we help?"
+                />
+              </div>
               <button
                 type="submit"
-                disabled={status === 'loading'}
-                className="group w-full relative flex items-center justify-center gap-3 bg-white text-black py-4 font-bold uppercase tracking-widest hover:bg-blue-400 transition-all duration-500 overflow-hidden disabled:opacity-50"
+                disabled={status === "loading"}
+                data-cursor="SEND"
+                className="group w-full relative flex items-center justify-center gap-3 bg-white text-black py-4 font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all duration-500 overflow-hidden disabled:opacity-50"
               >
-                {status === 'loading' ? (
+                {status === "loading" ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
-                ) : status === 'success' ? (
+                ) : status === "success" ? (
                   "Sent Successfully"
-                ) : status === 'error' ? (
+                ) : status === "error" ? (
                   "Error Sending"
                 ) : (
                   <>
@@ -189,7 +186,7 @@ export default function Footer() {
 
         <div className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">
-            © 2025 ROUABAH ZINE EDDINE // ALL RIGHTS RESERVED
+            © 2026 ROUABAH ZINE EDDINE // ALL RIGHTS RESERVED
           </p>
           <div className="flex gap-8">
             <p className="text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">BUILT FOR PERFORMANCE // NODE_DZ</p>
