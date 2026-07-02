@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import {
   SiTypescript,
   SiGnubash,
@@ -91,6 +91,55 @@ const STACK_CATEGORIES = [
   },
 ];
 
+function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES)[number]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15% 0px -15% 0px" });
+  const pct = 100;
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.06 }}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-[10px] font-technical text-white/30 uppercase tracking-[0.4em]">
+          {category.label}
+        </span>
+        <span className="text-[9px] font-technical text-blue-400/70 uppercase tracking-widest tabular-nums">
+          {inView ? `${category.items.length}/${category.items.length} synced` : "syncing..."}
+        </span>
+      </div>
+
+      <div className="h-[2px] bg-white/5 rounded-full overflow-hidden mb-4">
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.9, delay: index * 0.06 + 0.1, ease: "easeOut" }}
+          className="h-full bg-blue-500/60 origin-left"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-3">
+        {category.items.map((item, i) => (
+          <motion.div
+            key={item.name}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ delay: index * 0.06 + 0.2 + i * 0.05, duration: 0.3 }}
+            className="flex items-center gap-2 px-4 py-2.5 border border-white/10 rounded-full text-white/70 hover:text-white hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
+          >
+            <item.icon size={14} className="text-blue-400" />
+            <span className="text-[11px] font-bold uppercase tracking-wider">{item.name}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function SystemStack() {
   return (
     <section className="relative bg-black py-24 md:py-48 border-t border-white/5 overflow-hidden">
@@ -115,7 +164,7 @@ export default function SystemStack() {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-5"
+            className="lg:col-span-5 lg:sticky lg:top-32"
           >
             <div className="border border-white/10 bg-white/[0.02] rounded-xl overflow-hidden">
               <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/[0.02]">
@@ -157,31 +206,10 @@ export default function SystemStack() {
             </div>
           </motion.div>
 
-          {/* Categorized stack */}
+          {/* Categorized stack, rendered as sequential package installs */}
           <div className="lg:col-span-7 space-y-10">
             {STACK_CATEGORIES.map((category, catIndex) => (
-              <motion.div
-                key={category.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: catIndex * 0.08 }}
-              >
-                <span className="text-[10px] font-technical text-white/30 uppercase tracking-[0.4em] block mb-4">
-                  {category.label}
-                </span>
-                <div className="flex flex-wrap gap-3">
-                  {category.items.map((item) => (
-                    <div
-                      key={item.name}
-                      className="flex items-center gap-2 px-4 py-2.5 border border-white/10 rounded-full text-white/70 hover:text-white hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
-                    >
-                      <item.icon size={14} className="text-blue-400" />
-                      <span className="text-[11px] font-bold uppercase tracking-wider">{item.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+              <CategoryBlock key={category.label} category={category} index={catIndex} />
             ))}
           </div>
         </div>

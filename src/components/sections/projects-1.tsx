@@ -71,20 +71,10 @@ const projects = [
 
 type Project = (typeof projects)[number];
 
-const spanPattern = [
-  "col-span-2 row-span-2", // featured — big
-  "col-span-2 row-span-1", // wide
-  "col-span-1 row-span-1", // small
-  "col-span-1 row-span-1", // small
-  "col-span-2 row-span-1", // wide
-  "col-span-2 row-span-1", // wide
-];
-
 const TiltCard = ({ project, index, onOpen }: { project: Project; index: number; onOpen: (p: Project) => void }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
-  const spanClass = spanPattern[index % spanPattern.length];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = cardRef.current;
@@ -101,7 +91,7 @@ const TiltCard = ({ project, index, onOpen }: { project: Project; index: number;
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.08 }}
-      className={`group relative cursor-pointer h-full ${spanClass}`}
+      className="group relative cursor-pointer"
       data-cursor="VIEW"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
@@ -116,7 +106,7 @@ const TiltCard = ({ project, index, onOpen }: { project: Project; index: number;
         ref={cardRef}
         animate={{ rotateX: tilt.x, rotateY: tilt.y, scale: hovered ? 1.02 : 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="relative w-full h-full overflow-hidden border border-white/5 bg-white/5"
+        className="relative aspect-[4/3] overflow-hidden border border-white/5 bg-white/5"
         style={{ transformStyle: "preserve-3d" }}
       >
         <Image
@@ -180,7 +170,7 @@ export default function MyProjects() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 grid-flow-dense auto-rows-[180px] sm:auto-rows-[220px] md:auto-rows-[260px] gap-4 md:gap-6 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-20">
             {projects.map((project, index) => (
               <TiltCard key={project.title} project={project} index={index} onOpen={setSelectedProject} />
             ))}

@@ -1,8 +1,16 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Terminal } from "lucide-react";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+// NOTE: content unchanged for now — swap these when we do the info-update pass
 const experiences = [
   {
     id: "01",
@@ -30,95 +38,181 @@ const experiences = [
   },
 ];
 
-export default function TechExperience() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"],
-  });
+const STATUS_STYLES: Record<string, { dot: string; text: string }> = {
+  ACTIVE: { dot: "bg-green-500", text: "text-green-500" },
+  COMPLETED: { dot: "bg-blue-500", text: "text-blue-400" },
+  STABLE: { dot: "bg-white/60", text: "text-white/60" },
+};
 
+function useTypewriter(text: string, start: boolean, speed = 26) {
+  const [out, setOut] = useState("");
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+    if (!start) return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setOut(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, speed);
+    return () => clearInterval(id);
+  }, [start, text, speed]);
+  return out;
+}
 
-  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+function LogLine({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -8 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+      transition={{ duration: 0.4, delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20% 0px -20% 0px" });
+  const typedTitle = useTypewriter(exp.title, inView, 26);
+  const style = STATUS_STYLES[exp.status] ?? STATUS_STYLES.STABLE;
+  const stillTyping = inView && typedTitle.length < exp.title.length;
 
   return (
-    <section id="tech" className="bg-black py-20 md:py-64 relative overflow-hidden border-t border-white/5">
-      <div className="absolute top-12 md:top-24 right-[5vw] opacity-5 pointer-events-none">
-        <span className="text-[30vw] md:text-[20vw] font-black text-white leading-none uppercase tracking-tighter">PATH</span>
+    <div ref={ref} className="border-b border-white/5 last:border-b-0 py-8 first:pt-0">
+      <LogLine>
+        <div className="flex flex-wrap items-center gap-3 text-[10px] md:text-xs font-technical text-white/30">
+          <span className="text-blue-400/70">[{exp.id}]</span>
+          <span>boot: unit {exp.company.toLowerCase().replace(/\s+/g, "-")}.service</span>
+          <span className="text-white/20">//</span>
+          <span>{exp.date}</span>
+        </div>
+      </LogLine>
+
+      <div className="mt-4 flex items-baseline gap-1">
+        <h4 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tight min-h-[1.2em]">
+          {typedTitle}
+        </h4>
+        <motion.span
+          animate={{ opacity: stillTyping ? [1, 0] : 0 }}
+          transition={{ duration: 0.5, repeat: stillTyping ? Infinity : 0, repeatType: "reverse" }}
+          className="inline-block w-2 h-6 md:h-8 bg-blue-400 translate-y-1"
+        />
       </div>
 
-      <div className="container mx-auto px-6 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-          <div className="lg:col-span-4 mb-16 lg:mb-0">
-            <div className="lg:sticky lg:top-32">
-              <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[1em] uppercase block mb-8">Professional Record</span>
-              <h2 className="text-[16vw] md:text-[10vw] lg:text-[6vw] font-black text-white uppercase leading-[0.85] tracking-tighter mb-12">
-                THE<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(59,130,246,0.3)" }}>JOURNEY</span>
-              </h2>
+      <LogLine delay={0.15}>
+        <div className="mt-2 flex items-center gap-2">
+          <span className={`w-1.5 h-1.5 rounded-full ${style.dot} ${exp.status === "ACTIVE" ? "animate-pulse" : ""}`} />
+          <span className={`text-[10px] font-technical uppercase tracking-widest ${style.text}`}>{exp.status}</span>
+          <span className="text-white/20 text-[10px] font-technical">@ {exp.company}</span>
+        </div>
+      </LogLine>
 
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                  <span className="font-technical text-[8px] text-white/40 uppercase tracking-widest">System_Status: Online</span>
-                </div>
-                <p className="text-white/30 font-technical text-[10px] uppercase tracking-[0.2em] max-w-xs leading-relaxed">
-                  A chronological sequence of technical challenges delivered by a Software Engineer.
-                </p>
+      <LogLine delay={0.25}>
+        <p className="mt-4 text-sm md:text-base text-white/50 font-technical leading-relaxed max-w-2xl pl-4 border-l border-white/10">
+          {exp.desc}
+        </p>
+      </LogLine>
+    </div>
+  );
+}
+
+export default function TechExperience() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile || !fillRef.current || !sectionRef.current) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        fillRef.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            end: "bottom 40%",
+            scrub: 0.4,
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [isMobile]);
+
+  return (
+    <section id="tech" ref={sectionRef} className="bg-black py-24 md:py-48 relative overflow-hidden border-t border-white/5">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-32 space-y-8">
+              <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] uppercase block">
+                Professional Record
+              </span>
+              <p className="text-white/30 font-technical text-[10px] uppercase tracking-[0.2em] leading-relaxed max-w-xs">
+                A running log of technical roles — read the way a system reads its own startup, sequentially, one service at a time.
+              </p>
+              <div className="hidden lg:flex items-center gap-3 pt-4">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                <span className="font-technical text-[8px] text-white/40 uppercase tracking-widest">reading career.log</span>
               </div>
             </div>
           </div>
 
-          <div ref={containerRef} className="lg:col-span-8 relative">
-            <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-white/5 hidden md:block" />
-            {!isMobile && (
-              <motion.div style={{ scaleY, originY: 0 }} className="absolute left-0 top-0 bottom-0 w-[1px] bg-blue-500/60 hidden md:block z-10" />
-            )}
+          <div className="lg:col-span-8">
+            <div className="border border-white/10 bg-white/[0.02] rounded-xl overflow-hidden">
+              <div className="flex items-center justify-between gap-4 px-4 md:px-6 py-3 border-b border-white/10 bg-white/[0.02]">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                  <span className="ml-3 flex items-center gap-2 font-technical text-[9px] text-white/30 uppercase tracking-widest">
+                    <Terminal size={10} /> career.log
+                  </span>
+                </div>
+                <span className="font-technical text-[9px] text-white/20 uppercase tracking-widest hidden sm:block">
+                  {experiences.length} units loaded
+                </span>
+              </div>
 
-            <div className="space-y-24 md:space-y-48 md:pl-24">
-              {experiences.map((exp, idx) => (
-                <motion.div
-                  key={exp.id}
-                  initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="group relative"
-                >
-                  <div className="absolute -left-[101px] top-4 w-2 h-2 rounded-full bg-black border border-white/20 group-hover:border-blue-400 group-hover:scale-150 transition-all duration-500 hidden md:block z-20" />
+              <div className="h-[2px] bg-white/5 relative overflow-hidden">
+                <div
+                  ref={fillRef}
+                  className="absolute inset-y-0 left-0 w-full bg-blue-500/60 origin-left"
+                  style={{ transform: "scaleX(0)" }}
+                />
+              </div>
 
-                  <div className="flex flex-col gap-8">
-                    <div className="flex flex-wrap items-center gap-6">
-                      <span className="text-[10px] font-technical text-white/40 group-hover:text-white/80 transition-colors duration-500">[{exp.id}]</span>
-                      <span className="h-px w-12 bg-white/20" />
-                      <span className="text-[10px] font-technical text-white/60 uppercase tracking-widest">{exp.date}</span>
-                      <span className="px-2 py-0.5 border border-white/20 text-[7px] font-technical text-white/40 rounded uppercase">{exp.status}</span>
-                    </div>
+              <div className="p-6 md:p-10">
+                {experiences.map((exp) => (
+                  <ExperienceEntry key={exp.id} exp={exp} />
+                ))}
 
-                    <div className="space-y-4">
-                      <h4 className="text-4xl md:text-7xl font-black text-white uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-700 ease-in-out">
-                        {exp.title}
-                      </h4>
-                      <p className="text-xl md:text-2xl font-black text-white/40 uppercase tracking-tight group-hover:text-blue-400/80 transition-colors duration-700">
-                        // {exp.company}
-                      </p>
-                    </div>
-
-                    <div className="relative">
-                      <div className="absolute -left-4 top-0 bottom-0 w-[1px] bg-blue-500/40 scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
-                      <p className="text-white/60 font-technical text-sm md:text-lg uppercase tracking-wider leading-relaxed max-w-2xl group-hover:text-white transition-colors duration-700">
-                        {exp.desc}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                <div className="pt-8 flex items-center gap-2 font-technical text-white/40 text-xs">
+                  <span>guest@node_dz ~ %</span>
+                  <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
+                    className="w-1.5 h-3.5 bg-white/60 inline-block"
+                  />
+                  <span className="text-white/20 ml-2">system ready</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

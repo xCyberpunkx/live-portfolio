@@ -2,6 +2,7 @@ import Navigation from "@/components/sections/navigation";
 import HeroSection from "@/components/sections/hero";
 import SubHeroSection from "@/components/sections/sub-hero";
 import ImpactMarquee from "@/components/sections/impact-marquee";
+import Partnerships from "@/components/sections/partnerships";
 import SystemStack from "@/components/sections/system-stack";
 import MyProjects from "@/components/sections/projects";
 import Footer from "@/components/sections/footer";
@@ -25,6 +26,7 @@ export default function Home() {
         <SystemStack />
         <TechExperience />
         <MyProjects />
+        <Partnerships />
         <Footer />
       </SmoothScroll>
     </main>

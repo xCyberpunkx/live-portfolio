@@ -4,22 +4,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const partners = [
-  { 
-    name: 'Formula 1', 
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg',
-    invert: false 
-  },
-  { 
-    name: 'Vercel', 
-    logo: 'https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png',
-    invert: true 
-  },
-  { 
-    name: 'Oracle', 
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg',
-    invert: true 
-  },
+  { name: 'Ramdani', logo: '/clients/ramdani.png' },
+  { name: 'Faouzi', logo: '/clients/faouzi.jpg' },
+  { name: 'TekkoLab', logo: '/clients/tekkolab.png' },
+  { name: 'Todays', logo: '/clients/todays.png' },
+  { name: 'Maxconfort', logo: '/clients/maxconfort.webp' },
+  { name: 'Damac', logo: '/clients/damac.webp' },
+  { name: 'Ideal', logo: '/clients/ideal.png' },
+  { name: 'KTM', logo: '/clients/ktm.webp' },
+  { name: 'MyTech', logo: '/clients/mytech.png' },
+  { name: 'Conforeal', logo: '/clients/conforeal-logo.png' },
+  { name: 'Woodplay', logo: '/clients/woodplay.png' },
 ];
+
+// Duplicate the list so the marquee loop is seamless
+const marqueeLogos = [...partners, ...partners];
 
 export default function Partnerships() {
   return (
@@ -28,36 +27,48 @@ export default function Partnerships() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div 
+      <div className="relative z-10">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-24"
+          className="text-center mb-24 px-6"
         >
           <span className="font-technical text-[10px] tracking-[1em] text-white/20 uppercase block mb-4">STRATEGIC_PARTNERS</span>
           <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white">TRUSTED_BY_LEADERS</h2>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center items-center gap-16 md:gap-32">
-            {partners.map((partner, index) => (
-              <motion.div
-                key={partner.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="relative w-32 md:w-48 h-16 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700 cursor-crosshair"
+        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
+            {marqueeLogos.map((partner, index) => (
+              <div
+                key={`${partner.name}-${index}`}
+                className="relative w-64 md:w-80 h-28 md:h-36 mx-8 md:mx-14 flex items-center justify-center shrink-0"
               >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className={`w-full h-full object-contain ${partner.invert ? 'invert' : ''}`}
-              />
-            </motion.div>
-          ))}
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes marquee {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-marquee {
+          animation: marquee 35s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
