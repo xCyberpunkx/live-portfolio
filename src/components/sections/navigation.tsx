@@ -65,7 +65,7 @@ const Navigation = () => {
       />
       <nav
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-4 md:py-6 flex items-center justify-between ${
-          isScrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3 md:py-4" : "bg-transparent"
+          isScrolled ? "bg-zinc-950/80 backdrop-blur-xl border-b border-white/5 py-3 md:py-4" : "bg-transparent"
         }`}
       >
         <Link href="/" data-cursor="HOME" className="relative z-[120] group flex items-center gap-2">
@@ -121,7 +121,7 @@ const Navigation = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[105] bg-black flex flex-col items-center justify-center p-6"
+            className="fixed inset-0 z-[105] bg-zinc-950 flex flex-col items-center justify-center p-6"
           >
             <button
               onClick={() => setIsOpen(false)}

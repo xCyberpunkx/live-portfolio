@@ -128,7 +128,7 @@ export default function HelmetGallery() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 to-transparent" />
           </motion.div>
           
           <motion.div 

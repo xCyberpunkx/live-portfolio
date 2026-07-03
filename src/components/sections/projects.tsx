@@ -72,7 +72,7 @@ const projects = [
 type Project = (typeof projects)[number];
 
 const spanPattern = [
-  "col-span-2 row-span-2", // featured — big
+  "col-span-2 row-span-1 md:row-span-2", // featured — big (capped height on mobile)
   "col-span-2 row-span-1", // wide
   "col-span-1 row-span-1", // small
   "col-span-1 row-span-1", // small
@@ -125,7 +125,7 @@ const TiltCard = ({ project, index, onOpen }: { project: Project; index: number;
           fill
           className={`object-cover transition-all duration-700 ${hovered ? "grayscale-0 scale-110" : "grayscale opacity-60"}`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/10 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
           <span className="text-[9px] font-technical text-blue-400 uppercase tracking-widest block mb-2">
@@ -137,7 +137,7 @@ const TiltCard = ({ project, index, onOpen }: { project: Project; index: number;
         </div>
 
         <div
-          className={`absolute top-5 right-5 w-9 h-9 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-500 ${
+          className={`absolute top-5 right-5 w-9 h-9 rounded-full border border-white/20 bg-zinc-950/40 backdrop-blur-sm flex items-center justify-center transition-all duration-500 ${
             hovered ? "opacity-100 rotate-0" : "opacity-0 -rotate-45"
           }`}
         >
@@ -168,7 +168,7 @@ export default function MyProjects() {
 
   return (
     <>
-      <section id="projects" className="bg-black py-24 md:py-64 border-t border-white/5 overflow-hidden relative">
+      <section id="projects" className="bg-zinc-950 py-24 md:py-64 border-t border-white/5 overflow-hidden relative">
         <div className="container mx-auto px-6">
           <div className="flex flex-col mb-16 md:mb-32">
             <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8">
@@ -209,7 +209,7 @@ export default function MyProjects() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                  className="absolute inset-0 bg-zinc-950/80 backdrop-blur-md"
                   onClick={() => setSelectedProject(null)}
                 />
 
@@ -220,7 +220,7 @@ export default function MyProjects() {
                   transition={{ type: "spring", damping: 32, stiffness: 260 }}
                   className="relative z-10 w-full sm:w-[90%] md:w-[70%] lg:w-[55%] h-full bg-[#0a0a0a] border-l border-white/10 overflow-y-auto"
                 >
-                  <div className="relative w-full aspect-[16/9] bg-black/40">
+                  <div className="relative w-full aspect-[16/9] bg-zinc-950/40">
                     <Image
                       src={selectedProject.image}
                       alt={selectedProject.title}
@@ -229,11 +229,11 @@ export default function MyProjects() {
                       priority
                       sizes="(max-width: 768px) 100vw, 55vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-black/40" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-zinc-950/40" />
 
                     <button
                       onClick={() => setSelectedProject(null)}
-                      className="absolute top-6 right-6 p-3 bg-black/50 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors z-20 backdrop-blur-sm"
+                      className="absolute top-6 right-6 p-3 bg-zinc-950/50 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors z-20 backdrop-blur-sm"
                     >
                       <X size={20} />
                     </button>

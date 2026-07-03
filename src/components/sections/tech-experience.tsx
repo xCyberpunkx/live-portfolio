@@ -10,31 +10,47 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// NOTE: content unchanged for now — swap these when we do the info-update pass
+// Synced from LinkedIn work history (last updated: session — July 2026)
 const experiences = [
   {
     id: "01",
-    date: "2025 — PRES",
-    title: "Frontend Developer",
-    company: "Snovatech",
+    date: "APR 2026 — PRES",
+    title: "Software Engineer",
+    company: "Script Shock",
     status: "ACTIVE",
-    desc: "Developing and maintaining user-facing features for web and simulation platforms. Improving UI performance and optimizing rendering for large datasets. Integrating APIs to ensure consistent user experience.",
+    desc: "Working across front-end development and database administration, building and maintaining features on-site as part of the engineering team.",
   },
   {
     id: "02",
-    date: "2024 — 25",
-    title: "Software Engineer Intern",
-    company: "P.I Design",
-    status: "COMPLETED",
-    desc: "Led the design and implementation of a comprehensive patient management system for healthcare facilities. Collaborated with medical professionals to translate operational needs into effective software solutions.",
+    date: "APR 2024 — PRES",
+    title: "Software Engineer",
+    company: "Freelance",
+    status: "ACTIVE",
+    desc: "Building and maintaining websites for independent clients — from PostgreSQL-backed data layers and Prisma ORM integration to full deployment.",
   },
   {
     id: "03",
-    date: "2024",
+    date: "FEB 2025 — FEB 2026",
+    title: "Frontend Web Developer",
+    company: "SnovaTech",
+    status: "COMPLETED",
+    desc: "Delivered front-end features for a solar simulation platform using Next.js, remote, improving UI consistency and performance across the app.",
+  },
+  {
+    id: "04",
+    date: "FEB 2024 — JAN 2025",
+    title: "Web Developer",
+    company: "Kara Automobile",
+    status: "COMPLETED",
+    desc: "On-site web development role supporting the company's digital presence and internal documentation workflows.",
+  },
+  {
+    id: "05",
+    date: "JUL 2023 — SEP 2024",
     title: "Full-Stack Developer",
     company: "Ultra Light",
-    status: "STABLE",
-    desc: "Directed the development of corporate digital platforms and internal management systems. Designed application architecture aligned with business objectives and workflow requirements.",
+    status: "COMPLETED",
+    desc: "Led development of Ultra Light's corporate website using Laravel — architecting a custom web application focused on performance, scalability, and security, with a responsive, user-friendly design.",
   },
 ];
 
@@ -110,7 +126,7 @@ function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
       </LogLine>
 
       <LogLine delay={0.25}>
-        <p className="mt-4 text-sm md:text-base text-white/50 font-technical leading-relaxed max-w-2xl pl-4 border-l border-white/10">
+        <p className="mt-4 text-sm md:text-base text-white/70 font-technical leading-relaxed max-w-2xl pl-4 border-l border-white/10">
           {exp.desc}
         </p>
       </LogLine>
@@ -156,7 +172,7 @@ export default function TechExperience() {
   }, [isMobile]);
 
   return (
-    <section id="tech" ref={sectionRef} className="bg-black py-24 md:py-48 relative overflow-hidden border-t border-white/5">
+    <section id="tech" ref={sectionRef} className="bg-zinc-950 py-24 md:py-48 relative overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="lg:col-span-4">

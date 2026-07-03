@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const ChampionCollection = () => {
   return (
-    <section id="about" className="relative w-full bg-black py-24 md:py-64 overflow-hidden border-t border-white/5">
+    <section id="about" className="relative w-full bg-zinc-950 py-24 md:py-64 overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-12 gap-y-24 md:gap-x-24 relative items-center">
           <div className="col-span-12 md:col-span-6 z-10">
@@ -64,7 +64,7 @@ const ChampionCollection = () => {
                 </div>
               </div>
 
-              <div className="w-full h-full border border-white/10 p-1 bg-black/40 backdrop-blur-sm relative overflow-hidden group">
+              <div className="w-full h-full border border-white/10 p-1 bg-zinc-950/40 backdrop-blur-sm relative overflow-hidden group">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] z-10" />
                 
                 {/* Corner Accents */}
@@ -85,7 +85,7 @@ const ChampionCollection = () => {
               </div>
               
               {/* Data Overlay */}
-                <div className="absolute -bottom-4 -right-4 p-6 bg-black border border-white/10 font-technical text-[8px] text-white/40 uppercase tracking-[0.2em] space-y-1 z-30">
+                <div className="absolute -bottom-4 -right-4 p-6 bg-zinc-950 border border-white/10 font-technical text-[8px] text-white/40 uppercase tracking-[0.2em] space-y-1 z-30">
                   <p>LAT: 36.4701° N</p>
                   <p>LNG: 2.8288° E</p>
                   <p className="text-white/60">NODE: DZ_BLIDA</p>

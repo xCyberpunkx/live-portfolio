@@ -18,7 +18,7 @@ function ProbeLine({ line, index, active }: { line: (typeof PROBE_LINES)[number]
       initial={{ opacity: 0, x: -12 }}
       animate={active ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.35, delay: index * 0.12 }}
-      className="flex items-center gap-4 py-2 border-b border-white/5 last:border-b-0"
+      className="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 border-b border-white/5 last:border-b-0"
     >
       <span className="font-technical text-[9px] text-blue-400/60 w-6">{`0${index + 1}`}</span>
       <span className="font-technical text-[9px] md:text-[10px] text-white/30 uppercase tracking-[0.3em] w-32 md:w-40 flex-shrink-0">
@@ -64,7 +64,7 @@ export default function SubHeroSection() {
   );
 
   return (
-    <section id="about" ref={container} className="bg-black py-24 md:py-48 overflow-hidden relative">
+    <section id="about" ref={container} className="bg-zinc-950 py-24 md:py-48 overflow-hidden relative">
       {!isMobile && (
         <motion.div
           className="pointer-events-none absolute -inset-px opacity-40 transition duration-300 z-0"
@@ -139,7 +139,7 @@ export default function SubHeroSection() {
             <div className="p-8 border border-white/10 bg-white/[0.02] backdrop-blur-sm relative group overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               <span className="font-technical text-[8px] text-white/40 uppercase tracking-[0.5em] block mb-4">Brief_01</span>
-              <p className="text-white/60 font-technical text-[10px] uppercase tracking-widest leading-relaxed">
+              <p className="text-white/75 font-technical text-[10px] uppercase tracking-widest leading-relaxed">
                 4+ years of delivering enterprise-grade solutions across healthcare, renewable energy, and fintech sectors. Focused on performance at scale.
               </p>
             </div>

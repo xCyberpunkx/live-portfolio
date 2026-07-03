@@ -138,7 +138,7 @@ const HeroSection = () => {
     <section
       ref={sectionRef}
       onPointerMove={handlePointerMove}
-      className={`relative h-screen w-full bg-black overflow-hidden flex items-center justify-center transition-opacity duration-1000 ${
+      className={`relative h-screen w-full bg-zinc-950 overflow-hidden flex items-center justify-center transition-opacity duration-1000 ${
         mounted ? "opacity-100" : "opacity-0"
       }`}
     >

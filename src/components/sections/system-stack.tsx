@@ -29,9 +29,8 @@ const NEOFETCH_INFO = [
   { label: "host", value: "NODE_DZ" },
   { label: "kernel", value: "software-engineer-5.0" },
   { label: "uptime", value: "4+ years coding" },
-  { label: "shell", value: "typescript / bash" },
-  { label: "de", value: "React + Next.js" },
-  { label: "wm", value: "Tailwind CSS" },
+  { label: "shell", value: "zsh" },
+  { label: "wm", value: "Hyprland" },
   { label: "terminal", value: "Neovim" },
   { label: "repos", value: "244 public // 443 stars" },
 ];
@@ -142,7 +141,7 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
 
 export default function SystemStack() {
   return (
-    <section className="relative bg-black py-24 md:py-48 border-t border-white/5 overflow-hidden">
+    <section className="relative bg-zinc-950 py-24 md:py-48 border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

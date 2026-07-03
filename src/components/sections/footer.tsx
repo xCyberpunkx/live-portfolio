@@ -60,7 +60,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="contact" className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/5">
+    <footer id="contact" className="relative bg-zinc-950 pt-32 pb-12 overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div className="space-y-12">
@@ -81,7 +81,7 @@ export default function Footer() {
               <div className="space-y-6">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Sitemap</p>
                 <ul className="space-y-4">
-                  <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">About Architect</Link></li>
+                  <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">About</Link></li>
                   <li><Link href="/services" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Expert Services</Link></li>
                   <li><Link href="/projects" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Project Archive</Link></li>
                 </ul>
@@ -90,6 +90,7 @@ export default function Footer() {
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Resources</p>
                 <ul className="space-y-4">
                   <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Technical Blog</Link></li>
+                  <li><Link href="/learning-journey" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Learning Journey</Link></li>
                   <li><Link href="/contact" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Get In Touch</Link></li>
                   <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Formula 1 Stats</Link></li>
                 </ul>
