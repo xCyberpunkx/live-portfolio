@@ -109,7 +109,7 @@ const HeroSection = () => {
     const ctx = gsap.context(() => {
       gsap.set(rings, {
         z: (i: number) => -200 - i * 220,
-        opacity: (i: number) => 1 - i * 0.1,
+        opacity: (i: number) => 1 - i * 0.06,
       });
 
       if (!isMobile) {
@@ -167,15 +167,16 @@ const HeroSection = () => {
               ref={(el) => {
                 ringRefs.current[i] = el;
               }}
-              className="absolute inset-0 border rounded-2xl"
+              className="absolute inset-0 border-2 rounded-2xl"
               style={{
-                borderColor: i === RING_COUNT - 1 ? "rgba(59,130,246,0.4)" : "rgba(255,255,255,0.08)",
+                borderColor: i === RING_COUNT - 1 ? "rgba(59,130,246,0.9)" : "rgba(255,255,255,0.22)",
+                boxShadow: i === RING_COUNT - 1 ? "0 0 40px rgba(59,130,246,0.5)" : "0 0 20px rgba(255,255,255,0.05)",
                 transform: `translateZ(${-200 - i * 220}px)`,
               }}
             />
           ))}
         </motion.div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_75%)] z-[1]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_92%)] z-[1]" />
       </div>
 
       {/* Content */}
