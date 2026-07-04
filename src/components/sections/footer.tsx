@@ -17,10 +17,20 @@ const socialLinks = [
 
 export default function Footer() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", website: "" });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Honeypot check: real users never fill this hidden field, bots almost always do.
+    // Silently pretend success so bots don't learn to look for a different signal.
+    if (formData.website) {
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "", website: "" });
+      setTimeout(() => setStatus("idle"), 5000);
+      return;
+    }
+
     setStatus("loading");
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -50,7 +60,7 @@ export default function Footer() {
       if (result.status !== 200) throw new Error("Failed to send");
 
       setStatus("success");
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "", website: "" });
       setTimeout(() => setStatus("idle"), 5000);
     } catch (error) {
       console.error("EmailJS Error:", error);
@@ -91,7 +101,7 @@ export default function Footer() {
                 <ul className="space-y-4">
                   <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Technical Blog</Link></li>
                   <li><Link href="/learning-journey" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Learning Journey</Link></li>
-                  <li><Link href="/contact" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Get In Touch</Link></li>
+                  <li><Link href="/#contact" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Get In Touch</Link></li>
                   <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Formula 1 Stats</Link></li>
                 </ul>
               </div>
@@ -127,6 +137,17 @@ export default function Footer() {
             className="relative"
           >
             <form onSubmit={handleSubmit} className="space-y-8 p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
+              {/* Honeypot field — hidden from real users, bots fill it in anyway */}
+              <input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
                   <label className="text-xs font-technical text-white/60 uppercase">Name</label>
