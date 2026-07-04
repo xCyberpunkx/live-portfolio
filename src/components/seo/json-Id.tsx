@@ -1,22 +1,23 @@
 import Script from 'next/script'
 
 export default function JsonLd() {
-  const organizationData = {
+  const personData = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
+    '@type': 'Person',
     name: 'Rouabah Zine Eddine',
     url: 'https://zineddine.vercel.app',
-    logo: 'https://zineddine.vercel.app/og-image.png',
+    image: 'https://zineddine.vercel.app/og-image.png',
+    jobTitle: 'Software Engineer',
+    email: 'rouabah.zineedinee@gmail.com',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Blida',
+      addressCountry: 'DZ',
+    },
     sameAs: [
       'https://github.com/xCyberpunkx',
-      'https://linkedin.com/in/rouabah-zine-eddine',
+      'https://www.linkedin.com/in/zine-eddine-rouabah-992b16265',
     ],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: '',
-      contactType: 'customer service',
-      email: 'rouabah.zine.eddine@gmail.com',
-    },
   }
 
   const websiteData = {
@@ -24,22 +25,14 @@ export default function JsonLd() {
     '@type': 'WebSite',
     name: 'Rouabah Zine Eddine Portfolio',
     url: 'https://zineddine.vercel.app',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://zineddine.vercel.app/search?q={search_term_string}',
-      },
-      'query-input': 'required name=search_term_string',
-    },
   }
 
   return (
     <>
       <Script
-        id="organization-jsonld"
+        id="person-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personData) }}
       />
       <Script
         id="website-jsonld"
