@@ -11,7 +11,6 @@ import SmoothScroll from "@/components/ui/smooth-scroll";
 import TechExperience from "@/components/sections/tech-experience";
 import CustomCursor from "@/components/ui/custom-cursor";
 import BackToTop from "@/components/ui/back-to-top";
-<meta name="google-site-verification" content="UcnkBGrdaj_TDDrWUE5Lbqx7xIU_lSOzZ2xtwHTg65c" />
 export default function Home() {
   return (
     <main className="bg-zinc-950">
