@@ -6,12 +6,13 @@ import JsonLd from "@/components/seo/json-Id";
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
-  variable: '--font-sans',
+  variable: '--font-jakarta',
 });
 
-const jetbrains = JetBrains_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: '--font-mono',
+  weight: ["400", "500", "700"],
+  variable: '--font-jetbrains-mono',
 });
 
 export const viewport: Viewport = {
@@ -74,7 +75,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark scroll-smooth">
-      <body className={`${jakarta.variable} ${jetbrains.variable} font-sans antialiased bg-zinc-950 text-white`}>
+        <body className={`${jakarta.variable} ${jetbrainsMono.variable} font-sans antialiased bg-zinc-950 text-white`}>
           <JsonLd />
           <div className="grain-overlay" />
           <Script
