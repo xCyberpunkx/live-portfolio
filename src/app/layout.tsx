@@ -70,7 +70,6 @@ export const metadata: Metadata = {
     google: "UcnkBGrdaj_TDDrWUE5Lbqx7xIU_lSOzZ2xtwHTg65c",
   },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
