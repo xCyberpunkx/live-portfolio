@@ -96,18 +96,18 @@ function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
   const stillTyping = inView && typedTitle.length < exp.title.length;
 
   return (
-    <div ref={ref} className="border-b border-white/5 last:border-b-0 py-8 first:pt-0">
+    <div ref={ref} className="border-b last:border-b-0 py-8 first:pt-0" style={{ borderColor: "var(--border-subtle)" }}>
       <LogLine>
-        <div className="flex flex-wrap items-center gap-3 text-[10px] md:text-xs font-technical text-white/30">
+        <div className="flex flex-wrap items-center gap-3 text-[10px] md:text-xs font-technical" style={{ color: "var(--text-tertiary)" }}>
           <span className="text-blue-400/70">[{exp.id}]</span>
           <span>boot: unit {exp.company.toLowerCase().replace(/\s+/g, "-")}.service</span>
-          <span className="text-white/20">//</span>
+          <span style={{ color: "var(--text-quaternary)" }}>//</span>
           <span>{exp.date}</span>
         </div>
       </LogLine>
 
       <div className="mt-4 flex items-baseline gap-1">
-        <h4 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tight min-h-[1.2em]">
+        <h4 className="text-2xl md:text-4xl font-black uppercase tracking-tight min-h-[1.2em]" style={{ color: "var(--text-primary)" }}>
           {typedTitle}
         </h4>
         <motion.span
@@ -121,12 +121,12 @@ function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
         <div className="mt-2 flex items-center gap-2">
           <span className={`w-1.5 h-1.5 rounded-full ${style.dot} ${exp.status === "ACTIVE" ? "animate-pulse" : ""}`} />
           <span className={`text-[10px] font-technical uppercase tracking-widest ${style.text}`}>{exp.status}</span>
-          <span className="text-white/20 text-[10px] font-technical">@ {exp.company}</span>
+          <span className="text-[10px] font-technical" style={{ color: "var(--text-quaternary)" }}>@ {exp.company}</span>
         </div>
       </LogLine>
 
       <LogLine delay={0.25}>
-        <p className="mt-4 text-sm md:text-base text-white/70 font-technical leading-relaxed max-w-2xl pl-4 border-l border-white/10">
+        <p className="mt-4 text-sm md:text-base font-technical leading-relaxed max-w-2xl pl-4 border-l" style={{ color: "var(--text-secondary)", borderColor: "var(--border-default)" }}>
           {exp.desc}
         </p>
       </LogLine>
@@ -172,41 +172,41 @@ export default function TechExperience() {
   }, [isMobile]);
 
   return (
-    <section id="tech" ref={sectionRef} className="bg-zinc-950 py-24 md:py-48 relative overflow-hidden border-t border-white/5">
+    <section id="tech" ref={sectionRef} className="py-24 md:py-48 relative overflow-hidden border-t" style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}>
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-32 space-y-8">
-              <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] uppercase block">
+              <span className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] uppercase block" style={{ color: "var(--text-quaternary)" }}>
                 Professional Record
               </span>
-              <p className="text-white/30 font-technical text-[10px] uppercase tracking-[0.2em] leading-relaxed max-w-xs">
+              <p className="font-technical text-[10px] uppercase tracking-[0.2em] leading-relaxed max-w-xs" style={{ color: "var(--text-tertiary)" }}>
                 A running log of technical roles — read the way a system reads its own startup, sequentially, one service at a time.
               </p>
               <div className="hidden lg:flex items-center gap-3 pt-4">
                 <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                <span className="font-technical text-[8px] text-white/40 uppercase tracking-widest">reading career.log</span>
+                <span className="font-technical text-[8px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>reading career.log</span>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-8">
-            <div className="border border-white/10 bg-white/[0.02] rounded-xl overflow-hidden">
-              <div className="flex items-center justify-between gap-4 px-4 md:px-6 py-3 border-b border-white/10 bg-white/[0.02]">
+            <div className="border rounded-xl overflow-hidden" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}>
+              <div className="terminal-chrome flex items-center justify-between gap-4 px-4 md:px-6 py-3 border-b" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}>
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
                   <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
                   <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                  <span className="ml-3 flex items-center gap-2 font-technical text-[9px] text-white/30 uppercase tracking-widest">
+                  <span className="ml-3 flex items-center gap-2 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>
                     <Terminal size={10} /> career.log
                   </span>
                 </div>
-                <span className="font-technical text-[9px] text-white/20 uppercase tracking-widest hidden sm:block">
+                <span className="font-technical text-[9px] uppercase tracking-widest hidden sm:block" style={{ color: "var(--text-quaternary)" }}>
                   {experiences.length} units loaded
                 </span>
               </div>
 
-              <div className="h-[2px] bg-white/5 relative overflow-hidden">
+              <div className="h-[2px] relative overflow-hidden" style={{ backgroundColor: "var(--border-subtle)" }}>
                 <div
                   ref={fillRef}
                   className="absolute inset-y-0 left-0 w-full bg-blue-500/60 origin-left"
@@ -219,14 +219,15 @@ export default function TechExperience() {
                   <ExperienceEntry key={exp.id} exp={exp} />
                 ))}
 
-                <div className="pt-8 flex items-center gap-2 font-technical text-white/40 text-xs">
+                <div className="pt-8 flex items-center gap-2 font-technical text-xs" style={{ color: "var(--text-muted)" }}>
                   <span>guest@node_dz ~ %</span>
                   <motion.span
                     animate={{ opacity: [1, 0] }}
                     transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
-                    className="w-1.5 h-3.5 bg-white/60 inline-block"
+                    className="w-1.5 h-3.5 inline-block"
+                    style={{ backgroundColor: "var(--text-muted)" }}
                   />
-                  <span className="text-white/20 ml-2">system ready</span>
+                  <span className="ml-2" style={{ color: "var(--text-quaternary)" }}>system ready</span>
                 </div>
               </div>
             </div>

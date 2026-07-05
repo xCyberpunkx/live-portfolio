@@ -73,103 +73,106 @@ const STATUS_STYLES: Record<string, string> = {
 
 export default function AboutPage() {
   return (
-    <main className="bg-zinc-950 min-h-screen pt-32">
+    <main className="min-h-screen pt-32" style={{ backgroundColor: "var(--bg-base)" }}>
       <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "About", href: "/about" }]} />
 
         <header className="mb-16 md:mb-20 max-w-3xl">
-          <span className="text-[10px] font-technical text-white/30 tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-6">
+          <span className="text-[10px] font-technical tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-6" style={{ color: "var(--text-tertiary)" }}>
             PROFILE_RECORD
           </span>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-white leading-[0.95] md:leading-[0.9]">
-            About <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.35)" }}>The Engineer</span>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 leading-[0.95] md:leading-[0.9]" style={{ color: "var(--text-primary)" }}>
+            About <span className="text-transparent" style={{ WebkitTextStroke: "1px var(--border-strong)" }}>The Engineer</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-white/70 font-light leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl font-light leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             A software engineering professional focused on building reliable, well-structured web applications and continuously deepening his understanding of computer systems and networks.
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-20 md:mb-24">
-          <section className="p-6 sm:p-8 md:p-10 bg-white/[0.03] border border-white/10 rounded-2xl space-y-6">
+          <section className="p-6 sm:p-8 md:p-10 border rounded-2xl space-y-6" style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)", boxShadow: "var(--shadow-card)" }}>
             <span className="text-[10px] font-technical text-blue-400/80 uppercase tracking-[0.4em] block">Core Philosophy</span>
-            <p className="text-white/70 leading-relaxed">
+            <p className="leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               In an era of rapidly evolving technology, my approach remains grounded in the fundamentals of computer science and system architecture. I believe that true innovation stems from a deep understanding of how systems interact at every level — from the application layer down to the network infrastructure.
             </p>
-            <p className="text-white/70 leading-relaxed">
+            <p className="leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               My work is characterized by a commitment to precision, scalability, and resilience. Whether I&apos;m architecting a client-facing web application or optimizing a data pipeline, my goal is always to deliver solutions that are not just functional, but enduring.
             </p>
           </section>
 
-          <section className="p-6 sm:p-8 md:p-10 bg-white/[0.03] border border-white/10 rounded-2xl space-y-6">
+          <section className="p-6 sm:p-8 md:p-10 border rounded-2xl space-y-6" style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)", boxShadow: "var(--shadow-card)" }}>
             <span className="text-[10px] font-technical text-blue-400/80 uppercase tracking-[0.4em] block">Technical Expertise</span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {expertise.map((item) => (
                 <div
                   key={item.label}
-                  className="p-4 bg-white/[0.03] border border-white/10 rounded-lg hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-300"
+                  className="p-4 border rounded-lg hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-300"
+                  style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}
                 >
-                  <h3 className="font-technical text-[9px] uppercase tracking-[0.3em] mb-2 text-white/50">{item.label}</h3>
-                  <p className="text-sm font-medium text-white/90">{item.stack}</p>
+                  <h3 className="font-technical text-[9px] uppercase tracking-[0.3em] mb-2" style={{ color: "var(--text-muted)" }}>{item.label}</h3>
+                  <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>{item.stack}</p>
                 </div>
               ))}
             </div>
           </section>
         </div>
 
-        <section className="pt-16 border-t border-white/10">
-          <span className="text-[10px] font-technical text-white/30 tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-4">
+        <section className="pt-16 border-t" style={{ borderColor: "var(--border-default)" }}>
+          <span className="text-[10px] font-technical tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-4" style={{ color: "var(--text-tertiary)" }}>
             Session Log
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter mb-10 md:mb-12 text-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter mb-10 md:mb-12" style={{ color: "var(--text-primary)" }}>
             Professional Journey
           </h2>
           <div className="space-y-4">
             {journey.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row md:items-center gap-4 md:gap-10 p-6 md:p-8 bg-white/[0.03] border border-white/10 rounded-xl hover:border-white/20 transition-colors"
+                className="flex flex-col md:flex-row md:items-center gap-4 md:gap-10 p-6 md:p-8 border rounded-xl hover:border-blue-500/20 transition-colors"
+                style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}
               >
                 <div className="md:w-40 flex-shrink-0 flex items-center gap-3">
                   <span className={`w-1.5 h-1.5 rounded-full ${STATUS_STYLES[item.status]} ${item.status === "ACTIVE" ? "animate-pulse" : ""}`} />
-                  <span className="text-xs sm:text-sm font-black text-white/60 uppercase">{item.year}</span>
+                  <span className="text-xs sm:text-sm font-black uppercase" style={{ color: "var(--text-muted)" }}>{item.year}</span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-1">
-                    {item.role} <span className="text-white/50 font-technical text-xs">@ {item.company}</span>
+                  <h3 className="text-lg md:text-xl font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+                    {item.role} <span className="font-technical text-xs" style={{ color: "var(--text-muted)" }}>@ {item.company}</span>
                   </h3>
-                  <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-2xl">{item.description}</p>
+                  <p className="text-sm md:text-base leading-relaxed max-w-2xl" style={{ color: "var(--text-secondary)" }}>{item.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="pt-16 mt-16 border-t border-white/10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section className="pt-16 mt-16 border-t grid grid-cols-1 lg:grid-cols-2 gap-8" style={{ borderColor: "var(--border-default)" }}>
           <div>
-            <span className="text-[10px] font-technical text-white/30 tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-4">
+            <span className="text-[10px] font-technical tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-4" style={{ color: "var(--text-tertiary)" }}>
               Education
             </span>
-            <div className="p-6 md:p-8 bg-white/[0.03] border border-white/10 rounded-xl hover:border-white/20 transition-colors">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-1">{education.degree}</h3>
-              <p className="text-white/50 font-technical text-xs mb-3">{education.school}</p>
-              <p className="text-white/60 text-sm mb-3">{education.date}</p>
-              <p className="text-white/70 text-sm leading-relaxed">{education.skills}</p>
+            <div className="p-6 md:p-8 border rounded-xl hover:border-blue-500/20 transition-colors" style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}>
+              <h3 className="text-lg md:text-xl font-bold mb-1" style={{ color: "var(--text-primary)" }}>{education.degree}</h3>
+              <p className="font-technical text-xs mb-3" style={{ color: "var(--text-muted)" }}>{education.school}</p>
+              <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>{education.date}</p>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{education.skills}</p>
             </div>
           </div>
 
           <div>
-            <span className="text-[10px] font-technical text-white/30 tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-4">
+            <span className="text-[10px] font-technical tracking-[0.4em] md:tracking-[0.6em] uppercase block mb-4" style={{ color: "var(--text-tertiary)" }}>
               Certifications
             </span>
             <div className="space-y-4">
               {certifications.map((cert) => (
                 <div
                   key={cert.name}
-                  className="p-6 bg-white/[0.03] border border-white/10 rounded-xl hover:border-white/20 transition-colors"
+                  className="p-6 border rounded-xl hover:border-blue-500/20 transition-colors"
+                  style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}
                 >
-                  <h3 className="text-base md:text-lg font-bold text-white mb-1">{cert.name}</h3>
-                  <p className="text-white/50 font-technical text-xs">{cert.issuer} · Issued {cert.date}</p>
+                  <h3 className="text-base md:text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>{cert.name}</h3>
+                  <p className="font-technical text-xs" style={{ color: "var(--text-muted)" }}>{cert.issuer} · Issued {cert.date}</p>
                 </div>
               ))}
             </div>

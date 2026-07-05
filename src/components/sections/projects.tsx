@@ -116,8 +116,8 @@ const TiltCard = ({ project, index, onOpen }: { project: Project; index: number;
         ref={cardRef}
         animate={{ rotateX: tilt.x, rotateY: tilt.y, scale: hovered ? 1.02 : 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="relative w-full h-full overflow-hidden border border-white/5 bg-white/5"
-        style={{ transformStyle: "preserve-3d" }}
+        className="relative w-full h-full overflow-hidden border"
+        style={{ transformStyle: "preserve-3d", borderColor: "var(--border-subtle)", backgroundColor: "var(--bg-surface)" }}
       >
         <Image
           src={project.image}
@@ -125,23 +125,27 @@ const TiltCard = ({ project, index, onOpen }: { project: Project; index: number;
           fill
           className={`object-cover transition-all duration-700 ${hovered ? "grayscale-0 scale-110" : "grayscale opacity-60"}`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/10 to-transparent" />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: "linear-gradient(to top, var(--bg-base), color-mix(in srgb, var(--bg-base) 10%, transparent), transparent)" }}
+        />
 
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
           <span className="text-[9px] font-technical text-blue-400 uppercase tracking-widest block mb-2">
             {project.category}
           </span>
-          <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-tighter">
+          <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter" style={{ color: "var(--text-primary)" }}>
             {project.title}
           </h3>
         </div>
 
         <div
-          className={`absolute top-5 right-5 w-9 h-9 rounded-full border border-white/20 bg-zinc-950/40 backdrop-blur-sm flex items-center justify-center transition-all duration-500 ${
+          className={`absolute top-5 right-5 w-9 h-9 rounded-full border backdrop-blur-sm flex items-center justify-center transition-all duration-500 ${
             hovered ? "opacity-100 rotate-0" : "opacity-0 -rotate-45"
           }`}
+          style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-surface-strong)" }}
         >
-          <ArrowUpRight size={16} className="text-white" />
+          <ArrowUpRight size={16} style={{ color: "var(--text-primary)" }} />
         </div>
       </motion.div>
     </motion.div>
@@ -168,15 +172,15 @@ export default function MyProjects() {
 
   return (
     <>
-      <section id="projects" className="bg-zinc-950 py-24 md:py-64 border-t border-white/5 overflow-hidden relative">
+      <section id="projects" className="py-24 md:py-64 border-t overflow-hidden relative" style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}>
         <div className="container mx-auto px-6">
           <div className="flex flex-col mb-16 md:mb-32">
-            <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8">
+            <span className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8" style={{ color: "var(--text-quaternary)" }}>
               PROJECT ARCHIVE
             </span>
-            <h2 className="text-[16vw] md:text-[10vw] font-black text-white leading-[0.8] uppercase tracking-tighter">
+            <h2 className="text-[16vw] md:text-[10vw] font-black leading-[0.8] uppercase tracking-tighter" style={{ color: "var(--text-primary)" }}>
               SELECTED<br />
-              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>MISSIONS</span>
+              <span className="text-transparent" style={{ WebkitTextStroke: "1px var(--border-strong)" }}>MISSIONS</span>
             </h2>
           </div>
 
@@ -190,10 +194,11 @@ export default function MyProjects() {
             <a
               href="/projects"
               data-cursor="ALL"
-              className="group relative inline-flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-blue-500/40 transition-colors"
+              className="group relative inline-flex items-center gap-4 px-8 py-4 border rounded-full hover:border-blue-500/40 transition-colors"
+              style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}
             >
-              <span className="text-sm font-bold uppercase tracking-widest text-white">View Full Archive</span>
-              <ArrowUpRight className="text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={16} />
+              <span className="text-sm font-bold uppercase tracking-widest" style={{ color: "var(--text-primary)" }}>View Full Archive</span>
+              <ArrowUpRight className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={16} style={{ color: "var(--text-primary)" }} />
             </a>
           </div>
         </div>
@@ -209,7 +214,8 @@ export default function MyProjects() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-zinc-950/80 backdrop-blur-md"
+                  className="absolute inset-0 backdrop-blur-md"
+                  style={{ backgroundColor: "color-mix(in srgb, var(--bg-base) 80%, transparent)" }}
                   onClick={() => setSelectedProject(null)}
                 />
 
@@ -218,9 +224,10 @@ export default function MyProjects() {
                   animate={{ x: 0 }}
                   exit={{ x: "100%" }}
                   transition={{ type: "spring", damping: 32, stiffness: 260 }}
-                  className="relative z-10 w-full sm:w-[90%] md:w-[70%] lg:w-[55%] h-full bg-[#0a0a0a] border-l border-white/10 overflow-y-auto"
+                  className="relative z-10 w-full sm:w-[90%] md:w-[70%] lg:w-[55%] h-full border-l overflow-y-auto"
+                  style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-default)" }}
                 >
-                  <div className="relative w-full aspect-[16/9] bg-zinc-950/40">
+                  <div className="relative w-full aspect-[16/9]" style={{ backgroundColor: "var(--bg-surface)" }}>
                     <Image
                       src={selectedProject.image}
                       alt={selectedProject.title}
@@ -229,11 +236,15 @@ export default function MyProjects() {
                       priority
                       sizes="(max-width: 768px) 100vw, 55vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-zinc-950/40" />
+                    <div
+                      className="absolute inset-0"
+                      style={{ backgroundImage: "linear-gradient(to top, var(--bg-base), transparent, color-mix(in srgb, var(--bg-base) 40%, transparent))" }}
+                    />
 
                     <button
                       onClick={() => setSelectedProject(null)}
-                      className="absolute top-6 right-6 p-3 bg-zinc-950/50 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors z-20 backdrop-blur-sm"
+                      className="absolute top-6 right-6 p-3 rounded-full transition-colors z-20 backdrop-blur-sm"
+                      style={{ backgroundColor: "color-mix(in srgb, var(--bg-base) 50%, transparent)", color: "var(--text-secondary)" }}
                     >
                       <X size={20} />
                     </button>
@@ -242,7 +253,7 @@ export default function MyProjects() {
                       <span className="text-[10px] font-technical text-blue-400 tracking-[0.3em] uppercase mb-3 block">
                         {selectedProject.category}
                       </span>
-                      <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none">
+                      <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none" style={{ color: "var(--text-primary)" }}>
                         {selectedProject.title}
                       </h3>
                     </div>
@@ -250,27 +261,32 @@ export default function MyProjects() {
 
                   <div className="p-6 md:p-10 space-y-10">
                     <div>
-                      <h4 className="text-[10px] font-technical text-white/40 uppercase tracking-widest mb-3">Mission Details</h4>
-                      <p className="text-base md:text-lg text-white/70 leading-relaxed font-light">{selectedProject.details}</p>
+                      <h4 className="text-[10px] font-technical uppercase tracking-widest mb-3" style={{ color: "var(--text-tertiary)" }}>Mission Details</h4>
+                      <p className="text-base md:text-lg leading-relaxed font-light" style={{ color: "var(--text-secondary)" }}>{selectedProject.details}</p>
                     </div>
 
                     <div>
-                      <h4 className="text-[10px] font-technical text-white/40 uppercase tracking-widest mb-3">Project Specs</h4>
+                      <h4 className="text-[10px] font-technical uppercase tracking-widest mb-3" style={{ color: "var(--text-tertiary)" }}>Project Specs</h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedProject.tech.split(",").map((t, i) => (
-                          <span key={i} className="text-[10px] md:text-xs text-white/60 font-mono bg-white/5 px-2 py-1 rounded border border-white/5">
+                          <span
+                            key={i}
+                            className="text-[10px] md:text-xs font-mono px-2 py-1 rounded border"
+                            style={{ color: "var(--text-secondary)", backgroundColor: "var(--bg-surface)", borderColor: "var(--border-subtle)" }}
+                          >
                             {t.trim()}
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row gap-4">
+                    <div className="pt-6 border-t flex flex-col sm:flex-row gap-4" style={{ borderColor: "var(--border-subtle)" }}>
                       <a
                         href={selectedProject.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 flex items-center justify-center gap-3 py-5 bg-white text-black rounded-full font-bold uppercase tracking-wider text-xs hover:bg-blue-500 hover:text-white hover:scale-[1.02] transition-all duration-500 shadow-xl shadow-white/5"
+                        className="flex-1 flex items-center justify-center gap-3 py-5 rounded-full font-bold uppercase tracking-wider text-xs hover:bg-blue-500 hover:text-white hover:scale-[1.02] transition-all duration-500"
+                        style={{ backgroundColor: "var(--text-primary)", color: "var(--bg-base)", boxShadow: "var(--shadow-card)" }}
                       >
                         Visit Mission Website <ExternalLink size={16} />
                       </a>
@@ -279,7 +295,8 @@ export default function MyProjects() {
                           href={selectedProject.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-3 py-5 px-6 border border-white/15 text-white/70 rounded-full font-bold uppercase tracking-wider text-xs hover:border-white/40 hover:text-white transition-all duration-500"
+                          className="flex items-center justify-center gap-3 py-5 px-6 border rounded-full font-bold uppercase tracking-wider text-xs hover:border-blue-400/50 transition-all duration-500"
+                          style={{ borderColor: "var(--border-strong)", color: "var(--text-secondary)" }}
                         >
                           Source
                         </a>

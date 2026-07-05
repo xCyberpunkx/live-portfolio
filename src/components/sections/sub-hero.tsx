@@ -18,13 +18,17 @@ function ProbeLine({ line, index, active }: { line: (typeof PROBE_LINES)[number]
       initial={{ opacity: 0, x: -12 }}
       animate={active ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.35, delay: index * 0.12 }}
-      className="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 border-b border-white/5 last:border-b-0"
+      className="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 border-b last:border-b-0"
+      style={{ borderColor: "var(--border-subtle)" }}
     >
       <span className="font-technical text-[9px] text-blue-400/60 w-6">{`0${index + 1}`}</span>
-      <span className="font-technical text-[9px] md:text-[10px] text-white/30 uppercase tracking-[0.3em] w-32 md:w-40 flex-shrink-0">
+      <span
+        className="font-technical text-[9px] md:text-[10px] uppercase tracking-[0.3em] w-32 md:w-40 flex-shrink-0"
+        style={{ color: "var(--text-tertiary)" }}
+      >
         {line.label}
       </span>
-      <span className="font-technical text-[10px] md:text-xs text-white uppercase tracking-widest">{line.value}</span>
+      <span className="font-technical text-[10px] md:text-xs uppercase tracking-widest" style={{ color: "var(--text-primary)" }}>{line.value}</span>
       <span className="ml-auto font-technical text-[8px] text-green-500/70 uppercase tracking-widest">OK</span>
     </motion.div>
   );
@@ -60,11 +64,11 @@ export default function SubHeroSection() {
 
   const backgroundTransform = useTransform(
     [mouseXSpring, mouseYSpring],
-    ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, rgba(59,130,246,0.1), transparent 80%)`
+    ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, var(--accent-soft), transparent 80%)`
   );
 
   return (
-    <section id="about" ref={container} className="bg-zinc-950 py-24 md:py-48 overflow-hidden relative">
+    <section id="about" ref={container} className="py-24 md:py-48 overflow-hidden relative" style={{ backgroundColor: "var(--bg-base)" }}>
       {!isMobile && (
         <motion.div
           className="pointer-events-none absolute -inset-px opacity-40 transition duration-300 z-0"
@@ -75,7 +79,7 @@ export default function SubHeroSection() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex items-center gap-4 mb-16">
           <div className="h-[2px] w-12 bg-blue-500" />
-          <span className="font-technical text-[10px] tracking-[0.6em] text-white/30 uppercase">DIAGNOSTIC_SCAN</span>
+          <span className="font-technical text-[10px] tracking-[0.6em] uppercase" style={{ color: "var(--text-tertiary)" }}>DIAGNOSTIC_SCAN</span>
         </div>
 
         {/* Probe / scan panel */}
@@ -84,13 +88,17 @@ export default function SubHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative border border-white/10 bg-white/[0.02] rounded-xl overflow-hidden mb-24 max-w-3xl"
+          className="relative border rounded-xl overflow-hidden mb-24 max-w-3xl"
+          style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)" }}
         >
-          <div className="flex items-center gap-2 px-4 md:px-6 py-3 border-b border-white/10 bg-white/[0.02]">
+          <div
+            className="terminal-chrome flex items-center gap-2 px-4 md:px-6 py-3 border-b"
+            style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}
+          >
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
             <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-            <span className="ml-3 font-technical text-[9px] text-white/30 uppercase tracking-widest">probe --target=subject</span>
+            <span className="ml-3 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>probe --target=subject</span>
           </div>
 
           <div className="relative p-6 md:p-8">
@@ -114,32 +122,36 @@ export default function SubHeroSection() {
               initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-2xl md:text-4xl font-technical text-white/70 tracking-tight leading-[1.25] max-w-3xl"
+              className="text-2xl md:text-4xl font-technical tracking-tight leading-[1.25] max-w-3xl"
+              style={{ color: "var(--text-secondary)" }}
             >
               Rouabah Zine Eddine is a{" "}
-              <span className="text-white font-black uppercase">software engineering professional</span> focused on
-              building <span className="text-white font-black uppercase">reliable, well-structured web applications</span>{" "}
+              <span className="font-black uppercase" style={{ color: "var(--text-primary)" }}>software engineering professional</span> focused on
+              building <span className="font-black uppercase" style={{ color: "var(--text-primary)" }}>reliable, well-structured web applications</span>{" "}
               and continuously deepening his understanding of computer systems and networks.
             </motion.p>
 
             <div className="flex flex-wrap gap-12">
               <div className="flex flex-col">
-                <span className="text-[10px] font-technical text-white/40 uppercase tracking-[0.5em] mb-3">Core_Focus</span>
-                <span className="text-white font-black uppercase text-xl">FULL_STACK // CLOUD</span>
+                <span className="text-[10px] font-technical uppercase tracking-[0.5em] mb-3" style={{ color: "var(--text-tertiary)" }}>Core_Focus</span>
+                <span className="font-black uppercase text-xl" style={{ color: "var(--text-primary)" }}>FULL_STACK // CLOUD</span>
               </div>
-              <div className="w-[1px] h-12 bg-white/20 hidden sm:block" />
+              <div className="w-[1px] h-12 hidden sm:block" style={{ backgroundColor: "var(--border-strong)" }} />
               <div className="flex flex-col">
-                <span className="text-[10px] font-technical text-white/40 uppercase tracking-[0.5em] mb-3">Efficiency</span>
-                <span className="text-white font-black uppercase text-xl">OPTIMIZED_LOGIC</span>
+                <span className="text-[10px] font-technical uppercase tracking-[0.5em] mb-3" style={{ color: "var(--text-tertiary)" }}>Efficiency</span>
+                <span className="font-black uppercase text-xl" style={{ color: "var(--text-primary)" }}>OPTIMIZED_LOGIC</span>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-4">
-            <div className="p-8 border border-white/10 bg-white/[0.02] backdrop-blur-sm relative group overflow-hidden">
+            <div
+              className="p-8 border backdrop-blur-sm relative group overflow-hidden"
+              style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
+            >
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-              <span className="font-technical text-[8px] text-white/40 uppercase tracking-[0.5em] block mb-4">Brief_01</span>
-              <p className="text-white/75 font-technical text-[10px] uppercase tracking-widest leading-relaxed">
+              <span className="font-technical text-[8px] uppercase tracking-[0.5em] block mb-4" style={{ color: "var(--text-tertiary)" }}>Brief_01</span>
+              <p className="font-technical text-[10px] uppercase tracking-widest leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                 4+ years of delivering enterprise-grade solutions across healthcare, renewable energy, and fintech sectors. Focused on performance at scale.
               </p>
             </div>

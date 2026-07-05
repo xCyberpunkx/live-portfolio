@@ -70,7 +70,11 @@ export default function Footer() {
   };
 
   return (
-    <footer id="contact" className="relative bg-zinc-950 pt-32 pb-12 overflow-hidden border-t border-white/5">
+    <footer
+      id="contact"
+      className="relative pt-32 pb-12 overflow-hidden border-t"
+      style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
+    >
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div className="space-y-12">
@@ -80,8 +84,16 @@ export default function Footer() {
               viewport={{ once: true }}
               className="space-y-4"
             >
-              <span className="text-[10px] font-technical text-white/20 tracking-[0.2em] uppercase block">INITIATE SYNAPS</span>
-              <h2 className="text-[8vw] font-black text-white uppercase tracking-tighter leading-none">
+              <span
+                className="text-[10px] font-technical tracking-[0.2em] uppercase block"
+                style={{ color: "var(--text-quaternary)" }}
+              >
+                INITIATE SYNAPS
+              </span>
+              <h2
+                className="text-[8vw] font-black uppercase tracking-tighter leading-none"
+                style={{ color: "var(--text-primary)" }}
+              >
                 INITIATE<br />
                 <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(59,130,246,0.35)" }}>SYNAPS</span>
               </h2>
@@ -89,27 +101,27 @@ export default function Footer() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
               <div className="space-y-6">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Sitemap</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>Sitemap</p>
                 <ul className="space-y-4">
-                  <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">About</Link></li>
-                  <li><Link href="/services" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Expert Services</Link></li>
-                  <li><Link href="/projects" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Project Archive</Link></li>
+                  <li><Link href="/about" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>About</Link></li>
+                  <li><Link href="/services" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Expert Services</Link></li>
+                  <li><Link href="/projects" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Project Archive</Link></li>
                 </ul>
               </div>
               <div className="space-y-6">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Resources</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>Resources</p>
                 <ul className="space-y-4">
-                  <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Technical Blog</Link></li>
-                  <li><Link href="/learning-journey" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Learning Journey</Link></li>
-                  <li><Link href="/#contact" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Get In Touch</Link></li>
-                  <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Formula 1 Stats</Link></li>
+                  <li><Link href="/blog" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Technical Blog</Link></li>
+                  <li><Link href="/learning-journey" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Learning Journey</Link></li>
+                  <li><Link href="/#contact" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Get In Touch</Link></li>
+                  <li><Link href="/f1" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Formula 1 Stats</Link></li>
                 </ul>
               </div>
               <div className="space-y-6">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Legal</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>Legal</p>
                 <ul className="space-y-4">
-                  <li><Link href="/privacy" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Privacy Policy</Link></li>
-                  <li><Link href="/terms" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white/60">Terms of Service</Link></li>
+                  <li><Link href="/privacy" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Privacy Policy</Link></li>
+                  <li><Link href="/terms" className="text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-muted)" }}>Terms of Service</Link></li>
                 </ul>
               </div>
             </div>
@@ -122,9 +134,10 @@ export default function Footer() {
                   data-cursor={social.label.toUpperCase()}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-300"
+                  className="w-12 h-12 rounded-full border flex items-center justify-center hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-300"
+                  style={{ borderColor: "var(--border-default)" }}
                 >
-                  <social.icon className="w-5 h-5 text-white" />
+                  <social.icon className="w-5 h-5" style={{ color: "var(--text-primary)" }} />
                 </motion.a>
               ))}
             </div>
@@ -136,7 +149,11 @@ export default function Footer() {
             viewport={{ once: true }}
             className="relative"
           >
-            <form onSubmit={handleSubmit} className="space-y-8 p-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-8 p-10 backdrop-blur-sm border rounded-2xl"
+              style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)", boxShadow: "var(--shadow-card)" }}
+            >
               {/* Honeypot field — hidden from real users, bots fill it in anyway */}
               <input
                 type="text"
@@ -150,36 +167,39 @@ export default function Footer() {
               />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-xs font-technical text-white/60 uppercase">Name</label>
+                  <label className="text-xs font-technical uppercase" style={{ color: "var(--text-muted)" }}>Name</label>
                   <input
                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-blue-400 transition-colors placeholder:text-white/30"
+                    className="w-full bg-transparent border-b py-3 focus:outline-none focus:border-blue-400 transition-colors"
+                    style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
                     placeholder="Your Name"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-technical text-white/60 uppercase">Email</label>
+                  <label className="text-xs font-technical uppercase" style={{ color: "var(--text-muted)" }}>Email</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-blue-400 transition-colors placeholder:text-white/30"
+                    className="w-full bg-transparent border-b py-3 focus:outline-none focus:border-blue-400 transition-colors"
+                    style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
                     placeholder="your@email.com"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-technical text-white/60 uppercase">Message</label>
+                <label className="text-xs font-technical uppercase" style={{ color: "var(--text-muted)" }}>Message</label>
                 <textarea
                   required
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-transparent border-b border-white/20 py-4 text-white focus:outline-none focus:border-blue-400 transition-colors resize-none placeholder:text-white/30"
+                  className="w-full bg-transparent border-b py-4 focus:outline-none focus:border-blue-400 transition-colors resize-none"
+                  style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
                   placeholder="How can we help?"
                 />
               </div>
@@ -187,7 +207,8 @@ export default function Footer() {
                 type="submit"
                 disabled={status === "loading"}
                 data-cursor="SEND"
-                className="group w-full relative flex items-center justify-center gap-3 bg-white text-black py-4 font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all duration-500 overflow-hidden disabled:opacity-50"
+                className="group w-full relative flex items-center justify-center gap-3 py-4 font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all duration-500 overflow-hidden disabled:opacity-50 rounded-full"
+                style={{ backgroundColor: "var(--text-primary)", color: "var(--bg-base)" }}
               >
                 {status === "loading" ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -206,12 +227,15 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        <div className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">
+        <div
+          className="mt-32 pt-12 border-t flex flex-col md:flex-row items-center justify-between gap-6"
+          style={{ borderColor: "var(--border-subtle)" }}
+        >
+          <p className="text-[9px] font-technical uppercase tracking-[0.4em]" style={{ color: "var(--text-quaternary)" }}>
             © 2026 ROUABAH ZINE EDDINE // ALL RIGHTS RESERVED
           </p>
           <div className="flex gap-8">
-            <p className="text-[9px] font-technical text-white/20 uppercase tracking-[0.4em]">BUILT FOR PERFORMANCE // NODE_DZ</p>
+            <p className="text-[9px] font-technical uppercase tracking-[0.4em]" style={{ color: "var(--text-quaternary)" }}>BUILT FOR PERFORMANCE // NODE_DZ</p>
           </div>
         </div>
       </div>

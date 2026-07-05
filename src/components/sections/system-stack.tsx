@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   SiTypescript,
@@ -36,8 +36,8 @@ const NEOFETCH_INFO = [
 ];
 
 const SWATCHES = [
-  "bg-black", "bg-red-500", "bg-green-500", "bg-yellow-500",
-  "bg-blue-500", "bg-purple-500", "bg-cyan-400", "bg-white",
+  "#000000", "#ef4444", "#22c55e", "#eab308",
+  "#3b82f6", "#a855f7", "#22d3ee", "#ffffff",
 ];
 
 const STACK_CATEGORIES = [
@@ -103,7 +103,7 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
       transition={{ delay: index * 0.06 }}
     >
       <div className="flex items-center justify-between mb-3">
-        <span className="text-[10px] font-technical text-white/30 uppercase tracking-[0.4em]">
+        <span className="text-[10px] font-technical uppercase tracking-[0.4em]" style={{ color: "var(--text-tertiary)" }}>
           {category.label}
         </span>
         <span className="text-[9px] font-technical text-blue-400/70 uppercase tracking-widest tabular-nums">
@@ -111,7 +111,7 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
         </span>
       </div>
 
-      <div className="h-[2px] bg-white/5 rounded-full overflow-hidden mb-4">
+      <div className="h-[2px] rounded-full overflow-hidden mb-4" style={{ backgroundColor: "var(--border-subtle)" }}>
         <motion.div
           initial={{ scaleX: 0 }}
           animate={inView ? { scaleX: 1 } : {}}
@@ -128,7 +128,8 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
             initial={{ opacity: 0, scale: 0.9 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: index * 0.06 + 0.2 + i * 0.05, duration: 0.3 }}
-            className="flex items-center gap-2 px-4 py-2.5 border border-white/10 rounded-full text-white/70 hover:text-white hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
+            className="flex items-center gap-2 px-4 py-2.5 border rounded-full hover:text-blue-400 hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
+            style={{ borderColor: "var(--border-default)", color: "var(--text-secondary)" }}
           >
             <item.icon size={14} className="text-blue-400" />
             <span className="text-[11px] font-bold uppercase tracking-wider">{item.name}</span>
@@ -141,7 +142,7 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
 
 export default function SystemStack() {
   return (
-    <section className="relative bg-zinc-950 py-24 md:py-48 border-t border-white/5 overflow-hidden">
+    <section className="relative py-24 md:py-48 border-t overflow-hidden" style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -149,10 +150,10 @@ export default function SystemStack() {
           viewport={{ once: true }}
           className="mb-16 md:mb-24"
         >
-          <span className="text-[8px] md:text-[10px] font-technical text-white/20 tracking-[0.6em] md:tracking-[1em] uppercase block mb-6">
+          <span className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] md:tracking-[1em] uppercase block mb-6" style={{ color: "var(--text-quaternary)" }}>
             SYSTEM_SPECS
           </span>
-          <h2 className="text-[12vw] md:text-[7vw] font-black text-white leading-[0.85] uppercase tracking-tighter">
+          <h2 className="text-[12vw] md:text-[7vw] font-black leading-[0.85] uppercase tracking-tighter" style={{ color: "var(--text-primary)" }}>
             $ NEOFETCH
           </h2>
         </motion.div>
@@ -165,12 +166,12 @@ export default function SystemStack() {
             viewport={{ once: true }}
             className="lg:col-span-5 lg:sticky lg:top-32"
           >
-            <div className="border border-white/10 bg-white/[0.02] rounded-xl overflow-hidden">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/[0.02]">
+            <div className="border rounded-xl overflow-hidden" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}>
+              <div className="terminal-chrome flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}>
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
                 <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                <span className="ml-3 flex items-center gap-2 font-technical text-[9px] text-white/30 uppercase tracking-widest">
+                <span className="ml-3 flex items-center gap-2 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>
                   <Terminal size={10} /> zed@node_dz
                 </span>
               </div>
@@ -181,24 +182,29 @@ export default function SystemStack() {
                 <div className="space-y-2">
                   {NEOFETCH_INFO.map((row) => (
                     <div key={row.label} className="flex gap-3">
-                      <span className="text-white/30 uppercase w-16 flex-shrink-0">{row.label}</span>
-                      <span className="text-white/80">{row.value}</span>
+                      <span className="uppercase w-16 flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>{row.label}</span>
+                      <span style={{ color: "var(--text-secondary)" }}>{row.value}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="flex gap-1.5 mt-6">
                   {SWATCHES.map((c, i) => (
-                    <div key={i} className={`w-4 h-4 rounded-sm ${c} ${c === "bg-black" ? "border border-white/20" : ""}`} />
+                    <div
+                      key={i}
+                      className="w-4 h-4 rounded-sm border"
+                      style={{ backgroundColor: c, borderColor: "var(--border-default)" }}
+                    />
                   ))}
                 </div>
 
-                <p className="mt-6 flex items-center gap-2 text-white/40">
+                <p className="mt-6 flex items-center gap-2" style={{ color: "var(--text-tertiary)" }}>
                   guest@node_dz {"~"} %
                   <motion.span
                     animate={{ opacity: [1, 0] }}
                     transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
-                    className="w-1.5 h-3.5 bg-white/60 inline-block"
+                    className="w-1.5 h-3.5 inline-block"
+                    style={{ backgroundColor: "var(--text-muted)" }}
                   />
                 </p>
               </div>

@@ -245,16 +245,16 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <main className="bg-zinc-950 min-h-screen pt-32">
+    <main className="min-h-screen pt-32" style={{ backgroundColor: "var(--bg-base)" }}>
       <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "Projects", href: "/projects" }]} />
 
         <header className="mb-16 md:mb-20">
-          <h1 className="text-4xl sm:text-5xl md:text-8xl font-black uppercase tracking-tighter mb-6">
-            Project <span className="text-white/50">Archive</span>
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-black uppercase tracking-tighter mb-6" style={{ color: "var(--text-primary)" }}>
+            Project <span style={{ color: "var(--text-muted)" }}>Archive</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl font-light leading-relaxed">
+          <p className="text-lg md:text-xl max-w-2xl font-light leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             A selection of technical missions and digital builds. Focused on performance, architecture, and user-centric design.
           </p>
         </header>
@@ -262,36 +262,43 @@ export default function ProjectsPage() {
         <div className="space-y-24 md:space-y-32 mb-24 md:mb-32">
           {projects.map((project, index) => (
             <section key={index} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-24 items-center`}>
-              <div className="w-full lg:w-1/2 group relative aspect-[16/10] overflow-hidden bg-white/5 border border-white/10 rounded-2xl">
+              <div className="w-full lg:w-1/2 group relative aspect-[16/10] overflow-hidden border rounded-2xl" style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}>
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
                   className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                 />
-                <div className="absolute inset-0 bg-zinc-950/40 group-hover:bg-transparent transition-colors duration-700" />
+                <div
+                  className="absolute inset-0 group-hover:opacity-0 transition-opacity duration-700"
+                  style={{ backgroundColor: "color-mix(in srgb, var(--bg-base) 40%, transparent)" }}
+                />
               </div>
 
               <div className="w-full lg:w-1/2 space-y-6 md:space-y-8">
                 <div className="space-y-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-white/50">{project.category} — {project.year}</span>
-                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight">{project.title}</h2>
+                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>{project.category} — {project.year}</span>
+                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight" style={{ color: "var(--text-primary)" }}>{project.title}</h2>
                 </div>
 
-                <p className="text-base md:text-lg text-white/70 leading-relaxed">
+                <p className="text-base md:text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {project.desc}
                 </p>
 
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((t, i) => (
-                    <span key={i} className="text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-white/80">
+                    <span
+                      key={i}
+                      className="text-[10px] font-bold uppercase tracking-widest border px-3 py-1.5 rounded-full"
+                      style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)", color: "var(--text-secondary)" }}
+                    >
                       {t}
                     </span>
                   ))}
                 </div>
 
                 <div className="flex gap-6 pt-4">
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors text-white">
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-blue-400 transition-colors" style={{ color: "var(--text-primary)" }}>
                     <ExternalLink size={16} /> Live Demo
                   </a>
                 </div>

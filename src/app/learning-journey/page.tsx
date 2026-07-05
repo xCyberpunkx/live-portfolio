@@ -59,21 +59,26 @@ const coreIcons = [
   { icon: SiDotnet, name: ".NET / ASP.NET Core" },
 ];
 
+const STATUS_BADGE: Record<string, string> = {
+  COMPLETE: "text-green-400 border-green-500/30 bg-green-500/5",
+  IN_PROGRESS: "text-blue-400 border-blue-500/30 bg-blue-500/5",
+};
+
 export default function LearningJourneyPage() {
   return (
-    <main className="bg-zinc-950 min-h-screen pt-32">
+    <main className="min-h-screen pt-32" style={{ backgroundColor: "var(--bg-base)" }}>
       <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "Learning", href: "/learning-journey" }]} />
 
         <header className="mb-20 max-w-3xl">
-          <span className="text-[10px] font-technical text-white/20 tracking-[0.6em] uppercase block mb-6">
+          <span className="text-[10px] font-technical tracking-[0.6em] uppercase block mb-6" style={{ color: "var(--text-quaternary)" }}>
             SELF_DIRECTED // BEYOND_THE_JOB
           </span>
-          <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-white leading-[0.9]">
-            Learning <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>Log</span>
+          <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 leading-[0.9]" style={{ color: "var(--text-primary)" }}>
+            Learning <span className="text-transparent" style={{ WebkitTextStroke: "1px var(--border-strong)" }}>Log</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed">
+          <p className="text-lg md:text-xl font-light leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             Alongside client and freelance work, I follow a structured 24-module programming
             foundations roadmap — algorithms and data structures first, frameworks second — plus
             standalone tracks in web fundamentals and professional workflow skills.
@@ -85,28 +90,29 @@ export default function LearningJourneyPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="border border-white/10 bg-white/[0.02] rounded-xl overflow-hidden mb-20 max-w-3xl"
+          className="border rounded-xl overflow-hidden mb-20 max-w-3xl"
+          style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
         >
-          <div className="flex items-center gap-2 px-4 md:px-6 py-3 border-b border-white/10 bg-white/[0.02]">
+          <div className="terminal-chrome flex items-center gap-2 px-4 md:px-6 py-3 border-b" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}>
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
             <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-            <span className="ml-3 flex items-center gap-2 font-technical text-[9px] text-white/30 uppercase tracking-widest">
+            <span className="ml-3 flex items-center gap-2 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>
               <Terminal size={10} /> learning.log
             </span>
           </div>
           <div className="p-6 md:p-8 font-technical text-[11px] md:text-xs space-y-2">
             <p className="text-blue-400">guest@node_dz ~ % progress --roadmap=foundations</p>
-            <div className="flex gap-3"><span className="text-white/30 w-32 flex-shrink-0">MODULES_DONE</span><span className="text-white/80">20 / 24</span></div>
-            <div className="flex gap-3"><span className="text-white/30 w-32 flex-shrink-0">CURRENT</span><span className="text-white/80">Data Structures II · Algorithms L6 · Database L2</span></div>
-            <div className="flex gap-3"><span className="text-white/30 w-32 flex-shrink-0">PARALLEL</span><span className="text-white/80">HTML / CSS / JavaScript foundations</span></div>
-            <div className="flex gap-3"><span className="text-white/30 w-32 flex-shrink-0">SOURCE</span><span className="text-white/80">Programming Advices — Dr. Mohammed Abu-Hadhoud</span></div>
+            <div className="flex gap-3"><span className="w-32 flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>MODULES_DONE</span><span style={{ color: "var(--text-secondary)" }}>20 / 24</span></div>
+            <div className="flex gap-3"><span className="w-32 flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>CURRENT</span><span style={{ color: "var(--text-secondary)" }}>Data Structures II · Algorithms L6 · Database L2</span></div>
+            <div className="flex gap-3"><span className="w-32 flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>PARALLEL</span><span style={{ color: "var(--text-secondary)" }}>HTML / CSS / JavaScript foundations</span></div>
+            <div className="flex gap-3"><span className="w-32 flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>SOURCE</span><span style={{ color: "var(--text-secondary)" }}>Programming Advices — Dr. Mohammed Abu-Hadhoud</span></div>
           </div>
         </motion.div>
 
         {/* Roadmap stages */}
         <section className="mb-24">
-          <span className="text-[10px] font-technical text-white/20 tracking-[0.6em] uppercase block mb-8">
+          <span className="text-[10px] font-technical tracking-[0.6em] uppercase block mb-8" style={{ color: "var(--text-quaternary)" }}>
             Roadmap
           </span>
           <div className="space-y-4">
@@ -117,32 +123,31 @@ export default function LearningJourneyPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-6 md:p-8 bg-white/[0.02] border border-white/5 rounded-xl hover:border-blue-500/30 transition-colors"
+                className="p-6 md:p-8 border rounded-xl hover:border-blue-500/30 transition-colors"
+                style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-subtle)" }}
               >
                 <div className="flex flex-wrap items-center gap-4 mb-3">
                   <span className="font-technical text-[10px] text-blue-400/70">[{stage.id}]</span>
-                  <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-tight">{stage.label}</h3>
+                  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight" style={{ color: "var(--text-primary)" }}>{stage.label}</h3>
                   <span
                     className={`text-[9px] font-technical uppercase tracking-widest px-2 py-1 rounded-full border ${
-                      stage.status === "COMPLETE"
-                        ? "text-green-400 border-green-500/30 bg-green-500/5"
-                        : stage.status === "IN_PROGRESS"
-                        ? "text-blue-400 border-blue-500/30 bg-blue-500/5"
-                        : "text-white/40 border-white/10"
+                      STATUS_BADGE[stage.status] ?? ""
                     }`}
+                    style={stage.status === "QUEUED" ? { color: "var(--text-tertiary)", borderColor: "var(--border-default)" } : undefined}
                   >
                     {stage.status.replace("_", " ")}
                   </span>
-                  <span className="ml-auto font-technical text-[10px] text-white/20 uppercase tracking-widest">{stage.range}</span>
+                  <span className="ml-auto font-technical text-[10px] uppercase tracking-widest" style={{ color: "var(--text-quaternary)" }}>{stage.range}</span>
                 </div>
-                <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mb-4 pl-6 border-l border-white/10">
+                <p className="text-sm md:text-base leading-relaxed max-w-2xl mb-4 pl-6 border-l" style={{ color: "var(--text-secondary)", borderColor: "var(--border-default)" }}>
                   {stage.desc}
                 </p>
                 <div className="flex flex-wrap gap-2 pl-6">
                   {stage.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] font-mono text-white/60 bg-white/5 px-2 py-1 rounded border border-white/5"
+                      className="text-[10px] font-mono px-2 py-1 rounded border"
+                      style={{ color: "var(--text-secondary)", backgroundColor: "var(--bg-surface-strong)", borderColor: "var(--border-subtle)" }}
                     >
                       {tag}
                     </span>
@@ -155,7 +160,7 @@ export default function LearningJourneyPage() {
 
         {/* Core tech icons */}
         <section className="mb-24">
-          <span className="text-[10px] font-technical text-white/20 tracking-[0.6em] uppercase block mb-8">
+          <span className="text-[10px] font-technical tracking-[0.6em] uppercase block mb-8" style={{ color: "var(--text-quaternary)" }}>
             Core Languages
           </span>
           <div className="flex flex-wrap gap-6">
@@ -166,24 +171,25 @@ export default function LearningJourneyPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="flex items-center gap-3 px-6 py-4 border border-white/10 rounded-xl bg-white/[0.02] hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-300"
+                className="flex items-center gap-3 px-6 py-4 border rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-300"
+                style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)" }}
               >
                 <item.icon size={22} className="text-blue-400" />
-                <span className="text-sm font-bold uppercase tracking-wider text-white/80">{item.name}</span>
+                <span className="text-sm font-bold uppercase tracking-wider" style={{ color: "var(--text-secondary)" }}>{item.name}</span>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* Parallel web-fundamentals track */}
-        <section className="pt-16 border-t border-white/5">
+        <section className="pt-16 border-t" style={{ borderColor: "var(--border-subtle)" }}>
           <div className="flex items-center gap-3 mb-8">
             <GraduationCap size={16} className="text-blue-400" />
-            <span className="text-[10px] font-technical text-white/20 tracking-[0.6em] uppercase">
+            <span className="text-[10px] font-technical tracking-[0.6em] uppercase" style={{ color: "var(--text-quaternary)" }}>
               Parallel Track — Web Fundamentals & Workflow
             </span>
           </div>
-          <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-2xl mb-8">
+          <p className="text-sm md:text-base leading-relaxed max-w-2xl mb-8" style={{ color: "var(--text-secondary)" }}>
             Alongside the core roadmap, I'm building depth in web fundamentals from first principles
             rather than framework shortcuts, plus Git-based collaboration workflow and professional
             skills courses (time management, structured workflow discipline).
@@ -196,7 +202,8 @@ export default function LearningJourneyPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                className="flex items-center gap-2 px-4 py-2.5 border border-white/10 rounded-full text-white/70 hover:text-white hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2.5 border rounded-full hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
+                style={{ borderColor: "var(--border-default)", color: "var(--text-secondary)" }}
               >
                 <item.icon size={14} className="text-blue-400" />
                 <span className="text-[11px] font-bold uppercase tracking-wider">{item.name}</span>

@@ -3,8 +3,9 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import JsonLd from "@/components/seo/json-Id";
+import ThemeProvider from "@/components/ui/theme-provider";
 
-const jakarta = Plus_Jakarta_Sans({ 
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: '--font-jakarta',
 });
@@ -70,24 +71,26 @@ export const metadata: Metadata = {
     google: "UcnkBGrdaj_TDDrWUE5Lbqx7xIU_lSOzZ2xtwHTg65c",
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-        <body className={`${jakarta.variable} ${jetbrainsMono.variable} font-sans antialiased bg-zinc-950 text-white`}>
+    <html lang="en" data-theme="dark" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${jakarta.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+        <ThemeProvider>
           <JsonLd />
           <div className="grain-overlay" />
           <Script
-
-          id="orchids-browser-logs"
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
-          strategy="afterInteractive"
-          data-orchids-project-id="c99fa3a9-7f61-4053-a892-9a79b5387a9e"
-        />
-        {children}
+            id="orchids-browser-logs"
+            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
+            strategy="afterInteractive"
+            data-orchids-project-id="c99fa3a9-7f61-4053-a892-9a79b5387a9e"
+          />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
