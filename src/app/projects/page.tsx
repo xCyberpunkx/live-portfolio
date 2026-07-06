@@ -341,21 +341,6 @@ const projects: Project[] = [
       outcome: "Customers can browse the full product range before visiting or calling the store.",
     },
   },
-  {
-    title: "GENELTECH Industries",
-    category: "Industrial Solutions • Innovation",
-    image: "/projects/geneltech.png",
-    link: "https://geneltech-murex.vercel.app/",
-    github: "#",
-    desc: "Industrial excellence driven by innovation. Leader in industrial solutions, providing top-tier technical services.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    year: "2025",
-    caseStudy: {
-      problem: "GENELTECH needed a site that reflected its position as a technical solutions provider rather than a generic industrial template.",
-      approach: "Built a Next.js site structured around service capabilities and technical expertise.",
-      outcome: "A site that positions the company as a specialist provider to prospective industrial clients.",
-    },
-  },
 ];
 
 export default function ProjectsPage() {
