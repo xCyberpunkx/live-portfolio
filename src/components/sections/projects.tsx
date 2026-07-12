@@ -6,15 +6,35 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink, Github, Terminal } from "lucide-react";
 
 const projects = [
+    {
+    title: "Forge Kit",
+    category: "Developer Tools • Open Source",
+    image: "/projects/white.png",
+    link: "https://v1-forge-staging.vercel.app/",
+    github: "https://github.com/xCyberpunkx/forge",
+    details:
+      "A free, open-source workspace for builders — generators, converters, formatters, and dev utilities under one fast, keyboard-friendly interface. Runs entirely in the browser, no sign-up, no tracking, no paywall.",
+    tech: ["React 19", "TypeScript"],
+  },
   {
-    title: "Bookingo",
-    category: "Booking Platform • Full-Stack",
-    image: "/projects/bookingo.png",
-    link: "https://www.bookingo.app/",
+    title: "DentalDZ",
+    category: "E-Commerce • Full Backend CMS",
+    image: "/projects/dentaldz.png",
+    link: "https://www.dentaldz.com/",
     github: "#",
     details:
-      "A booking.com-style reservation platform handling multi-tenant reservations, availability, and payment flows — architected as a real production-grade Laravel application rather than a template site.",
-    tech: ["Laravel", "PHP", "MySQL"],
+      "A complete online store for dental equipment, including product catalog management, ordering, and a custom admin CMS behind the scenes.",
+    tech: ["React", "Supabase"],
+  },
+    {
+    title: "STEREO MIND",
+    category: "Productivity • Open Source",
+    image: "/projects/stereo-mind.png",
+    link: "https://stero-mind.vercel.app/",
+    github: "#",
+    details:
+      "A productivity tool focused on simplicity — tracking learning, tasks, and goals without the friction of complex features.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
   },
   {
     title: "Healthcare System",
@@ -27,16 +47,6 @@ const projects = [
     tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
   },
   {
-    title: "DentalDZ",
-    category: "E-Commerce • Full Backend CMS",
-    image: "/projects/dentaldz.png",
-    link: "https://www.dentaldz.com/",
-    github: "#",
-    details:
-      "A complete online store for dental equipment, including product catalog management, ordering, and a custom admin CMS behind the scenes.",
-    tech: ["React", "Supabase"],
-  },
-  {
     title: "Groupe Gadi",
     category: "Static Website • Custom CMS Editor",
     image: "/projects/gadi.png",
@@ -45,16 +55,6 @@ const projects = [
     details:
       "A static-first corporate site paired with a custom backend inline editor, letting the client update page content directly.",
     tech: ["Next.js", "Custom CMS"],
-  },
-  {
-    title: "STEREO MIND",
-    category: "Productivity • Open Source",
-    image: "/projects/stereo-mind.png",
-    link: "https://stero-mind.vercel.app/",
-    github: "#",
-    details:
-      "A productivity tool focused on simplicity — tracking learning, tasks, and goals without the friction of complex features.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS"],
   },
   {
     title: "Safouane Mokhtefi",

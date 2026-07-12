@@ -12,21 +12,6 @@ export const metadata: Metadata = {
 
 const projects: Project[] = [
   {
-    title: "Bookingo",
-    category: "Booking Platform • Full-Stack",
-    image: "/projects/bookingo.png",
-    link: "https://www.bookingo.app/",
-    github: "#",
-    desc: "A booking.com-style reservation platform built end-to-end in Laravel — multi-tenant reservations, availability, and payment flows.",
-    tech: ["Laravel", "PHP", "MySQL"],
-    year: "2026",
-    caseStudy: {
-      problem: "Small hospitality operators had no affordable way to manage multi-property availability without enterprise software or spreadsheets.",
-      approach: "Built a multi-tenant Laravel app with a shared availability engine, tenant-scoped dashboards, and a hold/cancel/refund payment flow.",
-      outcome: "One codebase now serves multiple independent properties with isolated data, at a fraction of SaaS licensing cost.",
-    },
-  },
-  {
     title: "DentalDZ",
     category: "E-Commerce • Full Backend CMS",
     image: "/projects/dentaldz.png",
@@ -114,6 +99,21 @@ const projects: Project[] = [
       problem: "A graphic designer had strong work but no dedicated site to present it — just scattered social posts and a PDF deck.",
       approach: "Built a minimalist Next.js portfolio structured around the designer's own visual identity, letting the work carry the design.",
       outcome: "The designer now has a single shareable link that presents their portfolio professionally to prospective clients.",
+    },
+  },
+  {
+    title: "Forge Kit",
+    category: "Developer Tools • Open Source",
+    image: "/projects/white.png",
+    link: "https://v1-forge-staging.vercel.app/",
+    github: "https://github.com/xCyberpunkx/forge",
+    desc: "A free, open-source workspace bundling generators, converters, formatters, and dev utilities behind one consistent, keyboard-friendly interface.",
+    tech: ["React 19", "TypeScript"],
+    year: "2026",
+    caseStudy: {
+      problem: "Developers rely on a scattered mix of ad-supported, tracking-heavy sites for everyday generators, converters, and formatters, breaking flow and raising privacy concerns.",
+      approach: "Built a single React 19 + TypeScript workspace that runs entirely client-side, with a growing catalog of tools that all share copy, download, reset, and share affordances.",
+      outcome: "A free, sign-up-free toolkit where nothing typed or uploaded ever leaves the browser, letting developers move between tools without losing momentum.",
     },
   },
   {
