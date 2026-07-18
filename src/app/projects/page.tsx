@@ -12,6 +12,22 @@ export const metadata: Metadata = {
 
 const projects: Project[] = [
   {
+    title: "Ledger",
+    category: "SaaS • Client & Project Operations Platform",
+    image: "/projects/ledger.png",
+    link: "https://ledger-frontend-woad.vercel.app",
+    github: "#",
+    desc: "A multi-tenant client and project operations platform for freelancers and small agencies, centralizing scattered client work into one source of truth.",
+    tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
+    year: "2026",
+    flagship: true,
+    caseStudy: {
+      problem: "Freelancers and small agencies run client work through scattered WhatsApp threads, email chains, spreadsheets, and shared Drive folders — status lives in five places that all disagree with each other.",
+      approach: "Built a multi-tenant platform with org-scoped role-based access, a dedicated client portal, and an append-only activity-event log that generates both the project timeline and email notifications from a single source.",
+      outcome: "Team members do their real work — tasks, files, comments — and the system produces the true project status automatically, showing the right slice of it to the right person instead of someone manually relaying updates.",
+    },
+  },
+  {
     title: "DentalDZ",
     category: "E-Commerce • Full Backend CMS",
     image: "/projects/dentaldz.png",
