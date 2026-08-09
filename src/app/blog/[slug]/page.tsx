@@ -1,5 +1,4 @@
 import { posts } from "../blog-data";
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
@@ -38,7 +37,6 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <main className="bg-black min-h-screen pt-32">
-      <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs 
           items={[

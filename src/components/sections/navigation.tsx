@@ -9,6 +9,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { useLenis } from "@/components/ui/smooth-scroll";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { OnboardingTourProvider, TourHighlight } from "@/components/ui/onboarding-tour";
+import MagneticButton from "@/components/ui/magnetic-button";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -131,15 +132,18 @@ const Navigation = () => {
               title="Grab a copy"
               description="Download the CV as a PDF — always up to date with the latest role."
             >
-              <a
+              <MagneticButton
                 href="/resume.pdf"
                 download
                 data-cursor="GET"
+                radius={40}
+                strength={0.3}
+                labelStrength={0.5}
                 className="text-[10px] font-bold uppercase tracking-[0.3em] px-4 py-2 rounded-full transition-all hover:opacity-90"
                 style={{ backgroundColor: "var(--text-primary)", color: "var(--bg-base)" }}
               >
                 Download CV
-              </a>
+              </MagneticButton>
             </TourHighlight>
           </div>
 

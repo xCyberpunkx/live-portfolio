@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
 import {
   SiTypescript,
   SiGnubash,
@@ -90,16 +91,17 @@ const STACK_CATEGORIES = [
   },
 ];
 
-function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES)[number]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px -15% 0px" });
+const CategoryBlock = React.forwardRef<
+  HTMLDivElement,
+  { category: (typeof STACK_CATEGORIES)[number]; index: number; active: boolean }
+>(function CategoryBlock({ category, index, active }, ref) {
   const pct = 100;
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      animate={active ? { opacity: 1, y: 0 } : {}}
       transition={{ delay: index * 0.06 }}
     >
       <div className="flex items-center justify-between mb-3">
@@ -107,14 +109,14 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
           {category.label}
         </span>
         <span className="text-[9px] font-technical text-blue-400/70 uppercase tracking-widest tabular-nums">
-          {inView ? `${category.items.length}/${category.items.length} synced` : "syncing..."}
+          {active ? `${category.items.length}/${category.items.length} synced` : "syncing..."}
         </span>
       </div>
 
       <div className="h-[2px] rounded-full overflow-hidden mb-4" style={{ backgroundColor: "var(--border-subtle)" }}>
         <motion.div
           initial={{ scaleX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
+          animate={active ? { scaleX: 1 } : {}}
           transition={{ duration: 0.9, delay: index * 0.06 + 0.1, ease: "easeOut" }}
           className="h-full bg-blue-500/60 origin-left"
           style={{ width: `${pct}%` }}
@@ -126,7 +128,7 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
           <motion.div
             key={item.name}
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            animate={active ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: index * 0.06 + 0.2 + i * 0.05, duration: 0.3 }}
             className="flex items-center gap-2 px-4 py-2.5 border rounded-full hover:text-blue-400 hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
             style={{ borderColor: "var(--border-default)", color: "var(--text-secondary)" }}
@@ -138,9 +140,44 @@ function CategoryBlock({ category, index }: { category: (typeof STACK_CATEGORIES
       </div>
     </motion.div>
   );
-}
+});
 
 export default function SystemStack() {
+  const categoryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [activeSet, setActiveSet] = useState<Set<number>>(new Set());
+
+  // One batched ScrollTrigger instead of five independent framer `useInView`
+  // observers (one per category). Same "reveal as you scroll to it" feel,
+  // but it's a single GSAP-owned scroll job instead of five separate
+  // IntersectionObservers doing overlapping work — this is the pattern
+  // called out in the redesign plan's performance section
+  // (ScrollTrigger.batch for repeated per-card reveals) applied here.
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setActiveSet(new Set(STACK_CATEGORIES.map((_, i) => i)));
+      return;
+    }
+    const targets = categoryRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (targets.length === 0) return;
+
+    const batch = ScrollTrigger.batch(targets, {
+      start: "top 85%",
+      once: true,
+      onEnter: (elements) => {
+        setActiveSet((prev) => {
+          const next = new Set(prev);
+          elements.forEach((el) => {
+            const idx = categoryRefs.current.indexOf(el as HTMLDivElement);
+            if (idx !== -1) next.add(idx);
+          });
+          return next;
+        });
+      },
+    });
+
+    return () => batch.forEach((b) => b.kill());
+  }, []);
+
   return (
     <section className="relative py-24 md:py-48 border-t overflow-hidden" style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}>
       <div className="container mx-auto px-6">
@@ -214,7 +251,15 @@ export default function SystemStack() {
           {/* Categorized stack, rendered as sequential package installs */}
           <div className="lg:col-span-7 space-y-10">
             {STACK_CATEGORIES.map((category, catIndex) => (
-              <CategoryBlock key={category.label} category={category} index={catIndex} />
+              <CategoryBlock
+                key={category.label}
+                category={category}
+                index={catIndex}
+                active={activeSet.has(catIndex)}
+                ref={(el) => {
+                  categoryRefs.current[catIndex] = el;
+                }}
+              />
             ))}
           </div>
         </div>

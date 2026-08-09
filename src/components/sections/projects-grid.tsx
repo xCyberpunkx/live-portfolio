@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { ExternalLink, ChevronDown, Target, Wrench, TrendingUp } from "lucide-react";
+import { ExternalLink, ChevronDown, Target, Wrench, TrendingUp, Sparkles } from "lucide-react";
 
 export type CaseStudy = {
   problem: string;
@@ -21,6 +21,8 @@ export type Project = {
   tech: string[];
   year: string;
   caseStudy?: CaseStudy;
+  /** Was set on the Ledger entry in app/projects/page.tsx but never had a type field or anywhere to render — fixed the tsc error by actually giving it somewhere to go instead of just deleting the data. */
+  flagship?: boolean;
 };
 
 function CaseStudyBlock({ caseStudy }: { caseStudy: CaseStudy }) {
@@ -158,9 +160,19 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
                     <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
                       {project.category} — {project.year}
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight" style={{ color: "var(--text-primary)" }}>
-                      {project.title}
-                    </h2>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight" style={{ color: "var(--text-primary)" }}>
+                        {project.title}
+                      </h2>
+                      {project.flagship && (
+                        <span
+                          className="flex items-center gap-1 text-[9px] font-technical uppercase tracking-widest px-2 py-1 rounded-full border flex-shrink-0"
+                          style={{ color: "var(--accent)", borderColor: "var(--accent)" }}
+                        >
+                          <Sparkles size={9} /> Flagship
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <p className="text-base md:text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>

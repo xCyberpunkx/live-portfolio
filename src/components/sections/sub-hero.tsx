@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
 
 const PROBE_LINES = [
   { label: "IDENTITY", value: "ROUABAH_ZINE_EDDINE" },
@@ -37,6 +38,9 @@ function ProbeLine({ line, index, active }: { line: (typeof PROBE_LINES)[number]
 export default function SubHeroSection() {
   const container = useRef<HTMLDivElement>(null);
   const scanRef = useRef<HTMLDivElement>(null);
+  const scanLineRef = useRef<HTMLDivElement>(null);
+  const probeWrapRef = useRef<HTMLDivElement>(null);
+  const briefWrapRef = useRef<HTMLDivElement>(null);
   const scanInView = useInView(scanRef, { once: true, margin: "-20% 0px -20% 0px" });
   const [isMobile, setIsMobile] = useState(false);
 
@@ -67,6 +71,54 @@ export default function SubHeroSection() {
     ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, var(--accent-soft), transparent 80%)`
   );
 
+  // Scroll-scrubbed scan sweep + two-speed parallax between the probe panel
+  // and the Brief_01 card. Previously the scanline played a fixed 1.1s
+  // animation the moment the panel entered view and never touched scroll
+  // again — visually nice but disconnected from what the user is actually
+  // doing. Tying it to scrub means the sweep position tracks scroll
+  // position directly: scroll down, the line moves; stop, it stops.
+  //
+  // Deliberately NOT gated on isMobile — unlike the pointer-tracked
+  // radial background above, this is driven by scroll position, not mouse
+  // position, and ScrollTrigger's scrub reads touch-scroll exactly the
+  // same way it reads a mouse wheel. Mobile gets the same effect.
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      if (scanRef.current && scanLineRef.current) {
+        gsap.fromTo(
+          scanLineRef.current,
+          { top: "0%" },
+          {
+            top: "100%",
+            ease: "none",
+            scrollTrigger: {
+              trigger: scanRef.current,
+              start: "top 75%",
+              end: "bottom 35%",
+              scrub: 0.5,
+            },
+          }
+        );
+      }
+      if (probeWrapRef.current) {
+        gsap.to(probeWrapRef.current, {
+          y: -30,
+          ease: "none",
+          scrollTrigger: { trigger: container.current, start: "top bottom", end: "bottom top", scrub: 1 },
+        });
+      }
+      if (briefWrapRef.current) {
+        gsap.to(briefWrapRef.current, {
+          y: -70,
+          ease: "none",
+          scrollTrigger: { trigger: container.current, start: "top bottom", end: "bottom top", scrub: 1 },
+        });
+      }
+    }, container);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section id="about" ref={container} className="py-24 md:py-48 overflow-hidden relative" style={{ backgroundColor: "var(--bg-base)" }}>
       {!isMobile && (
@@ -83,38 +135,37 @@ export default function SubHeroSection() {
         </div>
 
         {/* Probe / scan panel */}
-        <motion.div
-          ref={scanRef}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative border rounded-xl overflow-hidden mb-24 max-w-3xl"
-          style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)" }}
-        >
-          <div
-            className="terminal-chrome flex items-center gap-2 px-4 md:px-6 py-3 border-b"
-            style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}
+        <div ref={probeWrapRef} className="mb-24 max-w-3xl will-change-transform">
+          <motion.div
+            ref={scanRef}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative border rounded-xl overflow-hidden"
+            style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)" }}
           >
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-            <span className="ml-3 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>probe --target=subject</span>
-          </div>
+            <div
+              className="terminal-chrome flex items-center gap-2 px-4 md:px-6 py-3 border-b"
+              style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}
+            >
+              <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+              <span className="ml-3 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>probe --target=subject</span>
+            </div>
 
-          <div className="relative p-6 md:p-8">
-            {scanInView && (
-              <motion.div
-                initial={{ top: 0, opacity: 1 }}
-                animate={{ top: "100%", opacity: [1, 1, 0] }}
-                transition={{ duration: 1.1, ease: "linear" }}
+            <div className="relative p-6 md:p-8">
+              <div
+                ref={scanLineRef}
                 className="absolute left-0 w-full h-[2px] bg-blue-400/60 shadow-[0_0_15px_rgba(59,130,246,0.6)] z-10 pointer-events-none"
+                style={{ top: "0%" }}
               />
-            )}
-            {PROBE_LINES.map((line, i) => (
-              <ProbeLine key={line.label} line={line} index={i} active={scanInView} />
-            ))}
-          </div>
-        </motion.div>
+              {PROBE_LINES.map((line, i) => (
+                <ProbeLine key={line.label} line={line} index={i} active={scanInView} />
+              ))}
+            </div>
+          </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           <div className="lg:col-span-8 space-y-12">
@@ -145,15 +196,17 @@ export default function SubHeroSection() {
           </div>
 
           <div className="lg:col-span-4">
-            <div
-              className="p-8 border backdrop-blur-sm relative group overflow-hidden"
-              style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
-            >
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-              <span className="font-technical text-[8px] uppercase tracking-[0.5em] block mb-4" style={{ color: "var(--text-tertiary)" }}>Brief_01</span>
-              <p className="font-technical text-[10px] uppercase tracking-widest leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                4+ years of delivering enterprise-grade solutions across healthcare, renewable energy, and fintech sectors. Focused on performance at scale.
-              </p>
+            <div ref={briefWrapRef} className="will-change-transform">
+              <div
+                className="p-8 border backdrop-blur-sm relative group overflow-hidden"
+                style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
+              >
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <span className="font-technical text-[8px] uppercase tracking-[0.5em] block mb-4" style={{ color: "var(--text-tertiary)" }}>Brief_01</span>
+                <p className="font-technical text-[10px] uppercase tracking-widest leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                  4+ years of delivering enterprise-grade solutions across healthcare, renewable energy, and fintech sectors. Focused on performance at scale.
+                </p>
+              </div>
             </div>
           </div>
         </div>

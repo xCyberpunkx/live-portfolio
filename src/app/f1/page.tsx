@@ -5,10 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Zap, Trophy } from 'lucide-react';
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
-import CustomCursor from "@/components/ui/custom-cursor";
-import SmoothScroll from "@/components/ui/smooth-scroll";
 
 const cars = [
   {
@@ -42,11 +39,7 @@ const drivers = [
 export default function FormulaOnePage() {
   return (
     <main className="bg-black text-white min-h-screen selection:bg-red-600 selection:text-white">
-      <CustomCursor />
-      <Navigation />
-
-      <SmoothScroll>
-        {/* HERO */}
+      {/* HERO */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
           <motion.div
             initial={{ scale: 1.1, opacity: 0 }}
@@ -198,7 +191,6 @@ export default function FormulaOnePage() {
         </section>
 
         <Footer />
-      </SmoothScroll>
 
       <style jsx global>{`
         @keyframes scroll {

@@ -1,7 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
+import { hasFinePointer } from "@/lib/animations/gsap-config";
+
+/**
+ * The dot/ring both track a target position that's normally just the raw
+ * pointer coordinates. When hovering a `[data-cursor]` element, the target
+ * is pulled toward that element's center instead — the same "gravity" idea
+ * as the magnetic buttons (see lib/animations/use-magnetic.ts), so the
+ * cursor visibly cooperates with a magnetic button rather than just
+ * floating on top of one while the button does its own separate pull.
+ */
+const PULL_STRENGTH = 0.35;
 
 export default function CustomCursor() {
   const mouseX = useMotionValue(0);
@@ -14,19 +25,39 @@ export default function CustomCursor() {
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [label, setLabel] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(true); // Default to true
+  // Was viewport-width based (`innerWidth < 1024`), which meant a
+  // touchscreen laptop under that width wrongly got no cursor and a large
+  // touch-only tablet above it wrongly got one that doesn't track anything.
+  // hasFinePointer() checks for an actual mouse-like pointer instead.
+  const [lacksFinePointer, setLacksFinePointer] = useState(true); // default true until measured client-side
+
+  const rawPointer = useRef({ x: 0, y: 0 });
+  const hoveredRect = useRef<DOMRect | null>(null);
 
   useEffect(() => {
     setMounted(true);
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+    const checkPointer = () => {
+      setLacksFinePointer(!hasFinePointer());
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    checkPointer();
+    window.addEventListener("resize", checkPointer);
+
+    const applyTarget = () => {
+      const { x, y } = rawPointer.current;
+      if (hoveredRect.current) {
+        const cx = hoveredRect.current.left + hoveredRect.current.width / 2;
+        const cy = hoveredRect.current.top + hoveredRect.current.height / 2;
+        mouseX.set(x + (cx - x) * PULL_STRENGTH);
+        mouseY.set(y + (cy - y) * PULL_STRENGTH);
+      } else {
+        mouseX.set(x);
+        mouseY.set(y);
+      }
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      rawPointer.current = { x: e.clientX, y: e.clientY };
+      applyTarget();
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -38,28 +69,32 @@ export default function CustomCursor() {
       if (cursorTarget) {
         setIsHovered(true);
         setLabel(cursorTarget.dataset.cursor ?? null);
+        hoveredRect.current = cursorTarget.getBoundingClientRect();
       } else if (interactive) {
         setIsHovered(true);
         setLabel(null);
+        hoveredRect.current = null;
       } else {
         setIsHovered(false);
         setLabel(null);
+        hoveredRect.current = null;
       }
+      applyTarget();
     };
 
-    if (!isMobile) {
+    if (!lacksFinePointer) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseover", handleMouseOver);
     }
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("resize", checkPointer);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, [mouseX, mouseY, isMobile]);
+  }, [mouseX, mouseY, lacksFinePointer]);
 
-  if (isMobile || !mounted) return null;
+  if (lacksFinePointer || !mounted) return null;
 
   const hasLabel = isHovered && Boolean(label);
 

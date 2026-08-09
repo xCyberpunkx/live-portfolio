@@ -12,7 +12,6 @@ import {
   SiTypescript,
 } from "react-icons/si";
 import { Database, Terminal, GraduationCap, Code } from "lucide-react";
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 
@@ -67,7 +66,6 @@ const STATUS_BADGE: Record<string, string> = {
 export default function LearningJourneyPage() {
   return (
     <main className="min-h-screen pt-32" style={{ backgroundColor: "var(--bg-base)" }}>
-      <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "Learning", href: "/learning-journey" }]} />
 

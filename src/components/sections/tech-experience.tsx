@@ -2,13 +2,8 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Terminal } from "lucide-react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, prefersReducedMotion } from "@/lib/animations/gsap-config";
 
 // Synced from LinkedIn work history (last updated: session — July 2026)
 const experiences = [
@@ -137,39 +132,40 @@ function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
 export default function TechExperience() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+    if (!fillRef.current || !sectionRef.current) return;
+    if (prefersReducedMotion()) return;
 
-  useEffect(() => {
-    if (isMobile || !fillRef.current || !sectionRef.current) return;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
+    // No isMobile gate here on purpose — unlike the hero's ring tunnel,
+    // this timeline never pins the section, it's a pure scrub tween, so
+    // there's none of the mobile pin jank risk that justifies skipping it
+    // elsewhere. Mobile gets the same synced fill + card-settle effect.
 
+    // Fill bar and the terminal card's subtle "settle into focus" scale
+    // share one timeline (and therefore one scrub position) instead of two
+    // independent tweens — keeps them mathematically in sync as the user
+    // scrolls, rather than just visually close.
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        fillRef.current,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            end: "bottom 40%",
-            scrub: 0.4,
-          },
-        }
-      );
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          end: "bottom 40%",
+          scrub: 0.4,
+        },
+      });
+
+      tl.fromTo(fillRef.current, { scaleX: 0 }, { scaleX: 1, ease: "none" }, 0);
+
+      if (cardRef.current) {
+        tl.fromTo(cardRef.current, { scale: 0.985, y: 10 }, { scale: 1, y: 0, ease: "none" }, 0);
+      }
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [isMobile]);
+  }, []);
 
   return (
     <section id="tech" ref={sectionRef} className="py-24 md:py-48 relative overflow-hidden border-t" style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}>
@@ -191,7 +187,7 @@ export default function TechExperience() {
           </div>
 
           <div className="lg:col-span-8">
-            <div className="border rounded-xl overflow-hidden" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}>
+            <div ref={cardRef} className="border rounded-xl overflow-hidden will-change-transform" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}>
               <div className="terminal-chrome flex items-center justify-between gap-4 px-4 md:px-6 py-3 border-b" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}>
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />

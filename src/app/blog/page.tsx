@@ -1,6 +1,5 @@
 "use client";
 
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 import Link from "next/link";
@@ -31,7 +30,6 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen pt-32" style={{ backgroundColor: "var(--bg-base)" }}>
-      <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "Blog", href: "/blog" }]} />
         <BreadcrumbSchema items={[{ name: "Blog", url: "/blog" }]} />

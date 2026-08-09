@@ -1,4 +1,3 @@
-import Navigation from "@/components/sections/navigation";
 import Footer from "@/components/sections/footer";
 import Breadcrumbs from "@/components/ui/breadcrumbs";
 import { Metadata } from "next";
@@ -39,7 +38,6 @@ const services = [
 export default function ServicesPage() {
   return (
     <main className="min-h-screen pt-32" style={{ backgroundColor: "var(--bg-base)" }}>
-      <Navigation />
       <div className="container mx-auto px-6 py-12">
         <Breadcrumbs items={[{ label: "Services", href: "/services" }]} />
 

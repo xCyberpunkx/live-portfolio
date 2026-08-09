@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink, Github, Sparkles, Terminal, X } from "lucide-react";
+import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
+import { useMagnetic } from "@/lib/animations/use-magnetic";
 
 const projects = [
   {
@@ -87,21 +89,33 @@ const projects = [
 
 type Project = (typeof projects)[number];
 
-function ProjectRow({
-  project,
-  index,
-  active,
-  onHover,
-  onSelect,
-}: {
-  project: Project;
-  index: number;
-  active: boolean;
-  onHover: () => void;
-  onSelect: () => void;
-}) {
+/** Small magnetic pull on just the arrow, not the whole row — the row's own hover/active state already does most of the work; this adds a little life to the one element that's explicitly pointing somewhere. */
+function MagneticArrow({ active }: { active: boolean }) {
+  const { ref } = useMagnetic<HTMLSpanElement>({ radius: 24, strength: 0.5 });
+  return (
+    <span ref={ref} className="inline-flex flex-shrink-0 will-change-transform">
+      <ArrowUpRight
+        size={16}
+        className={`transition-all duration-300 ${active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1"}`}
+        style={{ color: "var(--accent)" }}
+      />
+    </span>
+  );
+}
+
+const ProjectRow = React.forwardRef<
+  HTMLButtonElement,
+  {
+    project: Project;
+    index: number;
+    active: boolean;
+    onHover: () => void;
+    onSelect: () => void;
+  }
+>(function ProjectRow({ project, index, active, onHover, onSelect }, ref) {
   return (
     <button
+      ref={ref}
       onMouseEnter={onHover}
       onFocus={onHover}
       onClick={onSelect}
@@ -144,22 +158,18 @@ function ProjectRow({
           </span>
         </div>
 
-        <ArrowUpRight
-          size={16}
-          className={`flex-shrink-0 transition-all duration-300 ${active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1"}`}
-          style={{ color: "var(--accent)" }}
-        />
+        <MagneticArrow active={active} />
       </div>
     </button>
   );
-}
+});
 
 /**
  * Shared preview body (image + details + tech + links). Used both in the
  * desktop sticky panel and the mobile bottom-sheet modal so the two stay
  * in sync instead of drifting into two copies of the same markup.
  */
-function ProjectDetails({ project }: { project: Project }) {
+function ProjectDetails({ project, imageParallaxRef }: { project: Project; imageParallaxRef?: React.Ref<HTMLDivElement> }) {
   return (
     <>
       <div className="relative aspect-[16/10] w-full overflow-hidden" style={{ backgroundColor: "var(--bg-chrome)" }}>
@@ -172,14 +182,20 @@ function ProjectDetails({ project }: { project: Project }) {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0"
           >
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-cover"
-            />
+            {/* Inner wrapper gets the slow scroll-linked drift (GSAP); the
+                outer motion.div above keeps the framer crossfade when the
+                active project changes — two different jobs, two different
+                elements, so they don't fight over the same transform. */}
+            <div ref={imageParallaxRef} className="absolute inset-0 will-change-transform">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover"
+              />
+            </div>
             <div
               className="absolute inset-0"
               style={{
@@ -341,8 +357,62 @@ export default function MyProjects() {
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
   const active = projects[activeIndex];
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const listWrapRef = useRef<HTMLDivElement>(null);
+  const rowRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const previewImageRef = useRef<HTMLDivElement>(null);
+
+  // Row-list entrance: the directory listing previously had no animation
+  // at all on first view — it just appeared. One ScrollTrigger, staggered
+  // reveal, fires once when the list scrolls into range.
+  useEffect(() => {
+    if (prefersReducedMotion() || !listWrapRef.current) return;
+    const rows = rowRefs.current.filter(Boolean) as HTMLButtonElement[];
+    if (rows.length === 0) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set(rows, { opacity: 0, y: 16 });
+      ScrollTrigger.create({
+        trigger: listWrapRef.current,
+        start: "top 85%",
+        once: true,
+        onEnter: () =>
+          gsap.to(rows, { opacity: 1, y: 0, duration: 0.55, stagger: 0.06, ease: "power3.out" }),
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  // Slow scroll-linked drift on the active preview image — a gentle,
+  // continuous zoom-settle as the section passes through, independent of
+  // which project happens to be active. Applied to the inner wrapper
+  // introduced in ProjectDetails so it never fights the crossfade
+  // transform framer-motion owns on the outer element.
+  useEffect(() => {
+    if (prefersReducedMotion() || !sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        previewImageRef.current,
+        { scale: 1.12 },
+        {
+          scale: 1.0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="projects"
       className="py-24 md:py-64 border-t overflow-hidden relative"
       style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
@@ -371,6 +441,7 @@ export default function MyProjects() {
           {/* Directory listing */}
           <div className="lg:col-span-5 order-2 lg:order-1">
             <div
+              ref={listWrapRef}
               className="border rounded-xl overflow-hidden"
               style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
             >
@@ -401,6 +472,9 @@ export default function MyProjects() {
                       setActiveIndex(i);
                       setMobilePreviewOpen(true);
                     }}
+                    ref={(el) => {
+                      rowRefs.current[i] = el;
+                    }}
                   />
                 ))}
               </div>
@@ -416,7 +490,7 @@ export default function MyProjects() {
                 className="border rounded-xl overflow-hidden"
                 style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-elevated)" }}
               >
-                <ProjectDetails project={active} />
+                <ProjectDetails project={active} imageParallaxRef={previewImageRef} />
               </div>
             </div>
           </div>

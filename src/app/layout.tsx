@@ -4,6 +4,12 @@ import "./globals.css";
 import Script from "next/script";
 import JsonLd from "@/components/seo/json-Id";
 import ThemeProvider from "@/components/ui/theme-provider";
+import SplashScreen from "@/components/ui/splash-screen";
+import CustomCursor from "@/components/ui/custom-cursor";
+import BackToTop from "@/components/ui/back-to-top";
+import Navigation from "@/components/sections/navigation";
+import SmoothScroll from "@/components/ui/smooth-scroll";
+import PageTransition from "@/components/ui/page-transition";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -89,7 +95,25 @@ export default function RootLayout({
             strategy="afterInteractive"
             data-orchids-project-id="c99fa3a9-7f61-4053-a892-9a79b5387a9e"
           />
-          {children}
+          {/*
+            Splash screen, cursor, nav, and the page-transition overlay live here
+            instead of inside each page.tsx. The root layout does not remount on
+            client-side navigation in the App Router, so lifting them here means:
+            - the boot splash plays once per real page load, from any entry route
+              (previously it only existed on "/", so a direct landing on /about
+              never got it)
+            - Navigation and CustomCursor stop re-mounting (and re-binding their
+              scroll/mouse listeners) on every route change, which is what makes
+              the page-transition wipe below actually read as smooth instead of
+              fighting a flicker
+            - Lenis initializes once for the whole session instead of per page
+          */}
+          <SplashScreen />
+          <CustomCursor />
+          <PageTransition />
+          <BackToTop />
+          <Navigation />
+          <SmoothScroll>{children}</SmoothScroll>
         </ThemeProvider>
       </body>
     </html>
