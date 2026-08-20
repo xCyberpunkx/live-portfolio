@@ -6,10 +6,26 @@ import BreadcrumbSchema from "@/components/seo/breadcrumb-schema";
 
 export const metadata: Metadata = {
   title: "Projects Portfolio | Rouabah Zine Eddine",
-  description: "Explore a curated collection of software engineering projects — booking platforms, e-commerce systems with custom CMS backends, healthcare software, and business websites.",
+  description: "Explore a curated collection of software engineering projects — SaaS platforms, booking systems, e-commerce with custom CMS backends, and business websites.",
 };
 
 const projects: Project[] = [
+  {
+    title: "Nexora",
+    category: "SaaS • Multi-Tenant ERP for Gyms, Spas & Beauty Institutes",
+    image: "/projects/nexora.png",
+    link: "https://nexora-jet-rho.vercel.app/",
+    github: "#",
+    desc: "A multi-tenant SaaS ERP for gyms, spas, and beauty institutes in Algeria — members, subscriptions, appointments, point-of-sale, stock, and accounting in dinars, with CIB, Edahabia, BaridiMob, and CCP built in as native payment methods.",
+    tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
+    year: "2026",
+    flagship: true,
+    caseStudy: {
+      problem: "Gyms, spas, and beauty institutes in Algeria run members, subscriptions, appointments, point-of-sale, and stock across disconnected tools and paper — and foreign SaaS ERPs don't support DZD pricing or local payment rails like CIB, Edahabia, BaridiMob, or CCP.",
+      approach: "Built a multi-tenant ERP with strict per-organization data isolation, role-based permissions (owner, admin, manager, staff, reader), and integrated modules — members, subscriptions, appointments, caisse, stock & purchasing, accounting — priced and billed in dinars with Algerian payment methods built in from the start.",
+      outcome: "Clubs, spas, and institutes now run front-desk to back-office from one platform, with tiered plans — Free through Enterprise — that scale from a single studio to multi-site groups.",
+    },
+  },
   {
     title: "Ledger",
     category: "SaaS • Client & Project Operations Platform",
@@ -19,7 +35,6 @@ const projects: Project[] = [
     desc: "A multi-tenant client and project operations platform for freelancers and small agencies, centralizing scattered client work into one source of truth.",
     tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
     year: "2026",
-    flagship: true,
     caseStudy: {
       problem: "Freelancers and small agencies run client work through scattered WhatsApp threads, email chains, spreadsheets, and shared Drive folders — status lives in five places that all disagree with each other.",
       approach: "Built a multi-tenant platform with org-scoped role-based access, a dedicated client portal, and an append-only activity-event log that generates both the project timeline and email notifications from a single source.",
@@ -69,21 +84,6 @@ const projects: Project[] = [
       problem: "The client needed a fast, static corporate site but wanted to edit page copy and images without filing a support ticket each time.",
       approach: "Paired a static Next.js front end with a purpose-built inline editor, so content blocks are editable directly on the page.",
       outcome: "The client updates their own site content in minutes, while keeping the performance benefits of a static build.",
-    },
-  },
-  {
-    title: "Clinic Management System",
-    category: "Healthcare Software",
-    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
-    link: "https://ramdani.vercel.app/",
-    github: "https://github.com/xCyberpunkx/dental-backend",
-    desc: "A comprehensive dental clinic management system designed for efficiency.",
-    tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
-    year: "2024",
-    caseStudy: {
-      problem: "A dental clinic tracked appointments and patient records on paper and spreadsheets, causing double-bookings and lost history.",
-      approach: "Built a Next.js + PostgreSQL system with scheduling, patient records, and billing in one dashboard, using Drizzle ORM for type-safe queries.",
-      outcome: "Staff now manage the full patient lifecycle — booking to billing — from a single interface, cutting scheduling conflicts.",
     },
   },
   {

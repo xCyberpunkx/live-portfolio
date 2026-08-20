@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
-import { gsap, prefersReducedMotion } from "@/lib/animations/gsap-config";
+import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
 
 // Synced from LinkedIn work history (last updated: session — July 2026)
 const experiences = [
@@ -55,10 +55,14 @@ const STATUS_STYLES: Record<string, { dot: string; text: string }> = {
   STABLE: { dot: "bg-white/60", text: "text-white/60" },
 };
 
-function useTypewriter(text: string, start: boolean, speed = 26) {
+function useTypewriter(text: string, start: boolean, reducedMotion: boolean, speed = 26) {
   const [out, setOut] = useState("");
   useEffect(() => {
     if (!start) return;
+    if (reducedMotion) {
+      setOut(text);
+      return;
+    }
     let i = 0;
     const id = setInterval(() => {
       i++;
@@ -66,16 +70,19 @@ function useTypewriter(text: string, start: boolean, speed = 26) {
       if (i >= text.length) clearInterval(id);
     }, speed);
     return () => clearInterval(id);
-  }, [start, text, speed]);
+  }, [start, text, speed, reducedMotion]);
   return out;
 }
 
-function LogLine({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+// Driven by the parent's batched ScrollTrigger `active` flag instead of its
+// own whileInView/viewport — previously every LogLine ran its own
+// IntersectionObserver (3 per entry x 5 entries = 15), on top of the 5 more
+// from each entry's own useInView. One shared batch now drives all of it.
+function LogLine({ children, active, delay = 0 }: { children: React.ReactNode; active: boolean; delay?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: -8 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+      animate={active ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.4, delay }}
     >
       {children}
@@ -83,16 +90,17 @@ function LogLine({ children, delay = 0 }: { children: React.ReactNode; delay?: n
   );
 }
 
-function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-20% 0px -20% 0px" });
-  const typedTitle = useTypewriter(exp.title, inView, 26);
+const ExperienceEntry = React.forwardRef<
+  HTMLDivElement,
+  { exp: (typeof experiences)[number]; active: boolean; reducedMotion: boolean }
+>(function ExperienceEntry({ exp, active, reducedMotion }, ref) {
+  const typedTitle = useTypewriter(exp.title, active, reducedMotion, 26);
   const style = STATUS_STYLES[exp.status] ?? STATUS_STYLES.STABLE;
-  const stillTyping = inView && typedTitle.length < exp.title.length;
+  const stillTyping = active && !reducedMotion && typedTitle.length < exp.title.length;
 
   return (
     <div ref={ref} className="border-b last:border-b-0 py-8 first:pt-0" style={{ borderColor: "var(--border-subtle)" }}>
-      <LogLine>
+      <LogLine active={active}>
         <div className="flex flex-wrap items-center gap-3 text-[10px] md:text-xs font-technical" style={{ color: "var(--text-tertiary)" }}>
           <span className="text-blue-400/70">[{exp.id}]</span>
           <span>boot: unit {exp.company.toLowerCase().replace(/\s+/g, "-")}.service</span>
@@ -112,7 +120,7 @@ function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
         />
       </div>
 
-      <LogLine delay={0.15}>
+      <LogLine active={active} delay={0.15}>
         <div className="mt-2 flex items-center gap-2">
           <span className={`w-1.5 h-1.5 rounded-full ${style.dot} ${exp.status === "ACTIVE" ? "animate-pulse" : ""}`} />
           <span className={`text-[10px] font-technical uppercase tracking-widest ${style.text}`}>{exp.status}</span>
@@ -120,19 +128,57 @@ function ExperienceEntry({ exp }: { exp: (typeof experiences)[number] }) {
         </div>
       </LogLine>
 
-      <LogLine delay={0.25}>
+      <LogLine active={active} delay={0.25}>
         <p className="mt-4 text-sm md:text-base font-technical leading-relaxed max-w-2xl pl-4 border-l" style={{ color: "var(--text-secondary)", borderColor: "var(--border-default)" }}>
           {exp.desc}
         </p>
       </LogLine>
     </div>
   );
-}
+});
 
 export default function TechExperience() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const entryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [activeSet, setActiveSet] = useState<Set<number>>(new Set());
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    setReducedMotion(prefersReducedMotion());
+  }, []);
+
+  // Same batching pattern as system-stack.tsx's CategoryBlock reveal — one
+  // ScrollTrigger.batch job for all 5 entries instead of 5 independent
+  // useInView observers (which, combined with each entry's 3 LogLines, was
+  // 20 total observers doing overlapping work).
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setActiveSet(new Set(experiences.map((_, i) => i)));
+      return;
+    }
+    const targets = entryRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (targets.length === 0) return;
+
+    const batch = ScrollTrigger.batch(targets, {
+      start: "top 85%",
+      once: true,
+      fastScrollEnd: true,
+      onEnter: (elements) => {
+        setActiveSet((prev) => {
+          const next = new Set(prev);
+          elements.forEach((el) => {
+            const idx = entryRefs.current.indexOf(el as HTMLDivElement);
+            if (idx !== -1) next.add(idx);
+          });
+          return next;
+        });
+      },
+    });
+
+    return () => batch.forEach((b) => b.kill());
+  }, []);
 
   useEffect(() => {
     if (!fillRef.current || !sectionRef.current) return;
@@ -211,8 +257,16 @@ export default function TechExperience() {
               </div>
 
               <div className="p-6 md:p-10">
-                {experiences.map((exp) => (
-                  <ExperienceEntry key={exp.id} exp={exp} />
+                {experiences.map((exp, i) => (
+                  <ExperienceEntry
+                    key={exp.id}
+                    exp={exp}
+                    active={activeSet.has(i)}
+                    reducedMotion={reducedMotion}
+                    ref={(el) => {
+                      entryRefs.current[i] = el;
+                    }}
+                  />
                 ))}
 
                 <div className="pt-8 flex items-center gap-2 font-technical text-xs" style={{ color: "var(--text-muted)" }}>

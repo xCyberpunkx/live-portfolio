@@ -9,15 +9,26 @@ import { useMagnetic } from "@/lib/animations/use-magnetic";
 
 const projects = [
   {
+    title: "Nexora",
+    category: "Flagship • Multi-Tenant ERP for Gyms, Spas & Beauty Institutes",
+    image: "/projects/nexora.png",
+    link: "https://nexora-jet-rho.vercel.app/",
+    github: "#",
+    details:
+      "A multi-tenant SaaS ERP built for gyms, spas, and beauty institutes in Algeria — members, subscriptions, appointments, point-of-sale, stock, and accounting in one platform, priced in dinars with CIB, Edahabia, BaridiMob, and CCP built in as native payment methods. Strict per-organization data isolation and role-based permissions (owner, admin, manager, staff, reader) let a single studio or a multi-site group run front-desk to back-office from one tool.",
+    tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
+    flagship: true,
+  },
+  {
     title: "Ledger",
-    category: "Flagship • Client & Project Operations Platform",
+    category: "Client & Project Operations Platform",
     image: "/projects/ledger.png",
     link: "https://ledger-frontend-woad.vercel.app",
     github: "#",
     details:
       "A multi-tenant client and project operations platform built for freelancers and small agencies — replacing scattered WhatsApp threads, email chains, and spreadsheets with one source of truth. Org-scoped role-based access, a dedicated client portal, and an append-only activity log that auto-generates timelines and notifications instead of relying on manual status updates.",
     tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
-    flagship: true,
+    flagship: false,
   },
   {
     title: "Forge Kit",
@@ -50,17 +61,6 @@ const projects = [
     details:
       "A productivity tool focused on simplicity — tracking learning, tasks, and goals without the friction of complex features.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    flagship: false,
-  },
-  {
-    title: "Healthcare System",
-    category: "Healthcare Software",
-    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
-    link: "https://ramdani.vercel.app/",
-    github: "https://github.com/xCyberpunkx/dental-backend",
-    details:
-      "A comprehensive dental clinic management system handling appointment scheduling, patient electronic health records, and automated billing.",
-    tech: ["Next.js", "PostgreSQL", "Tailwind CSS", "Drizzle ORM"],
     flagship: false,
   },
   {

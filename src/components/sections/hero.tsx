@@ -1,15 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { FaReddit, FaDiscord, FaWhatsapp } from "react-icons/fa6";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const SOCIALS = [
   { icon: Github, href: "https://github.com/xCyberpunkx" },
@@ -22,7 +16,6 @@ const SOCIALS = [
 
 const ROLES = ["SOFTWARE ENGINEER", "SYSTEM ARCHITECT", "FULL-STACK BUILDER"];
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_-/#01";
-const RING_COUNT = 7;
 
 function useScramble(words: string[], intervalMs = 2600) {
   const [display, setDisplay] = useState(words[0]);
@@ -65,19 +58,9 @@ function useScramble(words: string[], intervalMs = 2600) {
 }
 
 const HeroSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const tunnelRef = useRef<HTMLDivElement>(null);
-  const ringRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const headlineRef = useRef<HTMLDivElement>(null);
-
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const roleText = useScramble(ROLES);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useSpring(mouseY, { damping: 30, stiffness: 80 });
-  const rotateY = useSpring(mouseX, { damping: 30, stiffness: 80 });
 
   useEffect(() => {
     setMounted(true);
@@ -87,105 +70,265 @@ const HeroSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handlePointerMove = useCallback(
-    (e: React.PointerEvent) => {
-      if (isMobile) return;
-      const { innerWidth, innerHeight } = window;
-      const px = (e.clientX / innerWidth - 0.5) * 2;
-      const py = (e.clientY / innerHeight - 0.5) * 2;
-      mouseX.set(px * -8);
-      mouseY.set(py * 8);
-    },
-    [isMobile, mouseX, mouseY]
-  );
-
-  useEffect(() => {
-    if (!mounted) return;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const rings = ringRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (reduceMotion || rings.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      gsap.set(rings, {
-        z: (i: number) => -200 - i * 220,
-        opacity: (i: number) => 1 - i * 0.06,
-      });
-
-      if (!isMobile) {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "+=120%",
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-          },
-        });
-
-        rings.forEach((ring, i) => {
-          tl.to(ring, { z: 1400 - i * 60, opacity: 0, ease: "none" }, 0);
-        });
-        tl.to(headlineRef.current, { opacity: 0, scale: 0.85, y: -40, ease: "none" }, 0.05);
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [mounted, isMobile]);
-
   return (
     <section
-      ref={sectionRef}
-      onPointerMove={handlePointerMove}
       className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-opacity duration-1000 ${
         mounted ? "opacity-100" : "opacity-0"
       }`}
       style={{ backgroundColor: "var(--bg-base)" }}
     >
-      <svg className="absolute inset-0 w-full h-full opacity-[0.035] mix-blend-overlay pointer-events-none z-[5]">
-        <filter id="heroGrain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#heroGrain)" />
-      </svg>
-
-      <div className="absolute inset-0 flex items-center justify-center z-0" style={{ perspective: "800px" }}>
-        <motion.div
-          ref={tunnelRef}
-          style={{
-            transformStyle: "preserve-3d",
-            rotateX: isMobile ? 0 : rotateX,
-            rotateY: isMobile ? 0 : rotateY,
-          }}
-          className="relative w-[70vmin] h-[70vmin]"
-        >
-          {Array.from({ length: RING_COUNT }).map((_, i) => (
-            <div
-              key={i}
-              ref={(el) => {
-                ringRefs.current[i] = el;
-              }}
-              className="absolute inset-0 border-2 rounded-2xl"
-              style={{
-                borderColor: i === RING_COUNT - 1 ? "var(--accent)" : "var(--border-strong)",
-                boxShadow: i === RING_COUNT - 1 ? "var(--shadow-elevated)" : "none",
-                transform: `translateZ(${-200 - i * 220}px)`,
-              }}
-            />
-          ))}
-        </motion.div>
+      {/* STATIC ARCHITECTURAL BACKGROUND
+          Everything below is painted once and never animates. Depth comes
+          from layered opacity + one-time CSS transforms, not from a render
+          loop, so this costs nothing on low-end hardware. */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* edge vignette — keeps the frame contained, darkens the corners */}
         <div
-          className="absolute inset-0 z-[1]"
-          style={{ background: "radial-gradient(circle at center, transparent 0%, var(--bg-base) 92%)" }}
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 90% 70% at 50% 35%, transparent 0%, var(--bg-base) 85%)",
+          }}
+        />
+
+        {/* perspective floor grid — desktop/tablet only, reads as an
+            architectural plane receding toward a horizon behind the name.
+            Two static passes (minor + major) give it real blueprint depth
+            without adding any extra elements to animate. */}
+        <div
+          className="absolute inset-x-0 bottom-0 hidden md:block"
+          style={{
+            height: "65%",
+            backgroundImage:
+              "linear-gradient(var(--border-default) 1px, transparent 1px), linear-gradient(90deg, var(--border-default) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            opacity: 0.14,
+            transform: "perspective(900px) rotateX(58deg) scale(2.2)",
+            transformOrigin: "50% 100%",
+            maskImage:
+              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+          }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 hidden md:block"
+          style={{
+            height: "65%",
+            backgroundImage:
+              "linear-gradient(var(--border-strong) 1px, transparent 1px), linear-gradient(90deg, var(--border-strong) 1px, transparent 1px)",
+            backgroundSize: "224px 224px",
+            opacity: 0.22,
+            transform: "perspective(900px) rotateX(58deg) scale(2.2)",
+            transformOrigin: "50% 100%",
+            maskImage:
+              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+          }}
+        />
+
+        {/* oversized frame, bled off the top-right corner — desktop/tablet */}
+        <div
+          className="absolute hidden sm:block"
+          style={{
+            width: "85vmin",
+            height: "85vmin",
+            top: "-25%",
+            right: "-20%",
+            border: "1px solid var(--border-strong)",
+            opacity: 0.22,
+            transform: "rotate(-14deg) skewY(-2deg)",
+          }}
+        />
+
+        {/* corner ticks on the main frame — echoes the monolith's
+            annotation marks so the two big elements read as one system */}
+        <div className="absolute hidden sm:block" style={{ width: "16px", height: "1px", background: "var(--border-strong)", opacity: 0.4, top: "9%", right: "22%" }} />
+        <div className="absolute hidden sm:block" style={{ width: "1px", height: "16px", background: "var(--border-strong)", opacity: 0.4, top: "9%", right: "22%" }} />
+
+        {/* arc — a single static partial ring, the one curved shape in
+            an otherwise all-rectilinear composition; reads like a
+            compass or measurement sweep. Desktop/tablet only. */}
+        <div
+          className="absolute hidden sm:block"
+          style={{
+            width: "46vmin",
+            height: "46vmin",
+            top: "-14vmin",
+            right: "8vmin",
+            borderRadius: "9999px",
+            borderTop: "1px solid var(--border-strong)",
+            borderRight: "1px solid var(--border-strong)",
+            borderBottom: "1px solid transparent",
+            borderLeft: "1px solid transparent",
+            opacity: 0.28,
+            transform: "rotate(18deg)",
+          }}
+        />
+
+        {/* diamond accent — a small rotated square for shape variety
+            against the squares, cube and arc; sits beside the dot
+            texture. Desktop/tablet only. */}
+        <div
+          className="absolute hidden sm:block"
+          style={{
+            width: "5vmin",
+            height: "5vmin",
+            top: "18%",
+            left: "9%",
+            border: "1px solid var(--border-strong)",
+            opacity: 0.34,
+            transform: "rotate(45deg)",
+          }}
+        />
+
+        {/* small plane — visible at every breakpoint, including mobile,
+            so phones still get one quiet perspective element even
+            though the bigger frame and monolith are desktop/tablet only */}
+        <div
+          className="absolute"
+          style={{
+            width: "34vmin",
+            height: "34vmin",
+            bottom: "-10%",
+            right: "-10%",
+            border: "1px solid var(--border-default)",
+            opacity: 0.24,
+            transform: "rotate(7deg)",
+          }}
+        />
+
+        {/* wireframe monolith — the one deliberately bold "signature"
+            element in the composition: a static isometric cube built
+            from three bordered, transparent-fill faces (a well-known
+            pure-CSS trick: rotate + skewX + scaleY per face, no 3D
+            engine involved). Bleeds off the bottom-left corner so it
+            frames the content without ever crossing it. Desktop/tablet
+            only. */}
+        <div
+          className="absolute hidden sm:block"
+          style={{ width: "26vmin", height: "26vmin", bottom: "-8vmin", left: "-6vmin", opacity: 0.32 }}
+        >
+          <div className="absolute inset-0" style={{ border: "1px solid var(--border-strong)", transform: "rotate(210deg) skewX(-30deg) scaleY(0.864)" }} />
+          <div className="absolute inset-0" style={{ border: "1px solid var(--border-strong)", transform: "rotate(-30deg) skewX(-30deg) scaleY(0.864)" }} />
+          <div className="absolute inset-0" style={{ border: "1px solid var(--border-strong)", transform: "rotate(90deg) skewX(-30deg) scaleY(0.864)" }} />
+        </div>
+
+        {/* dimension ticks — two short marks near the monolith, a
+            small blueprint-annotation detail */}
+        <div
+          className="absolute hidden sm:block"
+          style={{ width: "14px", height: "1px", background: "var(--border-strong)", opacity: 0.4, bottom: "17vmin", left: "8vmin", transform: "rotate(90deg)" }}
+        />
+        <div
+          className="absolute hidden sm:block"
+          style={{ width: "14px", height: "1px", background: "var(--border-strong)", opacity: 0.4, bottom: "9vmin", left: "1vmin" }}
+        />
+
+        {/* dot texture — a small patch of fine dots tucked into a
+            corner the content never reaches, for material variety
+            against the linear grid */}
+        <div
+          className="absolute hidden md:block"
+          style={{
+            width: "160px",
+            height: "160px",
+            top: "8%",
+            left: "4%",
+            backgroundImage: "radial-gradient(var(--border-default) 1px, transparent 1px)",
+            backgroundSize: "14px 14px",
+            opacity: 0.4,
+          }}
+        />
+
+        {/* crosshair — a small reticle mark near the arc, the last
+            technical HUD detail; two short overlapping lines, nothing
+            more. Desktop/tablet only. */}
+        <div className="absolute hidden md:block" style={{ width: "18px", height: "1px", background: "var(--accent)", opacity: 0.5, top: "12%", right: "10%" }} />
+        <div className="absolute hidden md:block" style={{ width: "1px", height: "18px", background: "var(--accent)", opacity: 0.5, top: "12%", right: "10%" }} />
+
+        {/* accent line — thin, off-center, never crosses the typography */}
+        <div
+          className="absolute"
+          style={{
+            top: "18%",
+            left: "-5%",
+            width: "45%",
+            height: "1px",
+            background: "linear-gradient(90deg, transparent, var(--accent), transparent)",
+            opacity: 0.42,
+            transform: "rotate(-6deg)",
+          }}
+        />
+
+        {/* secondary line — desktop/tablet only */}
+        <div
+          className="absolute hidden sm:block"
+          style={{
+            bottom: "24%",
+            right: "-5%",
+            width: "40%",
+            height: "1px",
+            background: "linear-gradient(90deg, transparent, var(--border-strong), transparent)",
+            opacity: 0.3,
+            transform: "rotate(5deg)",
+          }}
+        />
+
+        {/* meridian — a vertical technical axis through the center,
+            faded out through the middle band so it never touches the
+            name; only visible as a hairline above the badge and below
+            the CTAs, reinforcing the blueprint concept */}
+        <div
+          className="absolute left-1/2 inset-y-0 hidden sm:block"
+          style={{
+            width: "1px",
+            transform: "translateX(-50%)",
+            background:
+              "linear-gradient(to bottom, var(--border-strong) 0%, transparent 22%, transparent 78%, var(--border-strong) 100%)",
+            opacity: 0.26,
+          }}
+        />
+
+        {/* sheen — a single, static diagonal light wash for a premium,
+            glass-like quality; painted once, never moves */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(115deg, transparent 35%, var(--text-primary) 50%, transparent 65%)",
+            opacity: 0.04,
+          }}
+        />
+
+        {/* focus glow — layered radial wash directly behind the name
+            (tight inner glow + broad outer halo), keeps the center clean
+            and pulls the eye there first */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 55% at 50% 50%, var(--accent) 0%, transparent 75%)",
+            opacity: 0.07,
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 38% 32% at 50% 47%, var(--accent) 0%, transparent 65%)",
+            opacity: 0.11,
+          }}
         />
       </div>
 
-      <div ref={headlineRef} className="container mx-auto px-6 z-10 text-center relative">
+      <div className="container mx-auto px-6 z-10 text-center relative">
         <motion.div
           initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border backdrop-blur-md mb-8"
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border backdrop-blur-sm md:backdrop-blur-md mb-8"
           style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-surface)" }}
         >
           <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "var(--accent)" }} />
@@ -201,7 +344,7 @@ const HeroSection = () => {
           initial={isMobile ? { opacity: 1, filter: "none" } : { opacity: 0, filter: "blur(14px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
           transition={{ duration: 1.1, ease: "easeOut" }}
-          className="text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] font-black leading-[0.8] uppercase tracking-tighter"
+          className="text-[clamp(2.75rem,13vw,7rem)] font-black leading-[0.8] uppercase tracking-tighter"
           style={{ color: "var(--text-primary)" }}
         >
           ROUABAH<br />

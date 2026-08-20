@@ -23,7 +23,7 @@ import {
   SiNeovim,
   SiWireshark,
 } from "react-icons/si";
-import { Database, Shield, Terminal } from "lucide-react";
+import { Database, Bug, Radar, Crosshair, Terminal } from "lucide-react";
 
 const NEOFETCH_INFO = [
   { label: "os", value: "Arch Linux x86_64" },
@@ -84,18 +84,23 @@ const STACK_CATEGORIES = [
     label: "Security & Network",
     items: [
       { name: "Wireshark", icon: SiWireshark },
-      { name: "Metasploit", icon: Shield },
-      { name: "Burp Suite", icon: Shield },
-      { name: "Nmap", icon: Shield },
+      { name: "Metasploit", icon: Bug },
+      { name: "Burp Suite", icon: Radar },
+      { name: "Nmap", icon: Crosshair },
     ],
   },
 ];
+
+// Largest category sets the scale — a category's sync bar fills relative
+// to it, so the bar actually says something (how much ground this category
+// covers) instead of every bar filling to a meaningless 100%.
+const MAX_CATEGORY_ITEMS = Math.max(...STACK_CATEGORIES.map((c) => c.items.length));
 
 const CategoryBlock = React.forwardRef<
   HTMLDivElement,
   { category: (typeof STACK_CATEGORIES)[number]; index: number; active: boolean }
 >(function CategoryBlock({ category, index, active }, ref) {
-  const pct = 100;
+  const pct = Math.round((category.items.length / MAX_CATEGORY_ITEMS) * 100);
 
   return (
     <motion.div
@@ -163,6 +168,7 @@ export default function SystemStack() {
     const batch = ScrollTrigger.batch(targets, {
       start: "top 85%",
       once: true,
+      fastScrollEnd: true, // a fast mobile flick can otherwise skip past the trigger before onEnter fires
       onEnter: (elements) => {
         setActiveSet((prev) => {
           const next = new Set(prev);
