@@ -1,191 +1,200 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
-import {
-  SiTypescript,
-  SiGnubash,
-  SiReact,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiRedux,
-  SiExpress,
-  SiPostgresql,
-  SiMongodb,
-  SiRedis,
-  SiLinux,
-  SiDocker,
-  SiKubernetes,
-  SiGit,
-  SiGithubactions,
-  SiNginx,
-  SiNeovim,
-  SiWireshark,
-} from "react-icons/si";
-import { Database, Bug, Radar, Crosshair, Terminal } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Terminal, Check } from "lucide-react";
+import { prefersReducedMotion } from "@/lib/animations/gsap-config";
 
-const NEOFETCH_INFO = [
-  { label: "os", value: "Arch Linux x86_64" },
-  { label: "host", value: "NODE_DZ" },
-  { label: "kernel", value: "software-engineer-5.0" },
-  { label: "uptime", value: "4+ years coding" },
-  { label: "shell", value: "zsh" },
-  { label: "wm", value: "Hyprland" },
-  { label: "terminal", value: "Neovim" },
-  { label: "repos", value: "244 public // 443 stars" },
-];
+/**
+ * Tech stack, rendered as a resolved `npm ls --workspaces` dependency
+ * tree — a monorepo manifest instead of an icon grid. The command types
+ * itself out, then each line of the tree cascades in like a real install
+ * resolving, ending on a summary line + blinking prompt.
+ *
+ * Data below is the single source of truth for both the visible tree and
+ * its accessible text alternative — edit WORKSPACES to update your stack.
+ */
 
-const SWATCHES = [
-  "#000000", "#ef4444", "#22c55e", "#eab308",
-  "#3b82f6", "#a855f7", "#22d3ee", "#ffffff",
-];
+type Pkg = { name: string; version?: string; note?: string };
+type Workspace = { path: string; accent: string; packages: Pkg[] };
 
-const STACK_CATEGORIES = [
+const WORKSPACES: Workspace[] = [
   {
-    label: "Languages",
-    items: [
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "Bash", icon: SiGnubash },
-      { name: "SQL", icon: Database },
+    path: "apps/frontend",
+    accent: "#60a5fa",
+    packages: [
+      { name: "react", version: "18.3.1" },
+      { name: "next", version: "14.2.0", note: "app router" },
+      { name: "tailwindcss", version: "3.4.0" },
     ],
   },
   {
-    label: "Frontend",
-    items: [
-      { name: "React", icon: SiReact },
-      { name: "Next.js", icon: SiNextdotjs },
-      { name: "Tailwind CSS", icon: SiTailwindcss },
-      { name: "Redux", icon: SiRedux },
+    path: "apps/backend",
+    accent: "#3b82f6",
+    packages: [
+      { name: "laravel", version: "11.x" },
+      { name: "nestjs", version: "10.x" },
+      { name: "prisma", version: "5.x" },
     ],
   },
   {
-    label: "Backend & Databases",
-    items: [
-      { name: "Express", icon: SiExpress },
-      { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "MongoDB", icon: SiMongodb },
-      { name: "Redis", icon: SiRedis },
+    path: "packages/database",
+    accent: "#2563eb",
+    packages: [
+      { name: "postgresql", version: "16" },
+      { name: "mongodb", version: "7" },
     ],
   },
   {
-    label: "DevOps & Tools",
-    items: [
-      { name: "Linux", icon: SiLinux },
-      { name: "Docker", icon: SiDocker },
-      { name: "Kubernetes", icon: SiKubernetes },
-      { name: "Git", icon: SiGit },
-      { name: "GitHub Actions", icon: SiGithubactions },
-      { name: "Nginx", icon: SiNginx },
-      { name: "Neovim", icon: SiNeovim },
+    path: "packages/devops",
+    accent: "#1d4ed8",
+    packages: [
+      { name: "docker", version: "25" },
+      { name: "github-actions" },
+      { name: "nginx", version: "1.25" },
     ],
   },
   {
-    label: "Security & Network",
-    items: [
-      { name: "Wireshark", icon: SiWireshark },
-      { name: "Metasploit", icon: Bug },
-      { name: "Burp Suite", icon: Radar },
-      { name: "Nmap", icon: Crosshair },
-    ],
+    path: "packages/security",
+    accent: "#1e40af",
+    packages: [{ name: "wireshark" }, { name: "burp-suite" }, { name: "nmap" }],
   },
 ];
 
-// Largest category sets the scale — a category's sync bar fills relative
-// to it, so the bar actually says something (how much ground this category
-// covers) instead of every bar filling to a meaningless 100%.
-const MAX_CATEGORY_ITEMS = Math.max(...STACK_CATEGORIES.map((c) => c.items.length));
+const DEV_DEPENDENCIES: Pkg[] = [
+  { name: "typescript", version: "5.5" },
+  { name: "git" },
+  { name: "linux", note: "arch, zsh" },
+];
 
-const CategoryBlock = React.forwardRef<
-  HTMLDivElement,
-  { category: (typeof STACK_CATEGORIES)[number]; index: number; active: boolean }
->(function CategoryBlock({ category, index, active }, ref) {
-  const pct = Math.round((category.items.length / MAX_CATEGORY_ITEMS) * 100);
+const ROOT_LABEL = "zinou-portfolio@2.0.0";
+const COMMAND = "npm ls --workspaces --depth=2";
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={active ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: index * 0.06 }}
-    >
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-[10px] font-technical uppercase tracking-[0.4em]" style={{ color: "var(--text-tertiary)" }}>
-          {category.label}
-        </span>
-        <span className="text-[9px] font-technical text-blue-400/70 uppercase tracking-widest tabular-nums">
-          {active ? `${category.items.length}/${category.items.length} synced` : "syncing..."}
-        </span>
-      </div>
+type Line = {
+  key: string;
+  depth: number;
+  connector: string;
+  kind: "root" | "workspace" | "package" | "section";
+  text: string;
+  version?: string;
+  note?: string;
+  accent?: string;
+};
 
-      <div className="h-[2px] rounded-full overflow-hidden mb-4" style={{ backgroundColor: "var(--border-subtle)" }}>
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={active ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.9, delay: index * 0.06 + 0.1, ease: "easeOut" }}
-          className="h-full bg-blue-500/60 origin-left"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+function buildLines(): Line[] {
+  const lines: Line[] = [];
+  lines.push({ key: "root", depth: 0, connector: "", kind: "root", text: ROOT_LABEL });
 
-      <div className="flex flex-wrap gap-3">
-        {category.items.map((item, i) => (
-          <motion.div
-            key={item.name}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={active ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: index * 0.06 + 0.2 + i * 0.05, duration: 0.3 }}
-            className="flex items-center gap-2 px-4 py-2.5 border rounded-full hover:text-blue-400 hover:border-blue-500/40 hover:bg-blue-500/5 transition-all duration-300"
-            style={{ borderColor: "var(--border-default)", color: "var(--text-secondary)" }}
-          >
-            <item.icon size={14} className="text-blue-400" />
-            <span className="text-[11px] font-bold uppercase tracking-wider">{item.name}</span>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  );
-});
+  WORKSPACES.forEach((ws, wi) => {
+    const isLastWs = wi === WORKSPACES.length - 1;
+    lines.push({
+      key: `ws-${ws.path}`,
+      depth: 0,
+      connector: isLastWs ? "└── " : "├── ",
+      kind: "workspace",
+      text: ws.path,
+      accent: ws.accent,
+    });
+    ws.packages.forEach((pkg, pi) => {
+      const isLastPkg = pi === ws.packages.length - 1;
+      const branch = isLastWs ? "    " : "│   ";
+      lines.push({
+        key: `${ws.path}-${pkg.name}`,
+        depth: 1,
+        connector: branch + (isLastPkg ? "└── " : "├── "),
+        kind: "package",
+        text: pkg.name,
+        version: pkg.version,
+        note: pkg.note,
+      });
+    });
+  });
 
-export default function SystemStack() {
-  const categoryRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const [activeSet, setActiveSet] = useState<Set<number>>(new Set());
+  lines.push({ key: "devdeps-header", depth: 0, connector: "", kind: "section", text: "devDependencies" });
+  DEV_DEPENDENCIES.forEach((pkg, i) => {
+    const isLast = i === DEV_DEPENDENCIES.length - 1;
+    lines.push({
+      key: `dev-${pkg.name}`,
+      depth: 0,
+      connector: isLast ? "└── " : "├── ",
+      kind: "package",
+      text: pkg.name,
+      version: pkg.version,
+      note: pkg.note,
+    });
+  });
 
-  // One batched ScrollTrigger instead of five independent framer `useInView`
-  // observers (one per category). Same "reveal as you scroll to it" feel,
-  // but it's a single GSAP-owned scroll job instead of five separate
-  // IntersectionObservers doing overlapping work — this is the pattern
-  // called out in the redesign plan's performance section
-  // (ScrollTrigger.batch for repeated per-card reveals) applied here.
+  return lines;
+}
+
+const LINES = buildLines();
+const TOTAL_PACKAGE_COUNT =
+  WORKSPACES.reduce((sum, ws) => sum + ws.packages.length, 0) + DEV_DEPENDENCIES.length;
+
+function useTypewriter(text: string, start: boolean, reducedMotion: boolean, speed = 22) {
+  const [out, setOut] = useState(reducedMotion && start ? text : "");
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setActiveSet(new Set(STACK_CATEGORIES.map((_, i) => i)));
+    if (!start) return;
+    if (reducedMotion) {
+      setOut(text);
       return;
     }
-    const targets = categoryRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (targets.length === 0) return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setOut(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, speed);
+    return () => clearInterval(id);
+  }, [start, text, speed, reducedMotion]);
+  return out;
+}
 
-    const batch = ScrollTrigger.batch(targets, {
-      start: "top 85%",
-      once: true,
-      fastScrollEnd: true, // a fast mobile flick can otherwise skip past the trigger before onEnter fires
-      onEnter: (elements) => {
-        setActiveSet((prev) => {
-          const next = new Set(prev);
-          elements.forEach((el) => {
-            const idx = categoryRefs.current.indexOf(el as HTMLDivElement);
-            if (idx !== -1) next.add(idx);
-          });
-          return next;
-        });
-      },
-    });
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.045, delayChildren: 0.1 },
+  },
+};
 
-    return () => batch.forEach((b) => b.kill());
+const lineVariant = {
+  hidden: { opacity: 0, x: -6 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.25 } },
+};
+
+export default function TechStack() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(cardRef, { once: true, amount: 0.4 });
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [commandDone, setCommandDone] = useState(false);
+
+  useEffect(() => {
+    setReducedMotion(prefersReducedMotion());
   }, []);
 
+  const typedCommand = useTypewriter(COMMAND, inView, reducedMotion, 24);
+
+  useEffect(() => {
+    if (!inView) return;
+    if (reducedMotion) {
+      setCommandDone(true);
+      return;
+    }
+    if (typedCommand.length === COMMAND.length) {
+      const t = setTimeout(() => setCommandDone(true), 150);
+      return () => clearTimeout(t);
+    }
+  }, [typedCommand, inView, reducedMotion]);
+
+  const treeActive = reducedMotion ? inView : commandDone;
+
   return (
-    <section className="relative py-24 md:py-48 border-t overflow-hidden" style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}>
+    <section
+      ref={sectionRef}
+      className="py-24 md:py-48 border-t"
+      style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
+    >
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -193,82 +202,129 @@ export default function SystemStack() {
           viewport={{ once: true }}
           className="mb-16 md:mb-24"
         >
-          <span className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] md:tracking-[1em] uppercase block mb-6" style={{ color: "var(--text-quaternary)" }}>
-            SYSTEM_SPECS
+          <span
+            className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] md:tracking-[1em] uppercase block mb-6"
+            style={{ color: "var(--text-quaternary)" }}
+          >
+            TECH_STACK
           </span>
-          <h2 className="text-[12vw] md:text-[7vw] font-black leading-[0.85] uppercase tracking-tighter" style={{ color: "var(--text-primary)" }}>
-            $ NEOFETCH
+          <h2
+            className="text-[12vw] md:text-[7vw] font-black leading-[0.85] uppercase tracking-tighter"
+            style={{ color: "var(--text-primary)" }}
+          >
+            $ NPM LS
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Terminal identity card */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-5 lg:sticky lg:top-32"
+        <motion.div
+          ref={cardRef}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="border rounded-xl overflow-hidden max-w-3xl mx-auto"
+          style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
+        >
+          <div
+            className="terminal-chrome flex items-center gap-2 px-4 md:px-6 py-3 border-b"
+            style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}
           >
-            <div className="border rounded-xl overflow-hidden" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}>
-              <div className="terminal-chrome flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}>
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                <span className="ml-3 flex items-center gap-2 font-technical text-[9px] uppercase tracking-widest" style={{ color: "var(--text-tertiary)" }}>
-                  <Terminal size={10} /> zed@node_dz
-                </span>
-              </div>
-
-              <div className="p-6 md:p-8 font-technical text-[11px] md:text-xs">
-                <p className="text-blue-400 mb-6">guest@node_dz {"~"} % neofetch</p>
-
-                <div className="space-y-2">
-                  {NEOFETCH_INFO.map((row) => (
-                    <div key={row.label} className="flex gap-3">
-                      <span className="uppercase w-16 flex-shrink-0" style={{ color: "var(--text-tertiary)" }}>{row.label}</span>
-                      <span style={{ color: "var(--text-secondary)" }}>{row.value}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex gap-1.5 mt-6">
-                  {SWATCHES.map((c, i) => (
-                    <div
-                      key={i}
-                      className="w-4 h-4 rounded-sm border"
-                      style={{ backgroundColor: c, borderColor: "var(--border-default)" }}
-                    />
-                  ))}
-                </div>
-
-                <p className="mt-6 flex items-center gap-2" style={{ color: "var(--text-tertiary)" }}>
-                  guest@node_dz {"~"} %
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
-                    className="w-1.5 h-3.5 inline-block"
-                    style={{ backgroundColor: "var(--text-muted)" }}
-                  />
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Categorized stack, rendered as sequential package installs */}
-          <div className="lg:col-span-7 space-y-10">
-            {STACK_CATEGORIES.map((category, catIndex) => (
-              <CategoryBlock
-                key={category.label}
-                category={category}
-                index={catIndex}
-                active={activeSet.has(catIndex)}
-                ref={(el) => {
-                  categoryRefs.current[catIndex] = el;
-                }}
-              />
-            ))}
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+            <span
+              className="ml-3 flex items-center gap-2 font-technical text-[9px] uppercase tracking-widest"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              <Terminal size={10} /> workspace.log
+            </span>
           </div>
-        </div>
+
+          <div className="p-6 md:p-10 font-technical text-[11px] md:text-[13px] overflow-x-auto">
+            <div className="flex items-center gap-2 whitespace-pre" style={{ color: "var(--text-secondary)" }}>
+              <span style={{ color: "#3b82f6" }}>guest@node_dz</span>
+              <span style={{ color: "var(--text-quaternary)" }}>~</span>
+              <span>%</span>
+              <span style={{ color: "var(--text-primary)" }}>{typedCommand}</span>
+              {!commandDone && (
+                <motion.span
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                  className="w-1.5 h-3.5 inline-block"
+                  style={{ backgroundColor: "var(--text-muted)" }}
+                />
+              )}
+            </div>
+
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate={treeActive ? "show" : "hidden"}
+              className="mt-5 whitespace-pre leading-relaxed"
+            >
+              {LINES.map((line) => (
+                <motion.div key={line.key} variants={lineVariant}>
+                  {line.kind === "root" && (
+                    <span style={{ color: "var(--text-primary)", fontWeight: 700 }}>{line.text}</span>
+                  )}
+
+                  {line.kind === "section" && (
+                    <>
+                      <span> </span>
+                      <br />
+                      <span style={{ color: "var(--text-tertiary)" }}>{line.text}</span>
+                    </>
+                  )}
+
+                  {line.kind === "workspace" && (
+                    <>
+                      <span style={{ color: "var(--text-quaternary)" }}>{line.connector}</span>
+                      <span style={{ color: line.accent, fontWeight: 700 }}>{line.text}</span>
+                    </>
+                  )}
+
+                  {line.kind === "package" && (
+                    <>
+                      <span style={{ color: "var(--text-quaternary)" }}>{line.connector}</span>
+                      <span style={{ color: "var(--text-secondary)" }}>{line.text}</span>
+                      {line.version && <span style={{ color: "var(--text-tertiary)" }}>@{line.version}</span>}
+                      {line.note && <span style={{ color: "var(--text-quaternary)" }}> ({line.note})</span>}
+                    </>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={treeActive ? { opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: LINES.length * 0.045 + 0.3 }}
+              className="mt-6 pt-6 border-t flex items-center gap-2"
+              style={{ borderColor: "var(--border-subtle)" }}
+            >
+              <Check size={12} color="#3b82f6" />
+              <span style={{ color: "var(--text-secondary)" }}>
+                found {TOTAL_PACKAGE_COUNT} packages across {WORKSPACES.length} workspaces
+              </span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={treeActive ? { opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: LINES.length * 0.045 + 0.45 }}
+              className="mt-4 flex items-center gap-2"
+              style={{ color: "var(--text-quaternary)" }}
+            >
+              <span>guest@node_dz ~ %</span>
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
+                className="w-1.5 h-3.5 inline-block"
+                style={{ backgroundColor: "var(--text-muted)" }}
+              />
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
