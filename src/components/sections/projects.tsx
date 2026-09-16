@@ -158,7 +158,7 @@ function ProjectTile({
       className={`group relative rounded-2xl border overflow-hidden ${tileSpan(project)}`}
       style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
     >
-      <div className="relative w-full h-full" style={{ aspectRatio: "16/11" }}>
+      <div className="relative w-full h-full" style={{ aspectRatio: "2/1" }}>
         <Image
           src={project.image}
           alt={project.title}
