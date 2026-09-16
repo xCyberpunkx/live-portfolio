@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, type MouseEvent } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, ExternalLink, Github, Sparkles, Terminal, X } from "lucide-react";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ArrowUpRight, ExternalLink, Github, Sparkles, X } from "lucide-react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
-import { useMagnetic } from "@/lib/animations/use-magnetic";
 
 const projects = [
   {
@@ -89,205 +88,116 @@ const projects = [
 
 type Project = (typeof projects)[number];
 
-/** Small magnetic pull on just the arrow, not the whole row — the row's own hover/active state already does most of the work; this adds a little life to the one element that's explicitly pointing somewhere. */
-function MagneticArrow({ active }: { active: boolean }) {
-  const { ref } = useMagnetic<HTMLSpanElement>({ radius: 24, strength: 0.5 });
-  return (
-    <span ref={ref} className="inline-flex flex-shrink-0 will-change-transform">
-      <ArrowUpRight
-        size={16}
-        className={`transition-all duration-300 ${active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1"}`}
-        style={{ color: "var(--accent)" }}
-      />
-    </span>
-  );
+/** Bento sizing — width only. Flagship is the one wide tile; everything
+ *  else is a uniform square, so a 4-col grid always fills evenly with no
+ *  trailing gaps (2 + six 1s = exactly two full rows of 4). */
+function tileSpan(project: Project): string {
+  return project.flagship ? "sm:col-span-2" : "sm:col-span-1";
 }
 
-const ProjectRow = React.forwardRef<
+/** Pointer-tracked 3D tilt — reacts to the cursor, resets on leave, does
+ *  nothing on its own. Skipped under reduced motion. */
+const TiltTile = React.forwardRef<
   HTMLButtonElement,
-  {
-    project: Project;
-    index: number;
-    active: boolean;
-    onHover: () => void;
-    onSelect: () => void;
-  }
->(function ProjectRow({ project, index, active, onHover, onSelect }, ref) {
+  { children: React.ReactNode; className?: string; style?: React.CSSProperties; onClick: () => void }
+>(function TiltTile({ children, className, style, onClick }, forwardedRef) {
+  const innerRef = useRef<HTMLButtonElement>(null);
+  const reduced = useRef(prefersReducedMotion());
+  const x = useMotionValue(0.5);
+  const y = useMotionValue(0.5);
+  const springX = useSpring(x, { stiffness: 200, damping: 20 });
+  const springY = useSpring(y, { stiffness: 200, damping: 20 });
+  const rotateX = useTransform(springY, [0, 1], [6, -6]);
+  const rotateY = useTransform(springX, [0, 1], [-6, 6]);
+
+  const handleMove = (e: MouseEvent<HTMLButtonElement>) => {
+    if (reduced.current || !innerRef.current) return;
+    const rect = innerRef.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width);
+    y.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handleLeave = () => {
+    x.set(0.5);
+    y.set(0.5);
+  };
+
   return (
-    <button
-      ref={ref}
-      onMouseEnter={onHover}
-      onFocus={onHover}
-      onClick={onSelect}
-      className="w-full text-left px-5 md:px-6 py-5 border-b last:border-b-0 transition-colors group"
-      style={{
-        borderColor: "var(--border-subtle)",
-        backgroundColor: active ? "var(--bg-surface-hover)" : "transparent",
+    <motion.button
+      ref={(el) => {
+        innerRef.current = el;
+        if (typeof forwardedRef === "function") forwardedRef(el);
+        else if (forwardedRef) forwardedRef.current = el;
       }}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      onClick={onClick}
+      style={{ rotateX, rotateY, transformPerspective: 1000, ...style }}
+      className={`text-left ${className ?? ""}`}
     >
-      <div className="flex items-center gap-4">
-        <span
-          className="font-technical text-[10px] tabular-nums flex-shrink-0"
-          style={{ color: active ? "var(--accent)" : "var(--text-quaternary)" }}
-        >
-          {String(index + 1).padStart(2, "0")}
-        </span>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3
-              className="text-lg md:text-xl font-black uppercase tracking-tight truncate"
-              style={{ color: active ? "var(--text-primary)" : "var(--text-secondary)" }}
-            >
-              {project.title}
-            </h3>
-            {project.flagship && (
-              <span
-                className="flex items-center gap-1 text-[8px] font-technical uppercase tracking-widest px-1.5 py-0.5 rounded-full border flex-shrink-0"
-                style={{ color: "var(--accent)", borderColor: "var(--accent)" }}
-              >
-                <Sparkles size={8} /> Flagship
-              </span>
-            )}
-          </div>
-          <span
-            className="font-technical text-[9px] uppercase tracking-widest block mt-1 truncate"
-            style={{ color: "var(--text-quaternary)" }}
-          >
-            {project.category}
-          </span>
-        </div>
-
-        <MagneticArrow active={active} />
-      </div>
-    </button>
+      {children}
+    </motion.button>
   );
 });
 
-/**
- * Shared preview body (image + details + tech + links). Used both in the
- * desktop sticky panel and the mobile bottom-sheet modal so the two stay
- * in sync instead of drifting into two copies of the same markup.
- */
-function ProjectDetails({ project, imageParallaxRef }: { project: Project; imageParallaxRef?: React.Ref<HTMLDivElement> }) {
-  return (
-    <>
-      <div className="relative aspect-[16/10] w-full overflow-hidden" style={{ backgroundColor: "var(--bg-chrome)" }}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={project.title}
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0"
-          >
-            {/* Inner wrapper gets the slow scroll-linked drift (GSAP); the
-                outer motion.div above keeps the framer crossfade when the
-                active project changes — two different jobs, two different
-                elements, so they don't fight over the same transform. */}
-            <div ref={imageParallaxRef} className="absolute inset-0 will-change-transform">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                className="object-cover"
-              />
-            </div>
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to top, var(--bg-base) 0%, color-mix(in srgb, var(--bg-base) 10%, transparent) 35%, transparent 65%)",
-              }}
-            />
-          </motion.div>
-        </AnimatePresence>
+function ProjectTile({
+  project,
+  onOpen,
+  tileRef,
+}: {
+  project: Project;
+  onOpen: () => void;
+  tileRef: React.Ref<HTMLButtonElement>;
+}) {
+  const isLarge = project.flagship;
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-10">
-          <span className="font-technical text-[9px] text-blue-400 uppercase tracking-[0.3em] block mb-2">
+  return (
+    <TiltTile
+      ref={tileRef}
+      onClick={onOpen}
+      className={`group relative rounded-2xl border overflow-hidden ${tileSpan(project)}`}
+      style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
+    >
+      <div className="relative w-full h-full" style={{ aspectRatio: "16/11" }}>
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
+        />
+        {project.flagship && (
+          <span
+            className="absolute top-4 left-4 z-10 flex items-center gap-1 text-[9px] font-technical uppercase tracking-widest px-2 py-1 rounded-full border backdrop-blur-sm"
+            style={{ color: "var(--accent)", borderColor: "var(--accent)", backgroundColor: "var(--bg-base)" }}
+          >
+            <Sparkles size={9} /> Flagship
+          </span>
+        )}
+
+        {/* solid banner — always-legible plate behind the title, not just
+            a gradient fading into the image, so light screenshots (white
+            dashboards, e-commerce pages) never wash the text out */}
+        <div
+          className="absolute bottom-0 left-0 right-0 px-4 py-3 md:px-5 md:py-4 border-t"
+          style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
+        >
+          <span className="font-technical text-[8px] uppercase tracking-[0.25em] block mb-1" style={{ color: "var(--accent)" }}>
             {project.category}
           </span>
           <h3
-            className="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-none"
+            className={`font-black uppercase tracking-tighter leading-none truncate ${isLarge ? "text-2xl md:text-4xl" : "text-lg md:text-xl"}`}
             style={{ color: "var(--text-primary)" }}
           >
             {project.title}
           </h3>
         </div>
       </div>
-
-      <div className="p-6 md:p-8 space-y-6">
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={project.title + "-desc"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="text-sm md:text-base leading-relaxed"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            {project.details}
-          </motion.p>
-        </AnimatePresence>
-
-        <div className="flex flex-wrap gap-2">
-          {project.tech.map((t) => (
-            <span
-              key={t}
-              className="text-[10px] font-mono px-2 py-1 rounded border"
-              style={{ color: "var(--text-secondary)", backgroundColor: "var(--bg-surface-strong)", borderColor: "var(--border-subtle)" }}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex gap-4 pt-2">
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-blue-500 hover:text-white transition-all duration-300"
-            style={{ backgroundColor: "var(--text-primary)", color: "var(--bg-base)" }}
-          >
-            Live Demo <ExternalLink size={14} />
-          </a>
-          {project.github !== "#" && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-3.5 px-6 border rounded-full font-bold uppercase tracking-widest text-xs hover:border-blue-400/50 transition-all duration-300"
-              style={{ borderColor: "var(--border-strong)", color: "var(--text-secondary)" }}
-            >
-              <Github size={14} />
-            </a>
-          )}
-        </div>
-      </div>
-    </>
+    </TiltTile>
   );
 }
 
-/**
- * Mobile-only bottom sheet. On small screens the sticky preview column
- * disappears (there's nowhere for it to stick, and it forced people to
- * scroll back up after picking a project), so tapping a row opens the
- * same details as a slide-up modal instead.
- */
-function MobilePreviewModal({
-  project,
-  open,
-  onClose,
-}: {
-  project: Project;
-  open: boolean;
-  onClose: () => void;
-}) {
+function ProjectModal({ project, open, onClose }: { project: Project; open: boolean; onClose: () => void }) {
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
@@ -305,7 +215,7 @@ function MobilePreviewModal({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-end lg:hidden"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -321,20 +231,13 @@ function MobilePreviewModal({
             role="dialog"
             aria-modal="true"
             aria-label={`${project.title} preview`}
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-h-[88vh] overflow-y-auto rounded-t-2xl border-t"
+            initial={{ y: 24, opacity: 0, scale: 0.98 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 24, opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border-t sm:border"
             style={{ backgroundColor: "var(--bg-surface)", borderColor: "var(--border-default)", boxShadow: "var(--shadow-elevated)" }}
           >
-            <div
-              className="sticky top-0 z-20 flex justify-center pt-3 pb-2"
-              style={{ backgroundColor: "var(--bg-surface)" }}
-            >
-              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: "var(--border-strong)" }} />
-            </div>
-
             <button
               onClick={onClose}
               aria-label="Close preview"
@@ -344,7 +247,65 @@ function MobilePreviewModal({
               <X size={16} />
             </button>
 
-            <ProjectDetails project={project} />
+            <div className="relative aspect-[16/10] w-full overflow-hidden" style={{ backgroundColor: "var(--bg-chrome)" }}>
+              <Image src={project.image} alt={project.title} fill sizes="100vw" className="object-cover" priority />
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to top, var(--bg-base) 0%, color-mix(in srgb, var(--bg-base) 10%, transparent) 35%, transparent 65%)",
+                }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-10">
+                <span className="font-technical text-[9px] text-blue-400 uppercase tracking-[0.3em] block mb-2">
+                  {project.category}
+                </span>
+                <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-none" style={{ color: "var(--text-primary)" }}>
+                  {project.title}
+                </h3>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-8 space-y-6">
+              <p className="text-sm md:text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                {project.details}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {project.tech.map((t) => (
+                  <span
+                    key={t}
+                    className="text-[10px] font-mono px-2 py-1 rounded border"
+                    style={{ color: "var(--text-secondary)", backgroundColor: "var(--bg-surface-strong)", borderColor: "var(--border-subtle)" }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex gap-4 pt-2">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-blue-500 hover:text-white transition-all duration-300"
+                  style={{ backgroundColor: "var(--text-primary)", color: "var(--bg-base)" }}
+                >
+                  Live Demo <ExternalLink size={14} />
+                </a>
+                {project.github !== "#" && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 py-3.5 px-6 border rounded-full font-bold uppercase tracking-widest text-xs hover:border-blue-400/50 transition-all duration-300"
+                    style={{ borderColor: "var(--border-strong)", color: "var(--text-secondary)" }}
+                  >
+                    <Github size={14} />
+                  </a>
+                )}
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       )}
@@ -353,62 +314,33 @@ function MobilePreviewModal({
 }
 
 export default function MyProjects() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
-  const active = projects[activeIndex];
-
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const listWrapRef = useRef<HTMLDivElement>(null);
-  const rowRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const previewImageRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const tileRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
-  // Row-list entrance: the directory listing previously had no animation
-  // at all on first view — it just appeared. One ScrollTrigger, staggered
-  // reveal, fires once when the list scrolls into range.
+  // Grid entrance: tiles rise in with a stagger once the section scrolls
+  // into range. One ScrollTrigger, fires once.
   useEffect(() => {
-    if (prefersReducedMotion() || !listWrapRef.current) return;
-    const rows = rowRefs.current.filter(Boolean) as HTMLButtonElement[];
-    if (rows.length === 0) return;
+    if (prefersReducedMotion() || !gridRef.current) return;
+    const tiles = tileRefs.current.filter(Boolean) as HTMLButtonElement[];
+    if (tiles.length === 0) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(rows, { opacity: 0, y: 16 });
+      gsap.set(tiles, { opacity: 0, y: 24, scale: 0.97 });
       ScrollTrigger.create({
-        trigger: listWrapRef.current,
+        trigger: gridRef.current,
         start: "top 85%",
         once: true,
         onEnter: () =>
-          gsap.to(rows, { opacity: 1, y: 0, duration: 0.55, stagger: 0.06, ease: "power3.out" }),
+          gsap.to(tiles, { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" }),
       });
     });
 
     return () => ctx.revert();
   }, []);
 
-  // Slow scroll-linked drift on the active preview image — a gentle,
-  // continuous zoom-settle as the section passes through, independent of
-  // which project happens to be active. Applied to the inner wrapper
-  // introduced in ProjectDetails so it never fights the crossfade
-  // transform framer-motion owns on the outer element.
-  useEffect(() => {
-    if (prefersReducedMotion() || !sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        previewImageRef.current,
-        { scale: 1.12 },
-        {
-          scale: 1.0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-        }
-      );
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+  const active = activeIndex !== null ? projects[activeIndex] : null;
 
   return (
     <section
@@ -437,63 +369,20 @@ export default function MyProjects() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 mb-16 md:mb-20">
-          {/* Directory listing */}
-          <div className="lg:col-span-5 order-2 lg:order-1">
-            <div
-              ref={listWrapRef}
-              className="border rounded-xl overflow-hidden"
-              style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
-            >
-              <div
-                className="terminal-chrome flex items-center gap-2 px-4 md:px-6 py-3 border-b"
-                style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-chrome)" }}
-              >
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                <span
-                  className="ml-3 flex items-center gap-2 font-technical text-[9px] uppercase tracking-widest"
-                  style={{ color: "var(--text-tertiary)" }}
-                >
-                  <Terminal size={10} /> ls -la /projects
-                </span>
-              </div>
-
-              <div>
-                {projects.map((project, i) => (
-                  <ProjectRow
-                    key={project.title}
-                    project={project}
-                    index={i}
-                    active={i === activeIndex}
-                    onHover={() => setActiveIndex(i)}
-                    onSelect={() => {
-                      setActiveIndex(i);
-                      setMobilePreviewOpen(true);
-                    }}
-                    ref={(el) => {
-                      rowRefs.current[i] = el;
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Sticky preview pane — desktop/tablet only. On mobile there's no
-              room for it to stick above the fold, so it's replaced by the
-              bottom-sheet modal below. */}
-          <div className="hidden lg:block lg:col-span-7 order-1 lg:order-2">
-            <div className="lg:sticky lg:top-32">
-              <div
-                className="border rounded-xl overflow-hidden"
-                style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-elevated)" }}
-              >
-                <ProjectDetails project={active} imageParallaxRef={previewImageRef} />
-              </div>
-            </div>
-          </div>
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16 md:mb-20"
+        >
+          {projects.map((project, i) => (
+            <ProjectTile
+              key={project.title}
+              project={project}
+              onOpen={() => setActiveIndex(i)}
+              tileRef={(el) => {
+                tileRefs.current[i] = el;
+              }}
+            />
+          ))}
         </div>
 
         <div className="flex justify-center">
@@ -515,11 +404,7 @@ export default function MyProjects() {
         </div>
       </div>
 
-      <MobilePreviewModal
-        project={active}
-        open={mobilePreviewOpen}
-        onClose={() => setMobilePreviewOpen(false)}
-      />
+      {active && <ProjectModal project={active} open={activeIndex !== null} onClose={() => setActiveIndex(null)} />}
     </section>
   );
 }

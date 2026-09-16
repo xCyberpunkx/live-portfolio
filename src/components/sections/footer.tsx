@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Github, Linkedin, Send, Loader2 } from "lucide-react";
 import { FaReddit, FaDiscord, FaWhatsapp } from "react-icons/fa6";
 import emailjs from "@emailjs/browser";
-import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
 import MagneticButton from "@/components/ui/magnetic-button";
 
 const socialLinks = [
@@ -20,34 +19,6 @@ const socialLinks = [
 export default function Footer() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [formData, setFormData] = useState({ name: "", email: "", message: "", website: "" });
-  const footerRef = useRef<HTMLElement>(null);
-  const pullBackRef = useRef<HTMLDivElement>(null);
-
-  // Closing beat that bookends the hero's opening pin: as the visitor
-  // reaches the true bottom of the page, the whole footer content eases
-  // back a touch — the same "camera pulling away" idea as the hero's
-  // ring-tunnel exit, just gentler, since this is a goodbye, not an entrance.
-  useEffect(() => {
-    if (prefersReducedMotion() || !footerRef.current || !pullBackRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        pullBackRef.current,
-        { scale: 1, y: 0 },
-        {
-          scale: 0.97,
-          y: -10,
-          ease: "none",
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: "bottom 95%",
-            end: "bottom bottom",
-            scrub: 1,
-          },
-        }
-      );
-    }, footerRef);
-    return () => ctx.revert();
-  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -101,12 +72,11 @@ export default function Footer() {
 
   return (
     <footer
-      ref={footerRef}
       id="contact"
       className="relative pt-32 pb-12 overflow-hidden border-t"
       style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
     >
-      <div ref={pullBackRef} className="container mx-auto px-6 relative z-10 will-change-transform">
+      <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div className="space-y-12">
             <motion.div

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { FaReddit, FaDiscord, FaWhatsapp } from "react-icons/fa6";
+import { gsap, prefersReducedMotion } from "@/lib/animations/gsap-config";
 
 const SOCIALS = [
   { icon: Github, href: "https://github.com/xCyberpunkx" },
@@ -57,10 +58,127 @@ function useScramble(words: string[], intervalMs = 2600) {
   return display;
 }
 
+/** True 3D wireframe cube — six bordered, transparent faces positioned with
+ *  real translateZ/rotateX/rotateY on a preserve-3d parent (not the flat
+ *  rotate+skew trick). Tumbles slowly and continuously via GSAP; the two
+ *  axes finish at different times so it never repeats the same beat twice. */
+function WireCube({
+  size,
+  className,
+  style,
+  speed = 70,
+}: {
+  size: number;
+  className?: string;
+  style?: React.CSSProperties;
+  speed?: number;
+}) {
+  const cubeRef = useRef<HTMLDivElement>(null);
+  const half = size / 2;
+
+  useEffect(() => {
+    if (prefersReducedMotion() || !cubeRef.current) return;
+    const tween = gsap.to(cubeRef.current, {
+      rotateX: "+=360",
+      rotateY: "+=520",
+      duration: speed,
+      repeat: -1,
+      ease: "none",
+    });
+    return () => {
+      tween.kill();
+    };
+  }, [speed]);
+
+  const faceStyle: React.CSSProperties = {
+    position: "absolute",
+    width: size,
+    height: size,
+    border: "1px solid var(--border-strong)",
+    backgroundColor: "color-mix(in srgb, var(--accent) 4%, transparent)",
+  };
+
+  return (
+    <div className={className} style={{ perspective: 1200, width: size, height: size, ...style }}>
+      <div
+        ref={cubeRef}
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transformStyle: "preserve-3d",
+          transform: "rotateX(-24deg) rotateY(35deg)",
+        }}
+      >
+        <div style={{ ...faceStyle, transform: `translateZ(${half}px)` }} />
+        <div style={{ ...faceStyle, transform: `rotateY(180deg) translateZ(${half}px)` }} />
+        <div style={{ ...faceStyle, transform: `rotateY(90deg) translateZ(${half}px)` }} />
+        <div style={{ ...faceStyle, transform: `rotateY(-90deg) translateZ(${half}px)` }} />
+        <div style={{ ...faceStyle, transform: `rotateX(90deg) translateZ(${half}px)` }} />
+        <div style={{ ...faceStyle, transform: `rotateX(-90deg) translateZ(${half}px)` }} />
+      </div>
+    </div>
+  );
+}
+
+/** A second, smaller 3D form for shape variety against the cube — a
+ *  wireframe triangular pyramid (four faces via clip-path, angled with
+ *  real 3D transforms), independent slow spin. */
+function WirePyramid({ size, className, style, speed = 46 }: { size: number; className?: string; style?: React.CSSProperties; speed?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion() || !ref.current) return;
+    const tween = gsap.to(ref.current, {
+      rotateY: "+=360",
+      rotateX: "+=180",
+      duration: speed,
+      repeat: -1,
+      ease: "none",
+    });
+    return () => {
+      tween.kill();
+    };
+  }, [speed]);
+
+  const half = size / 2;
+  const faceStyle: React.CSSProperties = {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0,
+    borderLeft: `${half}px solid transparent`,
+    borderRight: `${half}px solid transparent`,
+    borderBottom: `${size}px solid transparent`,
+    borderBottomColor: "color-mix(in srgb, var(--accent) 10%, transparent)",
+    outline: "1px solid var(--border-strong)",
+  };
+
+  return (
+    <div className={className} style={{ perspective: 900, width: size, height: size, ...style }}>
+      <div ref={ref} style={{ position: "relative", width: "100%", height: "100%", transformStyle: "preserve-3d", transform: "rotateX(8deg)" }}>
+        <div style={{ ...faceStyle, transform: `rotateY(0deg) rotateX(18deg) translateZ(${half * 0.5}px)`, transformOrigin: "bottom center" }} />
+        <div style={{ ...faceStyle, transform: `rotateY(90deg) rotateX(18deg) translateZ(${half * 0.5}px)`, transformOrigin: "bottom center" }} />
+        <div style={{ ...faceStyle, transform: `rotateY(180deg) rotateX(18deg) translateZ(${half * 0.5}px)`, transformOrigin: "bottom center" }} />
+        <div style={{ ...faceStyle, transform: `rotateY(270deg) rotateX(18deg) translateZ(${half * 0.5}px)`, transformOrigin: "bottom center" }} />
+      </div>
+    </div>
+  );
+}
+
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const roleText = useScramble(ROLES);
+
+  const layerRef = useRef<HTMLDivElement>(null);
+  const arcRef = useRef<HTMLDivElement>(null);
+  const nearRef = useRef<HTMLDivElement>(null);
+  const midRef = useRef<HTMLDivElement>(null);
+  const farRef = useRef<HTMLDivElement>(null);
+  const floorRef = useRef<HTMLDivElement>(null);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -70,6 +188,64 @@ const HeroSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // GSAP entrance: every ".hero-shape" materializes with a stagger instead
+  // of appearing painted-in — plus a continuous slow radar-sweep rotation
+  // on the arc, and cursor-driven parallax across three depth layers.
+  useEffect(() => {
+    if (prefersReducedMotion() || !layerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const shapes = gsap.utils.toArray<HTMLElement>(".hero-shape");
+      gsap.set(shapes, { opacity: 0, scale: 0.85 });
+      gsap.to(shapes, {
+        opacity: (i, target) => Number(target.dataset.opacity ?? 0.3),
+        scale: 1,
+        duration: 1,
+        stagger: 0.06,
+        delay: 0.15,
+        ease: "power3.out",
+      });
+
+      if (arcRef.current) {
+        gsap.to(arcRef.current, { rotate: "+=360", duration: 90, repeat: -1, ease: "none" });
+      }
+
+      if (!isMobile) {
+        const moveNear = gsap.quickTo(nearRef.current, "x", { duration: 0.8, ease: "power3.out" });
+        const moveNearY = gsap.quickTo(nearRef.current, "y", { duration: 0.8, ease: "power3.out" });
+        const moveMid = gsap.quickTo(midRef.current, "x", { duration: 1, ease: "power3.out" });
+        const moveMidY = gsap.quickTo(midRef.current, "y", { duration: 1, ease: "power3.out" });
+        const moveFar = gsap.quickTo(farRef.current, "x", { duration: 1.3, ease: "power3.out" });
+        const moveFarY = gsap.quickTo(farRef.current, "y", { duration: 1.3, ease: "power3.out" });
+        const moveSpot = gsap.quickTo(spotlightRef.current, "x", { duration: 0.5, ease: "power3.out" });
+        const moveSpotY = gsap.quickTo(spotlightRef.current, "y", { duration: 0.5, ease: "power3.out" });
+        const moveFloor = gsap.quickTo(floorRef.current, "x", { duration: 1.1, ease: "power3.out" });
+
+        const onMouseMove = (e: MouseEvent) => {
+          const nx = e.clientX / window.innerWidth - 0.5;
+          const ny = e.clientY / window.innerHeight - 0.5;
+          moveNear(nx * 34);
+          moveNearY(ny * 34);
+          moveMid(nx * 18);
+          moveMidY(ny * 18);
+          moveFar(nx * -10);
+          moveFarY(ny * -10);
+          // spotlight tracks the cursor directly, at full range, so it
+          // genuinely feels like it's following the pointer
+          moveSpot(nx * window.innerWidth * 0.5);
+          moveSpotY(ny * window.innerHeight * 0.5);
+          // floor grid only shifts sideways — it's masked to a fixed
+          // vertical band, so vertical drift would tear the mask
+          moveFloor(nx * 14);
+        };
+        window.addEventListener("mousemove", onMouseMove);
+        return () => window.removeEventListener("mousemove", onMouseMove);
+      }
+    }, layerRef);
+
+    return () => ctx.revert();
+  }, [isMobile]);
+
   return (
     <section
       className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-opacity duration-1000 ${
@@ -77,250 +253,243 @@ const HeroSection = () => {
       }`}
       style={{ backgroundColor: "var(--bg-base)" }}
     >
-      {/* STATIC ARCHITECTURAL BACKGROUND
-          Everything below is painted once and never animates. Depth comes
-          from layered opacity + one-time CSS transforms, not from a render
-          loop, so this costs nothing on low-end hardware. */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        {/* edge vignette — keeps the frame contained, darkens the corners */}
+      <div ref={layerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* edge vignette — static base layer, never animates */}
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "radial-gradient(ellipse 90% 70% at 50% 35%, transparent 0%, var(--bg-base) 85%)",
+            background: "radial-gradient(ellipse 90% 70% at 50% 35%, transparent 0%, var(--bg-base) 85%)",
           }}
         />
 
-        {/* perspective floor grid — desktop/tablet only, reads as an
-            architectural plane receding toward a horizon behind the name.
-            Two static passes (minor + major) give it real blueprint depth
-            without adding any extra elements to animate. */}
-        <div
-          className="absolute inset-x-0 bottom-0 hidden md:block"
-          style={{
-            height: "65%",
-            backgroundImage:
-              "linear-gradient(var(--border-default) 1px, transparent 1px), linear-gradient(90deg, var(--border-default) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-            opacity: 0.14,
-            transform: "perspective(900px) rotateX(58deg) scale(2.2)",
-            transformOrigin: "50% 100%",
-            maskImage:
-              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
-          }}
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 hidden md:block"
-          style={{
-            height: "65%",
-            backgroundImage:
-              "linear-gradient(var(--border-strong) 1px, transparent 1px), linear-gradient(90deg, var(--border-strong) 1px, transparent 1px)",
-            backgroundSize: "224px 224px",
-            opacity: 0.22,
-            transform: "perspective(900px) rotateX(58deg) scale(2.2)",
-            transformOrigin: "50% 100%",
-            maskImage:
-              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
-          }}
-        />
-
-        {/* oversized frame, bled off the top-right corner — desktop/tablet */}
-        <div
-          className="absolute hidden sm:block"
-          style={{
-            width: "85vmin",
-            height: "85vmin",
-            top: "-25%",
-            right: "-20%",
-            border: "1px solid var(--border-strong)",
-            opacity: 0.22,
-            transform: "rotate(-14deg) skewY(-2deg)",
-          }}
-        />
-
-        {/* corner ticks on the main frame — echoes the monolith's
-            annotation marks so the two big elements read as one system */}
-        <div className="absolute hidden sm:block" style={{ width: "16px", height: "1px", background: "var(--border-strong)", opacity: 0.4, top: "9%", right: "22%" }} />
-        <div className="absolute hidden sm:block" style={{ width: "1px", height: "16px", background: "var(--border-strong)", opacity: 0.4, top: "9%", right: "22%" }} />
-
-        {/* arc — a single static partial ring, the one curved shape in
-            an otherwise all-rectilinear composition; reads like a
-            compass or measurement sweep. Desktop/tablet only. */}
-        <div
-          className="absolute hidden sm:block"
-          style={{
-            width: "46vmin",
-            height: "46vmin",
-            top: "-14vmin",
-            right: "8vmin",
-            borderRadius: "9999px",
-            borderTop: "1px solid var(--border-strong)",
-            borderRight: "1px solid var(--border-strong)",
-            borderBottom: "1px solid transparent",
-            borderLeft: "1px solid transparent",
-            opacity: 0.28,
-            transform: "rotate(18deg)",
-          }}
-        />
-
-        {/* diamond accent — a small rotated square for shape variety
-            against the squares, cube and arc; sits beside the dot
-            texture. Desktop/tablet only. */}
-        <div
-          className="absolute hidden sm:block"
-          style={{
-            width: "5vmin",
-            height: "5vmin",
-            top: "18%",
-            left: "9%",
-            border: "1px solid var(--border-strong)",
-            opacity: 0.34,
-            transform: "rotate(45deg)",
-          }}
-        />
-
-        {/* small plane — visible at every breakpoint, including mobile,
-            so phones still get one quiet perspective element even
-            though the bigger frame and monolith are desktop/tablet only */}
-        <div
-          className="absolute"
-          style={{
-            width: "34vmin",
-            height: "34vmin",
-            bottom: "-10%",
-            right: "-10%",
-            border: "1px solid var(--border-default)",
-            opacity: 0.24,
-            transform: "rotate(7deg)",
-          }}
-        />
-
-        {/* wireframe monolith — the one deliberately bold "signature"
-            element in the composition: a static isometric cube built
-            from three bordered, transparent-fill faces (a well-known
-            pure-CSS trick: rotate + skewX + scaleY per face, no 3D
-            engine involved). Bleeds off the bottom-left corner so it
-            frames the content without ever crossing it. Desktop/tablet
-            only. */}
-        <div
-          className="absolute hidden sm:block"
-          style={{ width: "26vmin", height: "26vmin", bottom: "-8vmin", left: "-6vmin", opacity: 0.32 }}
-        >
-          <div className="absolute inset-0" style={{ border: "1px solid var(--border-strong)", transform: "rotate(210deg) skewX(-30deg) scaleY(0.864)" }} />
-          <div className="absolute inset-0" style={{ border: "1px solid var(--border-strong)", transform: "rotate(-30deg) skewX(-30deg) scaleY(0.864)" }} />
-          <div className="absolute inset-0" style={{ border: "1px solid var(--border-strong)", transform: "rotate(90deg) skewX(-30deg) scaleY(0.864)" }} />
+        {/* perspective floor grid — three layered passes (fine/mid/coarse)
+            for real depth instead of one flat pattern, brighter than
+            before, and wrapped in its own parallax layer so it drifts
+            slightly with the cursor like everything else */}
+        <div ref={floorRef} className="absolute inset-x-0 bottom-0 hidden md:block" style={{ height: "65%" }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--border-default) 1px, transparent 1px), linear-gradient(90deg, var(--border-default) 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+              opacity: 0.24,
+              transform: "perspective(900px) rotateX(58deg) scale(2.2)",
+              transformOrigin: "50% 100%",
+              maskImage: "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+              WebkitMaskImage: "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--border-strong) 1px, transparent 1px), linear-gradient(90deg, var(--border-strong) 1px, transparent 1px)",
+              backgroundSize: "224px 224px",
+              opacity: 0.38,
+              transform: "perspective(900px) rotateX(58deg) scale(2.2)",
+              transformOrigin: "50% 100%",
+              maskImage: "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+              WebkitMaskImage: "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px)",
+              backgroundSize: "672px 672px",
+              opacity: 0.2,
+              transform: "perspective(900px) rotateX(58deg) scale(2.2)",
+              transformOrigin: "50% 100%",
+              maskImage: "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+              WebkitMaskImage: "radial-gradient(ellipse 50% 55% at 50% 100%, transparent 25%, black 72%)",
+            }}
+          />
+          {/* horizon line — a bright hairline at the vanishing point where
+              the grid recedes, the classic blueprint cue that sells the
+              floor as a real receding plane rather than a flat pattern */}
+          <div
+            className="absolute inset-x-0 top-0"
+            style={{
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, var(--accent), transparent)",
+              opacity: 0.5,
+            }}
+          />
         </div>
 
-        {/* dimension ticks — two short marks near the monolith, a
-            small blueprint-annotation detail */}
-        <div
-          className="absolute hidden sm:block"
-          style={{ width: "14px", height: "1px", background: "var(--border-strong)", opacity: 0.4, bottom: "17vmin", left: "8vmin", transform: "rotate(90deg)" }}
-        />
-        <div
-          className="absolute hidden sm:block"
-          style={{ width: "14px", height: "1px", background: "var(--border-strong)", opacity: 0.4, bottom: "9vmin", left: "1vmin" }}
-        />
+        {/* NEAR layer — biggest parallax swing */}
+        <div ref={nearRef} className="absolute inset-0">
+          <WireCube
+            size={200}
+            speed={70}
+            className="hero-shape absolute hidden sm:block"
+            style={{ bottom: "-6vmin", left: "-4vmin" }}
+          />
+          <div
+            className="hero-shape absolute hidden sm:block"
+            data-opacity="0.52"
+            style={{ width: "5vmin", height: "5vmin", top: "18%", left: "9%", border: "1px solid var(--border-strong)", transform: "rotate(45deg)" }}
+          />
+        </div>
 
-        {/* dot texture — a small patch of fine dots tucked into a
-            corner the content never reaches, for material variety
-            against the linear grid */}
+        {/* MID layer */}
+        <div ref={midRef} className="absolute inset-0">
+          <div
+            className="hero-shape absolute hidden sm:block"
+            data-opacity="0.38"
+            style={{ width: "85vmin", height: "85vmin", top: "-25%", right: "-20%", border: "1.5px solid var(--border-strong)", transform: "rotate(-14deg) skewY(-2deg)" }}
+          />
+          <div className="hero-shape absolute hidden sm:block" data-opacity="0.62" style={{ width: "16px", height: "1px", background: "var(--border-strong)", top: "9%", right: "22%" }} />
+          <div className="hero-shape absolute hidden sm:block" data-opacity="0.62" style={{ width: "1px", height: "16px", background: "var(--border-strong)", top: "9%", right: "22%" }} />
+
+          <div
+            ref={arcRef}
+            className="hero-shape absolute hidden sm:block"
+            data-opacity="0.45"
+            style={{
+              width: "46vmin",
+              height: "46vmin",
+              top: "-14vmin",
+              right: "8vmin",
+              borderRadius: "9999px",
+              borderTop: "1.5px solid var(--border-strong)",
+              borderRight: "1.5px solid var(--border-strong)",
+              borderBottom: "1px solid transparent",
+              borderLeft: "1px solid transparent",
+              transform: "rotate(18deg)",
+            }}
+          />
+
+          <WirePyramid
+            size={110}
+            speed={46}
+            className="hero-shape absolute hidden md:block"
+            style={{ top: "6%", right: "16%" }}
+          />
+
+          <div
+            className="hero-shape absolute"
+            data-opacity="0.4"
+            style={{ width: "34vmin", height: "34vmin", bottom: "-10%", right: "-10%", border: "1px solid var(--border-default)", transform: "rotate(7deg)" }}
+          />
+
+          <div className="hero-shape absolute hidden sm:block" data-opacity="0.62" style={{ width: "14px", height: "1px", background: "var(--border-strong)", bottom: "17vmin", left: "8vmin", transform: "rotate(90deg)" }} />
+          <div className="hero-shape absolute hidden sm:block" data-opacity="0.62" style={{ width: "14px", height: "1px", background: "var(--border-strong)", bottom: "9vmin", left: "1vmin" }} />
+
+          <div
+            className="hero-shape absolute hidden md:block"
+            data-opacity="0.62"
+            style={{
+              width: "160px",
+              height: "160px",
+              top: "8%",
+              left: "4%",
+              backgroundImage: "radial-gradient(var(--border-default) 1px, transparent 1px)",
+              backgroundSize: "14px 14px",
+            }}
+          />
+
+          <div className="hero-shape absolute hidden md:block" data-opacity="0.75" style={{ width: "18px", height: "1px", background: "var(--accent)", top: "12%", right: "10%" }} />
+          <div className="hero-shape absolute hidden md:block" data-opacity="0.75" style={{ width: "1px", height: "18px", background: "var(--accent)", top: "12%", right: "10%" }} />
+
+          <div
+            className="hero-shape absolute"
+            data-opacity="0.7"
+            style={{ top: "18%", left: "-5%", width: "45%", height: "2px", background: "linear-gradient(90deg, transparent, var(--accent), transparent)", transform: "rotate(-6deg)", boxShadow: "0 0 12px var(--accent)" }}
+          />
+          <div
+            className="hero-shape absolute hidden sm:block"
+            data-opacity="0.55"
+            style={{ bottom: "24%", right: "-5%", width: "40%", height: "1.5px", background: "linear-gradient(90deg, transparent, var(--border-strong), transparent)", transform: "rotate(5deg)" }}
+          />
+        </div>
+
+        {/* FAR layer — smallest, opposite-direction parallax swing for depth */}
+        <div ref={farRef} className="absolute inset-0">
+          <div
+            className="hero-shape absolute left-1/2 inset-y-0 hidden sm:block"
+            data-opacity="0.42"
+            style={{
+              width: "1px",
+              transform: "translateX(-50%)",
+              background: "linear-gradient(to bottom, var(--border-strong) 0%, transparent 22%, transparent 78%, var(--border-strong) 100%)",
+            }}
+          />
+
+          {/* extra density pass — more lines and marks scattered through
+              the far layer, quiet parallax swing so they read as
+              background texture rather than competing with the type */}
+          <div
+            className="hero-shape absolute hidden md:block"
+            data-opacity="0.32"
+            style={{ top: "62%", left: "6%", width: "22%", height: "1px", background: "linear-gradient(90deg, transparent, var(--border-strong), transparent)", transform: "rotate(-9deg)" }}
+          />
+          <div
+            className="hero-shape absolute hidden md:block"
+            data-opacity="0.3"
+            style={{ top: "30%", right: "6%", width: "1px", height: "18vmin", background: "linear-gradient(to bottom, transparent, var(--border-strong), transparent)" }}
+          />
+          <div
+            className="hero-shape absolute hidden sm:block"
+            data-opacity="0.36"
+            style={{ width: "3.5vmin", height: "3.5vmin", bottom: "14%", left: "22%", border: "1px solid var(--border-strong)", transform: "rotate(20deg)" }}
+          />
+          <div
+            className="hero-shape absolute hidden md:block"
+            data-opacity="0.5"
+            style={{ width: "10px", height: "1px", background: "var(--accent)", bottom: "30%", left: "16%" }}
+          />
+          <div
+            className="hero-shape absolute hidden md:block"
+            data-opacity="0.5"
+            style={{ width: "1px", height: "10px", background: "var(--accent)", bottom: "30%", left: "16%" }}
+          />
+          <div
+            className="hero-shape absolute hidden lg:block"
+            data-opacity="0.24"
+            style={{
+              width: "120px",
+              height: "120px",
+              bottom: "6%",
+              left: "34%",
+              backgroundImage: "radial-gradient(var(--border-default) 1px, transparent 1px)",
+              backgroundSize: "16px 16px",
+            }}
+          />
+        </div>
+
+        {/* interactive spotlight — a soft glow that follows the cursor,
+            moved purely with transform (compositor-only, no layout or
+            paint cost) via the same GSAP quickTo trackers as the
+            parallax layers. Skipped on touch/reduced-motion. */}
         <div
-          className="absolute hidden md:block"
+          ref={spotlightRef}
+          className="absolute pointer-events-none hidden lg:block"
           style={{
-            width: "160px",
-            height: "160px",
-            top: "8%",
-            left: "4%",
-            backgroundImage: "radial-gradient(var(--border-default) 1px, transparent 1px)",
-            backgroundSize: "14px 14px",
-            opacity: 0.4,
+            width: "38vmin",
+            height: "38vmin",
+            top: "50%",
+            left: "50%",
+            marginTop: "-19vmin",
+            marginLeft: "-19vmin",
+            background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+            opacity: 0.16,
+            filter: "blur(4px)",
+            willChange: "transform",
           }}
         />
 
-        {/* crosshair — a small reticle mark near the arc, the last
-            technical HUD detail; two short overlapping lines, nothing
-            more. Desktop/tablet only. */}
-        <div className="absolute hidden md:block" style={{ width: "18px", height: "1px", background: "var(--accent)", opacity: 0.5, top: "12%", right: "10%" }} />
-        <div className="absolute hidden md:block" style={{ width: "1px", height: "18px", background: "var(--accent)", opacity: 0.5, top: "12%", right: "10%" }} />
-
-        {/* accent line — thin, off-center, never crosses the typography */}
-        <div
-          className="absolute"
-          style={{
-            top: "18%",
-            left: "-5%",
-            width: "45%",
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, var(--accent), transparent)",
-            opacity: 0.42,
-            transform: "rotate(-6deg)",
-          }}
-        />
-
-        {/* secondary line — desktop/tablet only */}
-        <div
-          className="absolute hidden sm:block"
-          style={{
-            bottom: "24%",
-            right: "-5%",
-            width: "40%",
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, var(--border-strong), transparent)",
-            opacity: 0.3,
-            transform: "rotate(5deg)",
-          }}
-        />
-
-        {/* meridian — a vertical technical axis through the center,
-            faded out through the middle band so it never touches the
-            name; only visible as a hairline above the badge and below
-            the CTAs, reinforcing the blueprint concept */}
-        <div
-          className="absolute left-1/2 inset-y-0 hidden sm:block"
-          style={{
-            width: "1px",
-            transform: "translateX(-50%)",
-            background:
-              "linear-gradient(to bottom, var(--border-strong) 0%, transparent 22%, transparent 78%, var(--border-strong) 100%)",
-            opacity: 0.26,
-          }}
-        />
-
-        {/* sheen — a single, static diagonal light wash for a premium,
-            glass-like quality; painted once, never moves */}
+        {/* sheen — static, never moves */}
         <div
           className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(115deg, transparent 35%, var(--text-primary) 50%, transparent 65%)",
-            opacity: 0.04,
-          }}
+          style={{ background: "linear-gradient(115deg, transparent 35%, var(--text-primary) 50%, transparent 65%)", opacity: 0.04 }}
         />
 
-        {/* focus glow — layered radial wash directly behind the name
-            (tight inner glow + broad outer halo), keeps the center clean
-            and pulls the eye there first */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 65% 55% at 50% 50%, var(--accent) 0%, transparent 75%)",
-            opacity: 0.07,
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 38% 32% at 50% 47%, var(--accent) 0%, transparent 65%)",
-            opacity: 0.11,
-          }}
-        />
+        {/* focus glow — static base layer directly behind the name */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 65% 55% at 50% 50%, var(--accent) 0%, transparent 75%)", opacity: 0.07 }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 38% 32% at 50% 47%, var(--accent) 0%, transparent 65%)", opacity: 0.11 }} />
       </div>
 
       <div className="container mx-auto px-6 z-10 text-center relative">
@@ -332,10 +501,7 @@ const HeroSection = () => {
           style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-surface)" }}
         >
           <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "var(--accent)" }} />
-          <span
-            className="font-technical text-[9px] uppercase tracking-[0.3em]"
-            style={{ color: "var(--text-secondary)" }}
-          >
+          <span className="font-technical text-[9px] uppercase tracking-[0.3em]" style={{ color: "var(--text-secondary)" }}>
             NODE_DZ // ONLINE
           </span>
         </motion.div>
@@ -348,19 +514,13 @@ const HeroSection = () => {
           style={{ color: "var(--text-primary)" }}
         >
           ROUABAH<br />
-          <span
-            className="text-transparent"
-            style={{ WebkitTextStroke: "1px var(--text-tertiary)" }}
-          >
+          <span className="text-transparent" style={{ WebkitTextStroke: "1px var(--text-tertiary)" }}>
             ZINE_EDDINE
           </span>
         </motion.h1>
 
         <div className="mt-10 h-6 flex items-center justify-center">
-          <span
-            className="font-technical text-[11px] md:text-xs uppercase tracking-[0.5em] tabular-nums"
-            style={{ color: "var(--accent)" }}
-          >
+          <span className="font-technical text-[11px] md:text-xs uppercase tracking-[0.5em] tabular-nums" style={{ color: "var(--accent)" }}>
             {roleText}
           </span>
         </div>
@@ -421,10 +581,7 @@ const HeroSection = () => {
       </div>
 
       <div className="absolute left-10 bottom-10 z-10 hidden md:block">
-        <div
-          className="flex flex-col gap-1 font-technical text-[8px] uppercase tracking-widest"
-          style={{ color: "var(--text-quaternary)" }}
-        >
+        <div className="flex flex-col gap-1 font-technical text-[8px] uppercase tracking-widest" style={{ color: "var(--text-quaternary)" }}>
           <div className="flex items-center gap-3">
             <span className="w-8 h-px" style={{ backgroundColor: "var(--border-default)" }} />
             <span>LOC: 36.4701° N, 2.8288° E</span>
@@ -438,10 +595,7 @@ const HeroSection = () => {
 
       <div className="absolute right-10 bottom-10 z-10 flex flex-col items-center gap-3 opacity-30">
         <ArrowDown size={14} style={{ color: "var(--text-primary)" }} className="animate-bounce" />
-        <span
-          className="font-technical text-[8px] uppercase tracking-[0.4em] [writing-mode:vertical-lr]"
-          style={{ color: "var(--text-primary)" }}
-        >
+        <span className="font-technical text-[8px] uppercase tracking-[0.4em] [writing-mode:vertical-lr]" style={{ color: "var(--text-primary)" }}>
           SCROLL
         </span>
       </div>

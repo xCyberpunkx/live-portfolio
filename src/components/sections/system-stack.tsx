@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { Terminal, Check } from "lucide-react";
-import { prefersReducedMotion } from "@/lib/animations/gsap-config";
 
 /**
  * Tech stack, rendered as a resolved `npm ls --workspaces` dependency
- * tree — a monorepo manifest instead of an icon grid. The command types
- * itself out, then each line of the tree cascades in like a real install
- * resolving, ending on a summary line + blinking prompt.
+ * tree — a monorepo manifest instead of an icon grid. Renders fully
+ * resolved immediately (no typewriter, no cascading lines) — the section
+ * still fades in once on scroll, same as every other section, but nothing
+ * inside the terminal animates on its own.
  *
- * Data below is the single source of truth for both the visible tree and
- * its accessible text alternative — edit WORKSPACES to update your stack.
+ * Data below is the single source of truth — edit WORKSPACES to update
+ * your stack.
  */
 
 type Pkg = { name: string; version?: string; note?: string };
@@ -131,67 +131,9 @@ const LINES = buildLines();
 const TOTAL_PACKAGE_COUNT =
   WORKSPACES.reduce((sum, ws) => sum + ws.packages.length, 0) + DEV_DEPENDENCIES.length;
 
-function useTypewriter(text: string, start: boolean, reducedMotion: boolean, speed = 22) {
-  const [out, setOut] = useState(reducedMotion && start ? text : "");
-  useEffect(() => {
-    if (!start) return;
-    if (reducedMotion) {
-      setOut(text);
-      return;
-    }
-    let i = 0;
-    const id = setInterval(() => {
-      i++;
-      setOut(text.slice(0, i));
-      if (i >= text.length) clearInterval(id);
-    }, speed);
-    return () => clearInterval(id);
-  }, [start, text, speed, reducedMotion]);
-  return out;
-}
-
-const container = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.045, delayChildren: 0.1 },
-  },
-};
-
-const lineVariant = {
-  hidden: { opacity: 0, x: -6 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.25 } },
-};
-
 export default function TechStack() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(cardRef, { once: true, amount: 0.4 });
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [commandDone, setCommandDone] = useState(false);
-
-  useEffect(() => {
-    setReducedMotion(prefersReducedMotion());
-  }, []);
-
-  const typedCommand = useTypewriter(COMMAND, inView, reducedMotion, 24);
-
-  useEffect(() => {
-    if (!inView) return;
-    if (reducedMotion) {
-      setCommandDone(true);
-      return;
-    }
-    if (typedCommand.length === COMMAND.length) {
-      const t = setTimeout(() => setCommandDone(true), 150);
-      return () => clearTimeout(t);
-    }
-  }, [typedCommand, inView, reducedMotion]);
-
-  const treeActive = reducedMotion ? inView : commandDone;
-
   return (
     <section
-      ref={sectionRef}
       className="py-24 md:py-48 border-t"
       style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
     >
@@ -217,7 +159,6 @@ export default function TechStack() {
         </motion.div>
 
         <motion.div
-          ref={cardRef}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -245,25 +186,12 @@ export default function TechStack() {
               <span style={{ color: "#3b82f6" }}>guest@node_dz</span>
               <span style={{ color: "var(--text-quaternary)" }}>~</span>
               <span>%</span>
-              <span style={{ color: "var(--text-primary)" }}>{typedCommand}</span>
-              {!commandDone && (
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-                  className="w-1.5 h-3.5 inline-block"
-                  style={{ backgroundColor: "var(--text-muted)" }}
-                />
-              )}
+              <span style={{ color: "var(--text-primary)" }}>{COMMAND}</span>
             </div>
 
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate={treeActive ? "show" : "hidden"}
-              className="mt-5 whitespace-pre leading-relaxed"
-            >
+            <div className="mt-5 whitespace-pre leading-relaxed">
               {LINES.map((line) => (
-                <motion.div key={line.key} variants={lineVariant}>
+                <div key={line.key}>
                   {line.kind === "root" && (
                     <span style={{ color: "var(--text-primary)", fontWeight: 700 }}>{line.text}</span>
                   )}
@@ -291,14 +219,11 @@ export default function TechStack() {
                       {line.note && <span style={{ color: "var(--text-quaternary)" }}> ({line.note})</span>}
                     </>
                   )}
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={treeActive ? { opacity: 1 } : {}}
-              transition={{ duration: 0.4, delay: LINES.length * 0.045 + 0.3 }}
+            <div
               className="mt-6 pt-6 border-t flex items-center gap-2"
               style={{ borderColor: "var(--border-subtle)" }}
             >
@@ -306,23 +231,11 @@ export default function TechStack() {
               <span style={{ color: "var(--text-secondary)" }}>
                 found {TOTAL_PACKAGE_COUNT} packages across {WORKSPACES.length} workspaces
               </span>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={treeActive ? { opacity: 1 } : {}}
-              transition={{ duration: 0.4, delay: LINES.length * 0.045 + 0.45 }}
-              className="mt-4 flex items-center gap-2"
-              style={{ color: "var(--text-quaternary)" }}
-            >
-              <span>guest@node_dz ~ %</span>
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
-                className="w-1.5 h-3.5 inline-block"
-                style={{ backgroundColor: "var(--text-muted)" }}
-              />
-            </motion.div>
+            <div className="mt-4 flex items-center gap-2" style={{ color: "var(--text-quaternary)" }}>
+              <span>guest@node_dz ~ % _</span>
+            </div>
           </div>
         </motion.div>
       </div>
