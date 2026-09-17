@@ -164,7 +164,7 @@ function ProjectTile({
           alt={project.title}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
+          className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
         />
         {project.flagship && (
           <span
@@ -179,14 +179,14 @@ function ProjectTile({
             a gradient fading into the image, so light screenshots (white
             dashboards, e-commerce pages) never wash the text out */}
         <div
-          className="absolute bottom-0 left-0 right-0 px-4 py-3 md:px-5 md:py-4 border-t"
+          className="absolute bottom-0 left-0 right-0 px-5 py-4 md:px-6 md:py-5 border-t"
           style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
         >
           <span className="font-technical text-[8px] uppercase tracking-[0.25em] block mb-1" style={{ color: "var(--accent)" }}>
             {project.category}
           </span>
           <h3
-            className={`font-black uppercase tracking-tighter leading-none truncate ${isLarge ? "text-2xl md:text-4xl" : "text-lg md:text-xl"}`}
+            className={`font-black uppercase tracking-tighter leading-none truncate ${isLarge ? "text-3xl md:text-5xl" : "text-xl md:text-2xl"}`}
             style={{ color: "var(--text-primary)" }}
           >
             {project.title}
@@ -349,7 +349,7 @@ export default function MyProjects() {
       className="py-24 md:py-64 border-t overflow-hidden relative"
       style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
     >
-      <div className="container mx-auto px-6">
+      <div className="mx-auto px-6" style={{ maxWidth: "1600px" }}>
         <div className="flex flex-col mb-16 md:mb-24">
           <span
             className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8"
@@ -371,7 +371,7 @@ export default function MyProjects() {
 
         <div
           ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16 md:mb-20"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 md:mb-20"
         >
           {projects.map((project, i) => (
             <ProjectTile
