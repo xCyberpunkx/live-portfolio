@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState, type MouseEvent } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowUpRight, ExternalLink, Github, Sparkles, X } from "lucide-react";
+import { ExternalLink, ArrowUpRight, Github, Sparkles, X } from "lucide-react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/animations/gsap-config";
 
 const projects = [
@@ -88,39 +88,20 @@ const projects = [
 
 type Project = (typeof projects)[number];
 
-/** Bento sizing — width only. Flagship is the one wide tile; everything
- *  else is a uniform square, so a 4-col grid always fills evenly with no
- *  trailing gaps (2 + six 1s = exactly two full rows of 4). */
-function tileSpan(project: Project): string {
-  return project.flagship ? "sm:col-span-2" : "sm:col-span-1";
-}
-
-/** Pointer-tracked 3D tilt — reacts to the cursor, resets on leave, does
+/** Gentle pointer tilt — reacts to the cursor, resets on leave, does
  *  nothing on its own. Skipped under reduced motion. */
-const TiltTile = React.forwardRef<
+const TiltCard = React.forwardRef<
   HTMLButtonElement,
   { children: React.ReactNode; className?: string; style?: React.CSSProperties; onClick: () => void }
->(function TiltTile({ children, className, style, onClick }, forwardedRef) {
+>(function TiltCard({ children, className, style, onClick }, forwardedRef) {
   const innerRef = useRef<HTMLButtonElement>(null);
   const reduced = useRef(prefersReducedMotion());
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
-  const springX = useSpring(x, { stiffness: 200, damping: 20 });
-  const springY = useSpring(y, { stiffness: 200, damping: 20 });
-  const rotateX = useTransform(springY, [0, 1], [6, -6]);
-  const rotateY = useTransform(springX, [0, 1], [-6, 6]);
-
-  const handleMove = (e: MouseEvent<HTMLButtonElement>) => {
-    if (reduced.current || !innerRef.current) return;
-    const rect = innerRef.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width);
-    y.set((e.clientY - rect.top) / rect.height);
-  };
-
-  const handleLeave = () => {
-    x.set(0.5);
-    y.set(0.5);
-  };
+  const springX = useSpring(x, { stiffness: 220, damping: 22 });
+  const springY = useSpring(y, { stiffness: 220, damping: 22 });
+  const rotateX = useTransform(springY, [0, 1], [4, -4]);
+  const rotateY = useTransform(springX, [0, 1], [-4, 4]);
 
   return (
     <motion.button
@@ -129,8 +110,16 @@ const TiltTile = React.forwardRef<
         if (typeof forwardedRef === "function") forwardedRef(el);
         else if (forwardedRef) forwardedRef.current = el;
       }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
+      onMouseMove={(e) => {
+        if (reduced.current || !innerRef.current) return;
+        const rect = innerRef.current.getBoundingClientRect();
+        x.set((e.clientX - rect.left) / rect.width);
+        y.set((e.clientY - rect.top) / rect.height);
+      }}
+      onMouseLeave={() => {
+        x.set(0.5);
+        y.set(0.5);
+      }}
       onClick={onClick}
       style={{ rotateX, rotateY, transformPerspective: 1000, ...style }}
       className={`text-left ${className ?? ""}`}
@@ -140,64 +129,75 @@ const TiltTile = React.forwardRef<
   );
 });
 
-function ProjectTile({
+function NodeCard({
   project,
+  label,
   onOpen,
-  tileRef,
+  nodeRef,
+  large,
 }: {
   project: Project;
+  label: string;
   onOpen: () => void;
-  tileRef: React.Ref<HTMLButtonElement>;
+  nodeRef?: React.Ref<HTMLDivElement>;
+  large?: boolean;
 }) {
-  const isLarge = project.flagship;
-
   return (
-    <TiltTile
-      ref={tileRef}
-      onClick={onOpen}
-      className={`group relative rounded-2xl border overflow-hidden ${tileSpan(project)}`}
-      style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
-    >
-      <div className="relative w-full h-full" style={{ aspectRatio: "2/1" }}>
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-        />
-        {project.flagship && (
-          <span
-            className="absolute top-4 left-4 z-10 flex items-center gap-1 text-[9px] font-technical uppercase tracking-widest px-2 py-1 rounded-full border backdrop-blur-sm"
-            style={{ color: "var(--accent)", borderColor: "var(--accent)", backgroundColor: "var(--bg-base)" }}
-          >
-            <Sparkles size={9} /> Flagship
-          </span>
-        )}
+    <div ref={nodeRef}>
+      <TiltCard
+        onClick={onOpen}
+        className="group w-full rounded-2xl border overflow-hidden block"
+        style={{ borderColor: "var(--border-default)", backgroundColor: "var(--bg-surface)", boxShadow: "var(--shadow-card)" }}
+      >
+        <div className="relative w-full" style={{ aspectRatio: "2/1" }}>
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            sizes="(max-width: 1024px) 100vw, 45vw"
+            className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+          {project.flagship && (
+            <span
+              className="absolute top-4 left-4 flex items-center gap-1 text-[9px] font-technical uppercase tracking-widest px-2 py-1 rounded-full border backdrop-blur-sm"
+              style={{ color: "var(--accent)", borderColor: "var(--accent)", backgroundColor: "var(--bg-base)" }}
+            >
+              <Sparkles size={9} /> Flagship
+            </span>
+          )}
+        </div>
 
-        {/* solid banner — always-legible plate behind the title, not just
-            a gradient fading into the image, so light screenshots (white
-            dashboards, e-commerce pages) never wash the text out */}
-        <div
-          className="absolute bottom-0 left-0 right-0 px-5 py-4 md:px-6 md:py-5 border-t"
-          style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
-        >
-          <span className="font-technical text-[8px] uppercase tracking-[0.25em] block mb-1" style={{ color: "var(--accent)" }}>
-            {project.category}
-          </span>
+        <div className={large ? "p-6 md:p-8" : "p-5"}>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="font-technical text-[9px] tabular-nums" style={{ color: "var(--accent)" }}>
+              {label}
+            </span>
+            <span className="w-1 h-1 rounded-full" style={{ backgroundColor: "var(--border-strong)" }} />
+            <span
+              className="font-technical text-[9px] uppercase tracking-widest truncate"
+              style={{ color: "var(--text-quaternary)" }}
+            >
+              {project.category}
+            </span>
+          </div>
           <h3
-            className={`font-black uppercase tracking-tighter leading-none truncate ${isLarge ? "text-3xl md:text-5xl" : "text-xl md:text-2xl"}`}
+            className={`font-black uppercase tracking-tight ${large ? "text-3xl md:text-5xl" : "text-xl md:text-2xl"}`}
             style={{ color: "var(--text-primary)" }}
           >
             {project.title}
           </h3>
+          {large && (
+            <p className="mt-3 text-sm md:text-base leading-relaxed max-w-xl hidden md:block" style={{ color: "var(--text-secondary)" }}>
+              {project.details}
+            </p>
+          )}
         </div>
-      </div>
-    </TiltTile>
+      </TiltCard>
+    </div>
   );
 }
 
-function ProjectModal({ project, open, onClose }: { project: Project; open: boolean; onClose: () => void }) {
+function ProjectModal({ project, open, onClose }: { project: Project | null; open: boolean; onClose: () => void }) {
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
@@ -213,7 +213,7 @@ function ProjectModal({ project, open, onClose }: { project: Project; open: bool
 
   return (
     <AnimatePresence>
-      {open && (
+      {open && project && (
         <motion.div
           className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6"
           initial={{ opacity: 0 }}
@@ -248,7 +248,7 @@ function ProjectModal({ project, open, onClose }: { project: Project; open: bool
             </button>
 
             <div className="relative aspect-[16/10] w-full overflow-hidden" style={{ backgroundColor: "var(--bg-chrome)" }}>
-              <Image src={project.image} alt={project.title} fill sizes="100vw" className="object-cover" priority />
+              <Image src={project.image} alt={project.title} fill sizes="100vw" className="object-cover object-top" priority />
               <div
                 className="absolute inset-0"
                 style={{
@@ -315,41 +315,79 @@ function ProjectModal({ project, open, onClose }: { project: Project; open: bool
 
 export default function MyProjects() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const tileRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const pulseRef = useRef<HTMLDivElement>(null);
+  const nodeRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const dotRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const stubRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  // Grid entrance: tiles rise in with a stagger once the section scrolls
-  // into range. One ScrollTrigger, fires once.
+  const flagship = projects[0];
+  const rest = projects.slice(1);
+
+  // A single point of light travels the length of the spine continuously —
+  // pure transform on one small element, cheap regardless of node count.
   useEffect(() => {
-    if (prefersReducedMotion() || !gridRef.current) return;
-    const tiles = tileRefs.current.filter(Boolean) as HTMLButtonElement[];
-    if (tiles.length === 0) return;
+    if (prefersReducedMotion() || !pulseRef.current) return;
+    const tween = gsap.fromTo(
+      pulseRef.current,
+      { top: "0%" },
+      { top: "100%", duration: 5.5, repeat: -1, ease: "power1.inOut" }
+    );
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  // Each node "powers on" once as it scrolls into range: the stub line
+  // draws in from the spine, the dot snaps to full size, the card rises —
+  // one ScrollTrigger per node, fires once. Dots also breathe gently at
+  // rest so the map reads as live rather than static.
+  useEffect(() => {
+    if (prefersReducedMotion() || !mapRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(tiles, { opacity: 0, y: 24, scale: 0.97 });
-      ScrollTrigger.create({
-        trigger: gridRef.current,
-        start: "top 85%",
-        once: true,
-        onEnter: () =>
-          gsap.to(tiles, { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" }),
+      rest.forEach((_, i) => {
+        const node = nodeRefs.current[i];
+        const dot = dotRefs.current[i];
+        const stub = stubRefs.current[i];
+        if (!node) return;
+
+        gsap.set(node, { opacity: 0, y: 24 });
+        if (dot) gsap.set(dot, { scale: 0 });
+        if (stub) gsap.set(stub, { scaleX: 0 });
+
+        ScrollTrigger.create({
+          trigger: node,
+          start: "top 82%",
+          once: true,
+          onEnter: () => {
+            const tl = gsap.timeline();
+            if (dot) tl.to(dot, { scale: 1, duration: 0.3, ease: "back.out(2.5)" });
+            if (stub) tl.to(stub, { scaleX: 1, duration: 0.4, ease: "power2.out" }, "<");
+            tl.to(node, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, "<0.1");
+          },
+        });
       });
-    });
+
+      dotRefs.current.forEach((dot) => {
+        if (!dot) return;
+        gsap.to(dot, { opacity: 0.45, duration: 1.6, repeat: -1, yoyo: true, ease: "sine.inOut", delay: Math.random() * 1.5 });
+      });
+    }, mapRef);
 
     return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const active = activeIndex !== null ? projects[activeIndex] : null;
 
   return (
     <section
-      ref={sectionRef}
       id="projects"
       className="py-24 md:py-64 border-t overflow-hidden relative"
       style={{ backgroundColor: "var(--bg-base)", borderColor: "var(--border-subtle)" }}
     >
-      <div className="mx-auto px-6" style={{ maxWidth: "1600px" }}>
+      <div className="container mx-auto px-6">
         <div className="flex flex-col mb-16 md:mb-24">
           <span
             className="text-[8px] md:text-[10px] font-technical tracking-[0.6em] md:tracking-[1em] uppercase block mb-6 md:mb-8"
@@ -369,23 +407,93 @@ export default function MyProjects() {
           </h2>
         </div>
 
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 md:mb-20"
-        >
-          {projects.map((project, i) => (
-            <ProjectTile
-              key={project.title}
-              project={project}
-              onOpen={() => setActiveIndex(i)}
-              tileRef={(el) => {
-                tileRefs.current[i] = el;
-              }}
-            />
-          ))}
+        {/* root node — flagship, full width, where the circuit originates */}
+        <div className="max-w-4xl mx-auto mb-2">
+          <NodeCard project={flagship} label="N.01 // MAIN_SYSTEM" onOpen={() => setActiveIndex(0)} large />
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center py-2">
+          <span className="font-technical text-[8px] uppercase tracking-[0.4em]" style={{ color: "var(--text-quaternary)" }}>
+            branching network
+          </span>
+        </div>
+
+        {/* the circuit map itself */}
+        <div ref={mapRef} className="relative max-w-4xl mx-auto">
+          <div
+            className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-px lg:-translate-x-1/2"
+            style={{ background: "linear-gradient(to bottom, var(--accent), var(--border-strong) 12%, var(--border-strong) 88%, transparent)", opacity: 0.35 }}
+          >
+            <div
+              ref={pulseRef}
+              className="absolute left-1/2 -translate-x-1/2 w-1 rounded-full"
+              style={{ height: "10%", background: "linear-gradient(to bottom, transparent, var(--accent), transparent)", filter: "blur(1.5px)" }}
+            />
+          </div>
+
+          {rest.map((project, i) => {
+            const isLeft = i % 2 === 0;
+            return (
+              <div key={project.title} className="relative py-8 lg:py-12">
+                <div
+                  ref={(el) => {
+                    dotRefs.current[i] = el;
+                  }}
+                  className="absolute left-4 lg:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full z-10"
+                  style={{ backgroundColor: "var(--accent)", boxShadow: "0 0 14px var(--accent)" }}
+                />
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 pl-12 lg:pl-0">
+                  {isLeft ? (
+                    <>
+                      <div className="relative lg:pr-16">
+                        <div
+                          ref={(el) => {
+                            stubRefs.current[i] = el;
+                          }}
+                          className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 h-px origin-right"
+                          style={{ width: "4rem", backgroundColor: "var(--border-strong)" }}
+                        />
+                        <NodeCard
+                          project={project}
+                          label={`N.0${i + 2}`}
+                          onOpen={() => setActiveIndex(i + 1)}
+                          nodeRef={(el) => {
+                            nodeRefs.current[i] = el;
+                          }}
+                        />
+                      </div>
+                      <div className="hidden lg:block" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="hidden lg:block" />
+                      <div className="relative lg:pl-16">
+                        <div
+                          ref={(el) => {
+                            stubRefs.current[i] = el;
+                          }}
+                          className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 h-px origin-left"
+                          style={{ width: "4rem", backgroundColor: "var(--border-strong)" }}
+                        />
+                        <NodeCard
+                          project={project}
+                          label={`N.0${i + 2}`}
+                          onOpen={() => setActiveIndex(i + 1)}
+                          nodeRef={(el) => {
+                            nodeRefs.current[i] = el;
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="flex justify-center mt-8 md:mt-12">
           <a
             href="/projects"
             data-cursor="ALL"
@@ -404,7 +512,7 @@ export default function MyProjects() {
         </div>
       </div>
 
-      {active && <ProjectModal project={active} open={activeIndex !== null} onClose={() => setActiveIndex(null)} />}
+      <ProjectModal project={active} open={activeIndex !== null} onClose={() => setActiveIndex(null)} />
     </section>
   );
 }
